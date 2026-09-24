@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>luceecrescita | Parole, luce e crescita</title>
+<title>luceecrescita | Parole, pensieri e consigli</title>
 
-<meta name="description" content="luceecrescita - uno spazio di parole, riflessioni, emozioni e crescita personale.">
+<meta name="description" content="luceecrescita: parole, emozioni, riflessioni, il mio libro e una selezione di prodotti consigliati.">
 
 <style>
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -20,367 +21,739 @@ html {
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #faf8f3;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #faf8f4;
     color: #29251f;
     line-height: 1.7;
 }
 
+/* HEADER */
+
 header {
-    background: linear-gradient(135deg, #fff8df, #f5e5c8);
-    text-align: center;
-    padding: 55px 20px 45px;
-}
-
-.logo {
-    font-size: 42px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #8a641f;
-}
-
-.subtitle {
-    margin-top: 12px;
-    font-size: 19px;
-    color: #5f5548;
-}
-
-nav {
-    background: #ffffff;
-    padding: 15px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
-
-nav a {
-    color: #59462b;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.hero {
-    min-height: 520px;
+    min-height: 420px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 20px;
     background:
-        radial-gradient(circle at top, #fff4ce, transparent 55%),
-        #faf8f3;
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,.95), transparent 38%),
+        linear-gradient(135deg, #fff8df, #ead7b3);
+}
+
+.header-content {
+    max-width: 900px;
+}
+
+.logo {
+    font-size: clamp(40px, 9vw, 72px);
+    font-weight: bold;
+    letter-spacing: -2px;
+    color: #76531d;
+}
+
+.tagline {
+    margin-top: 18px;
+    font-size: clamp(18px, 4vw, 25px);
+    color: #594d3c;
+}
+
+.small-line {
+    margin-top: 22px;
+    color: #746958;
+}
+
+/* NAV */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.97);
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+}
+
+nav a {
+    display: inline-block;
+    margin: 4px 7px;
+    color: #59462b;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 20px;
+    background:
+        radial-gradient(circle at 50% 15%, #fff4c8, transparent 45%),
+        #faf8f4;
 }
 
 .hero-content {
-    max-width: 850px;
+    max-width: 900px;
 }
 
 .hero h1 {
-    font-size: 44px;
-    margin-bottom: 20px;
-    color: #74521c;
+    font-size: clamp(38px, 8vw, 64px);
+    line-height: 1.1;
+    color: #76531d;
+    margin-bottom: 25px;
 }
 
 .hero p {
-    font-size: 21px;
-    margin-bottom: 30px;
-    color: #514a40;
+    max-width: 760px;
+    margin: auto;
+    font-size: clamp(18px, 4vw, 22px);
+    color: #4e473d;
+}
+
+.buttons {
+    margin-top: 35px;
 }
 
 .button {
     display: inline-block;
-    background: #9a7128;
+    margin: 7px;
+    padding: 15px 28px;
+    border-radius: 40px;
+    background: #97702b;
     color: white;
     text-decoration: none;
-    padding: 14px 28px;
-    border-radius: 30px;
     font-weight: bold;
-    margin: 7px;
-    transition: 0.3s;
+    transition: .25s;
 }
 
 .button:hover {
-    background: #74521c;
     transform: translateY(-2px);
+    background: #76531d;
 }
 
+.button-light {
+    background: transparent;
+    border: 2px solid #97702b;
+    color: #76531d;
+}
+
+/* SECTIONS */
+
 section {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
-    padding: 75px 20px;
+    padding: 80px 20px;
 }
 
 section h2 {
     text-align: center;
-    font-size: 32px;
-    color: #74521c;
+    font-size: clamp(30px, 6vw, 42px);
+    color: #76531d;
     margin-bottom: 25px;
 }
 
 .intro {
-    text-align: center;
-    max-width: 750px;
+    max-width: 760px;
     margin: auto;
-    font-size: 18px;
+    text-align: center;
+    font-size: 19px;
+    color: #514a40;
 }
 
-.book {
-    background: white;
-    border-radius: 25px;
-    padding: 40px 25px;
+/* FRASE */
+
+.quote {
+    max-width: 800px;
+    margin: 45px auto 0;
+    padding: 35px 25px;
     text-align: center;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    background: #f1e5cf;
+    border-radius: 25px;
+    font-size: clamp(20px, 4vw, 27px);
+    font-style: italic;
+    color: #604b29;
+}
+
+/* LIBRO */
+
+.book-box {
+    max-width: 850px;
+    margin: 35px auto 0;
+    padding: 45px 25px;
+    text-align: center;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.08);
 }
 
 .book-title {
-    font-size: 29px;
+    font-size: clamp(25px, 5vw, 36px);
     font-weight: bold;
     color: #8a641f;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.quote {
-    background: #f3ead9;
-    border-left: 5px solid #b58a3a;
-    padding: 25px;
-    margin: 30px auto;
-    max-width: 750px;
-    font-size: 20px;
-    font-style: italic;
+/* AMAZON */
+
+.amazon-section {
+    background: linear-gradient(135deg, #fffaf0, #f3ead9);
+    border-radius: 35px;
+}
+
+.amazon-box {
+    max-width: 900px;
+    margin: auto;
     text-align: center;
 }
+
+.amazon-note {
+    margin: 25px auto;
+    max-width: 700px;
+    font-size: 16px;
+    color: #62594d;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+    margin-top: 40px;
+}
+
+.category {
+    background: white;
+    padding: 30px 18px;
+    border-radius: 22px;
+    box-shadow: 0 6px 22px rgba(0,0,0,.07);
+}
+
+.category h3 {
+    color: #8a641f;
+    margin-bottom: 8px;
+}
+
+/* PRODUCTS */
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+    margin-top: 40px;
+}
+
+.product {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 7px 25px rgba(0,0,0,.07);
+}
+
+.product h3 {
+    color: #8a641f;
+    margin-bottom: 12px;
+}
+
+.product p {
+    font-size: 15px;
+    color: #5b554c;
+}
+
+/* PENSIERI */
 
 .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+    gap: 22px;
+    margin-top: 40px;
 }
 
 .card {
     background: white;
-    padding: 28px 20px;
-    border-radius: 20px;
+    padding: 32px 22px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    box-shadow: 0 7px 25px rgba(0,0,0,.07);
 }
 
 .card h3 {
     color: #8a641f;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-size: 22px;
 }
 
-.contact {
+/* TIKTOK */
+
+.social-box {
     text-align: center;
-    background: #f3ead9;
-    border-radius: 25px;
+    background: linear-gradient(135deg, #f5ead7, #fffaf0);
+    border-radius: 30px;
+    padding: 50px 25px;
 }
+
+/* CONTATTI */
+
+.contact-box {
+    text-align: center;
+    background: #29251f;
+    color: white;
+    border-radius: 30px;
+    padding: 50px 25px;
+}
+
+.contact-box h2 {
+    color: #f1d99d;
+}
+
+.contact-box p {
+    max-width: 650px;
+    margin: auto;
+    color: #eee;
+}
+
+/* FOOTER */
 
 footer {
-    background: #29251f;
-    color: #eee;
-    text-align: center;
     padding: 35px 20px;
+    text-align: center;
+    background: #181612;
+    color: #ddd;
 }
 
-footer a {
-    color: #f2d48b;
-    text-decoration: none;
+footer strong {
+    color: #f1d99d;
 }
+
+/* MOBILE */
 
 @media (max-width: 600px) {
-    .logo {
-        font-size: 34px;
-    }
-
-    .hero h1 {
-        font-size: 34px;
-    }
-
-    .hero p {
-        font-size: 18px;
-    }
 
     nav a {
-        margin: 0 5px;
         font-size: 12px;
+        margin: 3px 5px;
     }
+
+    section {
+        padding: 60px 18px;
+    }
+
+    .button {
+        width: 90%;
+        max-width: 300px;
+    }
+
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">luceecrescita</div>
-    <div class="subtitle">
-        Parole che arrivano al cuore. Pensieri che possono accendere una luce.
+
+    <div class="header-content">
+
+        <div class="logo">luceecrescita</div>
+
+        <div class="tagline">
+            Parole che arrivano al cuore.
+        </div>
+
+        <div class="small-line">
+            Pensieri, emozioni, speranza e voglia di ricominciare.
+        </div>
+
     </div>
+
 </header>
 
+
 <nav>
+
     <a href="#home">Home</a>
+    <a href="#chi-sono">Chi sono</a>
     <a href="#libro">Il libro</a>
+    <a href="#amazon">Amazon</a>
     <a href="#pensieri">Pensieri</a>
-    <a href="#seguimi">Seguimi</a>
+    <a href="#seguimi">TikTok</a>
     <a href="#contatti">Contatti</a>
+
 </nav>
 
-<main>
 
 <section id="home" class="hero">
+
     <div class="hero-content">
+
         <h1>Ritrova la tua luce.</h1>
 
         <p>
-            Benvenuto in <strong>luceecrescita</strong>, uno spazio dedicato
-            alle parole, alle emozioni, alla riflessione e alla voglia
-            di ricominciare.
+            Benvenuto in <strong>luceecrescita</strong>.
+            Uno spazio dedicato alle parole,
+            alle emozioni, alle riflessioni
+            e alla voglia di ricominciare.
         </p>
 
-        <a class="button" href="#libro">Scopri il libro</a>
-        <a class="button" href="#pensieri">Leggi i pensieri</a>
+        <div class="buttons">
+
+            <a class="button" href="#libro">
+                Scopri il libro
+            </a>
+
+            <a class="button button-light" href="#amazon">
+                I miei consigli
+            </a>
+
+        </div>
+
     </div>
+
 </section>
 
-<section>
-    <h2>Benvenuto</h2>
+
+<section id="chi-sono">
+
+    <h2>Cos'è luceecrescita?</h2>
 
     <p class="intro">
-        A volte basta una parola per cambiare una giornata.
-        Una frase può arrivare proprio quando ne abbiamo bisogno.
-        Questo spazio nasce per condividere pensieri, emozioni,
-        speranza e piccoli momenti di luce.
+
+        Uno spazio semplice e autentico dove le parole
+        possono diventare un incoraggiamento,
+        una riflessione, una speranza
+        o semplicemente un momento per fermarsi.
+
+        <br><br>
+
+        Perché a volte una frase arriva
+        proprio quando ne abbiamo bisogno.
+
     </p>
 
     <div class="quote">
-        “Non smettere di cercare la luce: a volte è più vicina
-        di quanto immagini.”
+
+        “Non smettere di cercare la luce:
+        a volte è più vicina di quanto immagini.”
+
     </div>
+
 </section>
 
+
 <section id="libro">
+
     <h2>Il mio libro</h2>
 
-    <div class="book">
+    <div class="book-box">
 
         <div class="book-title">
             LE PAROLE CHE TI CERCANO
         </div>
 
         <p>
-            Un libro digitale interattivo nato per accompagnarti
-            attraverso parole, riflessioni ed emozioni.
+            Un libro digitale interattivo nato
+            per accompagnarti attraverso parole,
+            riflessioni ed emozioni.
         </p>
-
-        <br>
 
         <p>
-            Un piccolo viaggio dentro di te, perché alcune parole
-            sembrano arrivare proprio nel momento in cui ne abbiamo bisogno.
+            Un piccolo viaggio dentro di te,
+            perché alcune parole sembrano arrivare
+            proprio nel momento in cui ne abbiamo bisogno.
         </p>
 
-        <br>
+        <div class="buttons">
 
-        <a class="button"
-           href="https://payhip.com/b/IMJKV"
-           target="_blank">
-           Scopri il libro
-        </a>
+            <a
+                class="button"
+                href="https://payhip.com/b/IMJKV"
+                target="_blank"
+                rel="noopener"
+            >
+                Scopri il libro
+            </a>
+
+        </div>
 
     </div>
+
 </section>
 
+
+<section id="amazon">
+
+    <div class="amazon-section">
+
+        <div class="amazon-box">
+
+            <h2>I miei consigli</h2>
+
+            <p class="intro">
+                Una selezione di prodotti che possono essere
+                interessanti, utili o semplicemente piacevoli
+                da scoprire.
+            </p>
+
+            <p class="amazon-note">
+                Qui troverai prodotti di categorie diverse,
+                non soltanto libri.
+            </p>
+
+
+            <div class="categories">
+
+                <div class="category">
+                    <h3>📱 Tecnologia</h3>
+                    <p>
+                        Smartphone, accessori e prodotti tecnologici.
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3>🎥 Creator</h3>
+                    <p>
+                        Accessori e strumenti per creare contenuti.
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3>🏠 Casa</h3>
+                    <p>
+                        Idee e prodotti utili per la casa.
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3>✨ Benessere</h3>
+                    <p>
+                        Prodotti dedicati alla cura personale.
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3>🎁 Idee regalo</h3>
+                    <p>
+                        Idee da scoprire per occasioni speciali.
+                    </p>
+                </div>
+
+                <div class="category">
+                    <h3>📚 Libri</h3>
+                    <p>
+                        Letture e libri da scoprire.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="products">
+
+                <div class="product">
+
+                    <h3>Prodotto consigliato</h3>
+
+                    <p>
+                        Questa sezione sarà aggiornata
+                        con prodotti Amazon selezionati.
+                    </p>
+
+                    <a
+                        class="button"
+                        href="https://amzn.to/4sOKY2l"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Scopri su Amazon
+                    </a>
+
+                </div>
+
+
+                <div class="product">
+
+                    <h3>Nuovi consigli</h3>
+
+                    <p>
+                        Altri prodotti interessanti
+                        verranno aggiunti prossimamente.
+                    </p>
+
+                    <a
+                        class="button"
+                        href="https://amzn.to/4sOKY2l"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Vai su Amazon
+                    </a>
+
+                </div>
+
+
+                <div class="product">
+
+                    <h3>Idee e scoperte</h3>
+
+                    <p>
+                        Una vetrina in continua evoluzione
+                        dedicata a prodotti di diverse categorie.
+                    </p>
+
+                    <a
+                        class="button"
+                        href="https://amzn.to/4sOKY2l"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Scopri
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
 <section id="pensieri">
-    <h2>Pensieri e parole</h2>
+
+    <h2>Pensieri che fanno luce</h2>
 
     <p class="intro">
+
         Alcune parole non hanno bisogno di spiegazioni.
         Hanno solo bisogno di essere ascoltate.
+
     </p>
+
 
     <div class="cards">
 
         <div class="card">
+
             <h3>Ricominciare</h3>
+
             <p>
                 Ricominciare non significa aver perso.
-                Significa avere ancora la forza di andare avanti.
+                Significa avere ancora la forza
+                di fare un passo avanti.
             </p>
+
         </div>
 
+
         <div class="card">
+
             <h3>Gratitudine</h3>
+
             <p>
                 Imparare a riconoscere ciò che abbiamo
-                può cambiare il modo in cui guardiamo la vita.
+                può cambiare il modo in cui guardiamo
+                la nostra vita.
             </p>
+
         </div>
 
+
         <div class="card">
+
             <h3>Fiducia</h3>
+
             <p>
-                Anche quando non vedi ancora la strada,
-                continua a fare un passo alla volta.
+                Anche quando non vedi ancora
+                tutta la strada, continua a fare
+                un passo alla volta.
             </p>
+
         </div>
 
+
         <div class="card">
+
             <h3>La tua luce</h3>
+
             <p>
-                Non permettere alle difficoltà di convincerti
-                che dentro di te non esista più luce.
+                Le difficoltà possono essere grandi,
+                ma non devono convincerti che dentro
+                di te non esista più luce.
             </p>
+
         </div>
 
     </div>
+
 </section>
+
 
 <section id="seguimi">
-    <h2>Seguimi</h2>
 
-    <p class="intro">
-        Seguimi sui social per nuovi pensieri, frasi,
-        riflessioni e contenuti dedicati alla crescita personale.
-    </p>
+    <div class="social-box">
 
-    <div style="text-align:center; margin-top:25px;">
+        <h2>Seguimi su TikTok</h2>
 
-        <a class="button"
-           href="https://www.tiktok.com/"
-           target="_blank">
-           TikTok
-        </a>
+        <p class="intro">
+
+            Nuovi pensieri, frasi, riflessioni
+            e contenuti dedicati alla crescita,
+            alla speranza e alla vita.
+
+        </p>
+
+        <div class="buttons">
+
+            <a
+                class="button"
+                href="https://www.tiktok.com/"
+                target="_blank"
+                rel="noopener"
+            >
+                Vai su TikTok
+            </a>
+
+        </div>
 
     </div>
+
 </section>
 
+
 <section id="contatti">
-    <div class="contact">
+
+    <div class="contact-box">
+
         <h2>Contatti</h2>
 
         <p>
-            Per informazioni, collaborazioni o semplicemente
-            per condividere un pensiero, puoi contattarmi.
+            Per informazioni, collaborazioni
+            o per condividere un pensiero,
+            puoi contattare luceecrescita.
         </p>
 
-        <br>
-
-        <p>
-            <strong>luceecrescita</strong>
-        </p>
     </div>
+
 </section>
 
-</main>
 
 <footer>
-    <p>© 2026 luceecrescita</p>
-    <p>Parole, emozioni e crescita.</p>
+
+    <p>
+        © 2026 <strong>luceecrescita</strong>
+    </p>
+
+    <p>
+        Parole, emozioni e crescita.
+    </p>
+
 </footer>
 
 </body>
