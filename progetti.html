@@ -1,1 +1,1497 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Portfolio Industriale | luceecrescita</title>
+
+<meta name="description" content="Portfolio Industriale di Mastropaolo Antonello Salvatore. 20 progetti inediti nei settori tecnologia, energia, AI, ambiente, logistica, agricoltura e innovazione.">
+
+<meta name="robots" content="index, follow">
+
+<style>
+
+:root{
+    --bg:#030712;
+    --bg2:#07111f;
+    --card:rgba(10,23,40,.78);
+    --card2:rgba(15,32,53,.9);
+    --text:#eaf7ff;
+    --muted:#91a9bc;
+    --cyan:#00e5ff;
+    --blue:#168cff;
+    --violet:#8b5cf6;
+    --green:#00ff9d;
+    --gold:#f5c96a;
+    --border:rgba(0,229,255,.22);
+    --shadow:0 0 40px rgba(0,229,255,.10);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 20% 10%,rgba(0,229,255,.09),transparent 28%),
+        radial-gradient(circle at 80% 20%,rgba(139,92,246,.10),transparent 30%),
+        radial-gradient(circle at 50% 90%,rgba(0,255,157,.06),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+/* GRID TECNOLOGICA */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.16;
+    background-image:
+        linear-gradient(rgba(0,229,255,.08) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,229,255,.08) 1px,transparent 1px);
+    background-size:50px 50px;
+    z-index:-2;
+}
+
+/* SCAN LINE */
+
+body::after{
+    content:"";
+    position:fixed;
+    left:0;
+    right:0;
+    height:2px;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(0,229,255,.35),
+        transparent
+    );
+    animation:scan 7s linear infinite;
+    pointer-events:none;
+    z-index:100;
+}
+
+@keyframes scan{
+    0%{top:-5px;}
+    100%{top:100vh;}
+}
+
+/* HEADER */
+
+header{
+    min-height:92vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:100px 20px 70px;
+    position:relative;
+}
+
+.hero{
+    max-width:1100px;
+    width:100%;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    border:1px solid rgba(0,255,157,.35);
+    border-radius:50px;
+    background:rgba(0,255,157,.05);
+    color:var(--green);
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:28px;
+    box-shadow:0 0 25px rgba(0,255,157,.08);
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{opacity:1;transform:scale(1);}
+    50%{opacity:.4;transform:scale(.7);}
+}
+
+.hero h1{
+    font-size:clamp(44px,8vw,92px);
+    line-height:.95;
+    letter-spacing:-4px;
+    margin-bottom:28px;
+    background:linear-gradient(
+        90deg,
+        #ffffff,
+        var(--cyan),
+        #ffffff,
+        var(--violet)
+    );
+    background-size:250%;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:titleFlow 7s ease infinite;
+}
+
+@keyframes titleFlow{
+    0%{background-position:0%;}
+    50%{background-position:100%;}
+    100%{background-position:0%;}
+}
+
+.hero h1 span{
+    display:block;
+}
+
+.hero p{
+    max-width:760px;
+    margin:auto;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.8;
+}
+
+.author{
+    margin-top:30px;
+    color:#fff;
+    font-size:15px;
+}
+
+.author strong{
+    color:var(--cyan);
+}
+
+/* NAV */
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(3,7,18,.82);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+}
+
+.nav-inner{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 20px;
+}
+
+.logo{
+    color:#fff;
+    text-decoration:none;
+    font-size:20px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:var(--cyan);
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:#b8ccda;
+    text-decoration:none;
+    font-size:13px;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--cyan);
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:80px 20px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:55px;
+}
+
+.section-title .eyebrow{
+    color:var(--cyan);
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+}
+
+.section-title h2{
+    font-size:clamp(32px,5vw,55px);
+    margin-bottom:15px;
+}
+
+.section-title p{
+    max-width:720px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.7;
+}
+
+/* INTELLECTUAL PROPERTY */
+
+.ip-box{
+    position:relative;
+    padding:45px;
+    border:1px solid rgba(245,201,106,.35);
+    border-radius:25px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(245,201,106,.08),
+            rgba(0,229,255,.04)
+        );
+    box-shadow:
+        0 0 60px rgba(245,201,106,.05),
+        inset 0 0 40px rgba(0,229,255,.02);
+    overflow:hidden;
+}
+
+.ip-box::before{
+    content:"IP";
+    position:absolute;
+    right:-20px;
+    top:-50px;
+    font-size:220px;
+    font-weight:bold;
+    color:rgba(245,201,106,.025);
+}
+
+.ip-title{
+    color:var(--gold);
+    font-size:14px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.ip-box h3{
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.ip-box p{
+    color:#b6c8d4;
+    line-height:1.8;
+    margin-bottom:15px;
+}
+
+.warning{
+    margin-top:25px;
+    padding:18px;
+    border-left:3px solid var(--gold);
+    background:rgba(245,201,106,.05);
+    color:#d9cba7;
+    line-height:1.7;
+}
+
+/* CONTROLS */
+
+.controls{
+    margin:65px 0 35px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.search{
+    flex:1;
+    min-width:250px;
+    max-width:500px;
+    padding:15px 20px;
+    border-radius:50px;
+    border:1px solid var(--border);
+    background:rgba(5,14,27,.85);
+    color:#fff;
+    outline:none;
+}
+
+.search:focus{
+    border-color:var(--cyan);
+    box-shadow:0 0 20px rgba(0,229,255,.12);
+}
+
+.filter{
+    padding:13px 20px;
+    border:1px solid var(--border);
+    background:rgba(5,14,27,.8);
+    color:#b9d1df;
+    border-radius:50px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.filter:hover,
+.filter.active{
+    color:#000;
+    background:var(--cyan);
+}
+
+/* PROJECT GRID */
+
+.projects{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:22px;
+}
+
+.project{
+    position:relative;
+    padding:30px;
+    border:1px solid rgba(0,229,255,.14);
+    background:linear-gradient(
+        145deg,
+        rgba(12,28,47,.9),
+        rgba(5,14,27,.95)
+    );
+    border-radius:22px;
+    overflow:hidden;
+    transition:
+        transform .4s,
+        border-color .4s,
+        box-shadow .4s;
+}
+
+.project::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(
+        circle,
+        rgba(0,229,255,.10),
+        transparent 70%
+    );
+    right:-80px;
+    top:-80px;
+}
+
+.project:hover{
+    transform:translateY(-8px);
+    border-color:rgba(0,229,255,.55);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35),
+        0 0 35px rgba(0,229,255,.08);
+}
+
+.project-number{
+    color:var(--cyan);
+    font-family:monospace;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.project h3{
+    font-size:21px;
+    line-height:1.3;
+    margin-bottom:12px;
+}
+
+.project h3 span{
+    color:var(--cyan);
+}
+
+.project p{
+    color:#9eb2c1;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.project-footer{
+    margin-top:25px;
+    padding-top:15px;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#617b8d;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+/* COUNTER */
+
+.counter{
+    margin:70px 0 0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.counter-box{
+    text-align:center;
+    padding:30px 20px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:rgba(8,20,34,.7);
+}
+
+.counter-box strong{
+    display:block;
+    font-size:42px;
+    color:var(--cyan);
+    margin-bottom:8px;
+}
+
+.counter-box span{
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+/* TIMELINE */
+
+.timeline{
+    max-width:850px;
+    margin:50px auto 0;
+    position:relative;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:20px;
+    top:0;
+    bottom:0;
+    width:1px;
+    background:linear-gradient(
+        var(--cyan),
+        var(--violet),
+        transparent
+    );
+}
+
+.timeline-item{
+    position:relative;
+    padding:0 0 35px 65px;
+}
+
+.timeline-dot{
+    position:absolute;
+    left:14px;
+    top:4px;
+    width:13px;
+    height:13px;
+    border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 18px var(--cyan);
+}
+
+.timeline-item h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.timeline-item p{
+    color:var(--muted);
+    line-height:1.7;
+}
+
+/* CTA */
+
+.cta{
+    text-align:center;
+    margin-top:70px;
+    padding:70px 25px;
+    border:1px solid rgba(139,92,246,.3);
+    border-radius:30px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(139,92,246,.12),
+            transparent 65%
+        );
+}
+
+.cta h2{
+    font-size:clamp(30px,5vw,52px);
+    margin-bottom:20px;
+}
+
+.cta p{
+    max-width:700px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:30px;
+    padding:15px 28px;
+    border-radius:50px;
+    background:linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--blue)
+    );
+    color:#001018;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 30px rgba(0,229,255,.25);
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:80px;
+    padding:45px 20px;
+    text-align:center;
+    border-top:1px solid rgba(0,229,255,.12);
+    color:#607788;
+    font-size:12px;
+    line-height:1.8;
+}
+
+footer strong{
+    color:#a9c1ce;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:800px){
+
+    .nav-links{
+        display:none;
+    }
+
+    header{
+        min-height:80vh;
+    }
+
+    .hero h1{
+        letter-spacing:-2px;
+    }
+
+    .projects{
+        grid-template-columns:1fr;
+    }
+
+    .counter{
+        grid-template-columns:1fr;
+    }
+
+    .ip-box{
+        padding:28px 22px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+
+<header id="top">
+
+<div class="hero">
+
+<div class="status">
+<span class="status-dot"></span>
+Portfolio Industriale Digitale
+</div>
+
+<h1>
+<span>INNOVATION</span>
+<span>PORTFOLIO</span>
+</h1>
+
+<p>
+20 progetti inediti dedicati a tecnologia, intelligenza artificiale,
+energia, ambiente, logistica, agricoltura, infrastrutture e nuove
+soluzioni industriali.
+</p>
+
+<div class="author">
+Autore e ideatore:
+<strong>Mastropaolo Antonello Salvatore</strong>
+</div>
+
+</div>
+
+</header>
+
+
+<!-- NAV -->
+
+<nav>
+
+<div class="nav-inner">
+
+<a href="https://luce-crescita.github.io/" class="logo">
+luce<span>ecrescita</span>
+</a>
+
+<ul class="nav-links">
+
+<li><a href="#portfolio">Portfolio</a></li>
+<li><a href="#proprieta">Proprietà</a></li>
+<li><a href="#visione">Visione</a></li>
+<li><a href="#contatti">Contatti</a></li>
+
+</ul>
+
+</div>
+
+</nav>
+
+
+<main>
+
+
+<!-- INTRO -->
+
+<section class="container">
+
+<div class="section-title">
+
+<div class="eyebrow">SYSTEM / 001</div>
+
+<h2>Un portfolio. 20 idee.</h2>
+
+<p>
+Un archivio digitale dedicato a una raccolta di progetti
+inediti sviluppati come concept industriali e tecnologici.
+</p>
+
+</div>
+
+
+<div class="counter">
+
+<div class="counter-box">
+<strong>20</strong>
+<span>Progetti</span>
+</div>
+
+<div class="counter-box">
+<strong>∞</strong>
+<span>Innovazione</span>
+</div>
+
+<div class="counter-box">
+<strong>01</strong>
+<span>Autore</span>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROPRIETA -->
+
+<section class="container" id="proprieta">
+
+<div class="ip-box">
+
+<div class="ip-title">
+Intellectual Property / Rights Reserved
+</div>
+
+<h3>
+Dichiarazione di proprietà intellettuale
+</h3>
+
+<p>
+Io sottoscritto <strong>Mastropaolo Antonello Salvatore</strong>,
+nato a Vico del Gargano (FG) il 02/06/1973, dichiaro che il presente
+Portfolio Industriale costituisce una raccolta di progetti e concept
+inediti da me ideati e organizzati.
+</p>
+
+<p>
+Il portfolio comprende <strong>20 progetti</strong> presentati
+all'interno di questo spazio web istituzionale.
+</p>
+
+<p>
+Tutti i diritti di sfruttamento economico, riproduzione e sviluppo
+commerciale relativi ai contenuti e ai progetti del presente portfolio
+sono riservati in via esclusiva all'autore, fatti salvi i diritti
+eventualmente riconosciuti dalla normativa applicabile.
+</p>
+
+<div class="warning">
+
+<strong>AVVISO — DIRITTI RISERVATI</strong><br><br>
+
+È vietata, senza preventiva autorizzazione dell'autore, la
+riproduzione, copia, diffusione, pubblicazione, modifica, elaborazione,
+utilizzo commerciale o sviluppo dei contenuti progettuali presenti
+in questa pagina, nei limiti e secondo quanto previsto dalla normativa
+vigente.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PORTFOLIO -->
+
+<section class="container" id="portfolio">
+
+<div class="section-title">
+
+<div class="eyebrow">SYSTEM / 020</div>
+
+<h2>Portfolio Industriale</h2>
+
+<p>
+Esplora i 20 progetti attraverso un archivio digitale
+interattivo.
+</p>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="controls">
+
+<input
+type="text"
+id="search"
+class="search"
+placeholder="🔎 Cerca un progetto..."
+>
+
+<button class="filter active" data-filter="all">
+Tutti
+</button>
+
+<button class="filter" data-filter="ai">
+AI / Software
+</button>
+
+<button class="filter" data-filter="energy">
+Energia
+</button>
+
+<button class="filter" data-filter="eco">
+Ambiente
+</button>
+
+<button class="filter" data-filter="infra">
+Infrastrutture
+</button>
+
+</div>
+
+
+<div class="projects" id="projects">
+
+
+<!-- 01 -->
+
+<article class="project" data-category="agri">
+
+<div class="project-number">PROJECT_001</div>
+
+<h3>
+CERES-NET
+<span>(AgroBot-Share)</span>
+</h3>
+
+<p>
+Noleggio frazionato a ore di micro-robot agricoli autonomi solari.
+</p>
+
+<div class="project-footer">
+Agricoltura / Robotica / Energia solare
+</div>
+
+</article>
+
+
+<!-- 02 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_002</div>
+
+<h3>
+ZEUS-SHIELD
+<span>(Atmo-Static Ion-Harvester)</span>
+</h3>
+
+<p>
+Rete di piattaforme aerostatiche per cattura energia ionica.
+</p>
+
+<div class="project-footer">
+Energia / Atmosfera / Infrastrutture
+</div>
+
+</article>
+
+
+<!-- 03 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_003</div>
+
+<h3>
+ANTI-FRAUD NET
+<span>(AI Deep-Fake Shield)</span>
+</h3>
+
+<p>
+App aziendale di scansione biometrica contro cloni vocali e facciali.
+</p>
+
+<div class="project-footer">
+AI / Sicurezza / Biometria
+</div>
+
+</article>
+
+
+<!-- 04 -->
+
+<article class="project" data-category="eco">
+
+<div class="project-number">PROJECT_004</div>
+
+<h3>
+URBAN-MINING INFRASTRUCTURE
+<span>(Eco-Extract Net)</span>
+</h3>
+
+<p>
+Recupero automatizzato di terre rare da rifiuti RAEE.
+</p>
+
+<div class="project-footer">
+Economia circolare / RAEE / Tecnologia
+</div>
+
+</article>
+
+
+<!-- 05 -->
+
+<article class="project" data-category="infra">
+
+<div class="project-number">PROJECT_005</div>
+
+<h3>
+SUB-DELIVERY CAPSULES
+<span>(Pneumatic City-Mesh)</span>
+</h3>
+
+<p>
+Logistica sotterranea a micro-tunnel pneumatici urbani.
+</p>
+
+<div class="project-footer">
+Logistica / Infrastrutture / Smart City
+</div>
+
+</article>
+
+
+<!-- 06 -->
+
+<article class="project" data-category="eco">
+
+<div class="project-number">PROJECT_006</div>
+
+<h3>
+MYCO-STRUCTURE
+<span>(Bio-Synthetic Building-Mesh)</span>
+</h3>
+
+<p>
+Edilizia sostenibile tramite bio-stampa 3D in micelio fungino.
+</p>
+
+<div class="project-footer">
+Edilizia / Biomateriali / Sostenibilità
+</div>
+
+</article>
+
+
+<!-- 07 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_007</div>
+
+<h3>
+CARBON-CAPTURE NODES
+<span>(Graphite Transmute System)</span>
+</h3>
+
+<p>
+Torri urbane di filtraggio CO2 e conversione in grafite.
+</p>
+
+<div class="project-footer">
+CO2 / Ambiente / Materiali
+</div>
+
+</article>
+
+
+<!-- 08 -->
+
+<article class="project" data-category="eco">
+
+<div class="project-number">PROJECT_008</div>
+
+<h3>
+AQUA-DESAL FILTER
+<span>(Graphene-Mesh Grid)</span>
+</h3>
+
+<p>
+Dissalazione passiva costiera tramite membrane in grafene.
+</p>
+
+<div class="project-footer">
+Acqua / Grafene / Ambiente
+</div>
+
+</article>
+
+
+<!-- 09 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_009</div>
+
+<h3>
+NEURO-LINK LEARNING
+<span>(Synaptic-Sync Hub)</span>
+</h3>
+
+<p>
+Software di ottimizzazione mnemonica notturna via onde Alpha/Theta.
+</p>
+
+<div class="project-footer">
+Software / Neurotecnologia / Learning
+</div>
+
+</article>
+
+
+<!-- 10 -->
+
+<article class="project" data-category="infra">
+
+<div class="project-number">PROJECT_010</div>
+
+<h3>
+MAG-LEV ORBITAL RAMP
+<span>(Kinetic Launch-Mesh)</span>
+</h3>
+
+<p>
+Rampa a levitazione magnetica per lancio micro-satelliti.
+</p>
+
+<div class="project-footer">
+Spazio / Magnetismo / Infrastrutture
+</div>
+
+</article>
+
+
+<!-- 11 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_011</div>
+
+<h3>
+FIN-DATA FRACTION
+<span>(Yield-Arbitrage Mesh)</span>
+</h3>
+
+<p>
+Micro-arbitraggi automatizzati su frazioni di liquidità cross-currency.
+</p>
+
+<div class="project-footer">
+Fintech / Automazione / Dati
+</div>
+
+</article>
+
+
+<!-- 12 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_012</div>
+
+<h3>
+POWER-FLOW SHARING
+<span>(Virtual Grid-Bank)</span>
+</h3>
+
+<p>
+App P2P per compravendita di surplus energetico da batterie private.
+</p>
+
+<div class="project-footer">
+Energia / P2P / Smart Grid
+</div>
+
+</article>
+
+
+<!-- 13 -->
+
+<article class="project" data-category="eco">
+
+<div class="project-number">PROJECT_013</div>
+
+<h3>
+AQUA-GEN CONDENSER
+<span>(Atmospheric Water-Mesh)</span>
+</h3>
+
+<p>
+Idro-generatori passivi urbani a condensazione bio-mimica.
+</p>
+
+<div class="project-footer">
+Acqua / Atmosfera / Biomimetica
+</div>
+
+</article>
+
+
+<!-- 14 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_014</div>
+
+<h3>
+SMART-LOGISTICS ROUTING
+<span>(Predictive Delivery-Grid)</span>
+</h3>
+
+<p>
+Software predittivo per ottimizzazione tratte merci B2B.
+</p>
+
+<div class="project-footer">
+AI / Logistica / Predizione
+</div>
+
+</article>
+
+
+<!-- 15 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_015</div>
+
+<h3>
+BIO-LUME URBAN LIGHTING
+<span>(Phytoplankton City-Glow)</span>
+</h3>
+
+<p>
+Illuminazione pubblica passiva via fitoplancton bioluminescente.
+</p>
+
+<div class="project-footer">
+Biotecnologia / Illuminazione / Smart City
+</div>
+
+</article>
+
+
+<!-- 16 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_016</div>
+
+<h3>
+SOUND-HARVESTING BARRIERS
+<span>(Acoustic Eco-Grid)</span>
+</h3>
+
+<p>
+Barriere antirumore autostradali con nanofilm piezoelettrici.
+</p>
+
+<div class="project-footer">
+Acustica / Energia / Infrastrutture
+</div>
+
+</article>
+
+
+<!-- 17 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_017</div>
+
+<h3>
+AGRO-PREDICT COMMODITIES
+<span>(SaaS Crop-Arbitrage)</span>
+</h3>
+
+<p>
+Software B2B per trading merci incrociato con dati meteo El Niño.
+</p>
+
+<div class="project-footer">
+SaaS / Agricoltura / Data Analysis
+</div>
+
+</article>
+
+
+<!-- 18 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_018</div>
+
+<h3>
+LOCAL-BLOCK CHAIN DELIVERY
+<span>(Micro-Courier Hub)</span>
+</h3>
+
+<p>
+App di logistica dell'ultimo miglio peer-to-peer tra privati.
+</p>
+
+<div class="project-footer">
+Blockchain / Logistica / P2P
+</div>
+
+</article>
+
+
+<!-- 19 -->
+
+<article class="project" data-category="energy">
+
+<div class="project-number">PROJECT_019</div>
+
+<h3>
+HELIO-GLASS COATING
+<span>(Photovoltaic Liquid-Grid)</span>
+</h3>
+
+<p>
+Vernice nanotecnologica spray per trasformare vetri in pannelli solari.
+</p>
+
+<div class="project-footer">
+Fotovoltaico / Nanotecnologia / Energia
+</div>
+
+</article>
+
+
+<!-- 20 -->
+
+<article class="project" data-category="ai">
+
+<div class="project-number">PROJECT_020</div>
+
+<h3>
+ROBO-WASTE SORTING
+<span>(AI Trash-Ranger)</span>
+</h3>
+
+<p>
+Robot a micro-AI locale per separazione automatica rifiuti nei cassonetti.
+</p>
+
+<div class="project-footer">
+Robotica / AI / Riciclo
+</div>
+
+</article>
+
+
+</div>
+
+</section>
+
+
+<!-- VISIONE -->
+
+<section class="container" id="visione">
+
+<div class="section-title">
+
+<div class="eyebrow">SYSTEM / VISION</div>
+
+<h2>Una visione multidisciplinare</h2>
+
+<p>
+I progetti attraversano differenti aree tecnologiche con un
+approccio orientato alla ricerca di nuove possibilità.
+</p>
+
+</div>
+
+
+<div class="timeline">
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<h3>01 — Energia</h3>
+
+<p>
+Sistemi energetici alternativi, condivisione dell'energia,
+conversione e recupero di nuove fonti.
+</p>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<h3>02 — Ambiente</h3>
+
+<p>
+Soluzioni dedicate alla gestione delle risorse, recupero
+dei materiali, acqua e riduzione dell'impatto ambientale.
+</p>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<h3>03 — Intelligenza artificiale</h3>
+
+<p>
+Applicazioni software, automazione, sicurezza digitale,
+analisi predittiva e sistemi intelligenti.
+</p>
+
+</div>
+
+
+<div class="timeline-item">
+
+<div class="timeline-dot"></div>
+
+<h3>04 — Infrastrutture</h3>
+
+<p>
+Nuovi concept per mobilità, logistica, città intelligenti
+e infrastrutture tecnologiche.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="container" id="contatti">
+
+<div class="cta">
+
+<h2>Le idee diventano possibilità.</h2>
+
+<p>
+Questo portfolio rappresenta una raccolta di progetti ideati
+e organizzati dall'autore. Per informazioni, collaborazioni
+o richieste relative alla proprietà intellettuale dei progetti,
+è possibile contattare direttamente l'autore.
+</p>
+
+<a
+href="mailto:amastropaolo1@gmail.com"
+class="btn"
+>
+CONTATTA L'AUTORE
+</a>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<strong>luceecrescita</strong><br>
+
+Portfolio Industriale — Mastropaolo Antonello Salvatore<br><br>
+
+© 2026 Mastropaolo Antonello Salvatore — Tutti i diritti riservati.
+
+<br><br>
+
+La pubblicazione online dei progetti non costituisce,
+di per sé, attestazione di deposito o concessione di brevetto.
+La tutela giuridica applicabile dipende dalla natura del contenuto
+e dagli eventuali adempimenti effettuati presso gli organismi competenti.
+
+</footer>
+
+
+<script>
+
+/* RICERCA */
+
+const search = document.getElementById("search");
+const projects = document.querySelectorAll(".project");
+
+search.addEventListener("input", function(){
+
+    const query = this.value.toLowerCase().trim();
+
+    projects.forEach(project => {
+
+        const text = project.innerText.toLowerCase();
+
+        project.style.display =
+            text.includes(query) ? "" : "none";
+
+    });
+
+});
+
+
+/* FILTRI */
+
+const filters = document.querySelectorAll(".filter");
+
+filters.forEach(filter => {
+
+    filter.addEventListener("click", function(){
+
+        filters.forEach(f => f.classList.remove("active"));
+
+        this.classList.add("active");
+
+        const selected = this.dataset.filter;
+
+        projects.forEach(project => {
+
+            if(selected === "all"){
+                project.style.display = "";
+                return;
+            }
+
+            const category = project.dataset.category;
+
+            project.style.display =
+                category === selected ? "" : "none";
+
+        });
+
+        search.value = "";
+
+    });
+
+});
+
+
+/* EFFETTO APPARIZIONE */
+
+const observer = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if(entry.isIntersecting){
+
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+
+            }
+
+        });
+
+    },
+    {threshold:.08}
+);
+
+projects.forEach(project => {
+
+    project.style.opacity = "0";
+    project.style.transform = "translateY(20px)";
+    project.style.transition =
+        "opacity .6s ease, transform .6s ease";
+
+    observer.observe(project);
+
+});
+
+</script>
+
+</body>
+</html>
