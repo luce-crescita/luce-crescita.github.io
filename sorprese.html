@@ -1,1 +1,516 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101326">
+<meta name="description" content="Scopri ogni giorno una sorpresa, crea mondi digitali, gioca e condividi nuove idee con LUCEECRESCITA X∞.">
+<title>LUCEECRESCITA X∞ 2.0 — Infinite Sorprese</title>
+<style>
+:root{--bg:#0c1020;--panel:#171d34;--gold:#ead096;--text:#f8f6f0;--muted:#b9c0d4;--line:#343d59;--accent:#a78bfa}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#34305d 0,#101326 43%,#0c1020 80%);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--gold)}
+header,main,footer{width:min(1080px,92%);margin:auto}
+header{padding:20px 0;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.logo{color:var(--gold);font-weight:950;letter-spacing:1px;text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:13px}
+nav a{text-decoration:none;font-size:.88rem}
+.hero{text-align:center;padding:54px 0 35px}
+.eyebrow{font-size:.76rem;letter-spacing:3px;font-weight:850;color:var(--gold)}
+h1{font-size:clamp(2.5rem,8vw,5.5rem);line-height:1.02;margin:15px 0}
+h1 span,.gold{color:var(--gold)}
+.hero>p{max-width:670px;margin:20px auto;color:var(--muted);font-size:1.08rem}
+.btn{border:0;border-radius:13px;background:var(--gold);color:#19182a;padding:12px 18px;font-weight:850;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.secondary{background:#262d48;color:var(--text);border:1px solid #454d6a}
+.btn.small{padding:8px 12px;font-size:.88rem}
+.hero .btn{padding:16px 25px;font-size:1.08rem}
+#dailyResult{max-width:650px;margin:20px auto;min-height:80px;color:var(--gold);font-size:1.15rem}
+.pills{display:flex;justify-content:center;flex-wrap:wrap;gap:9px}
+.pill{border:1px solid var(--line);background:#171d34;padding:6px 12px;border-radius:30px;font-size:.82rem;color:var(--muted)}
+section{padding:32px 0}
+.section-head{text-align:center;margin-bottom:22px}
+h2{font-size:clamp(1.65rem,5vw,2.5rem);line-height:1.2;margin:8px 0}
+.section-head p,.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px}
+.card{background:linear-gradient(145deg,#1b223c,#13182b);border:1px solid var(--line);border-radius:21px;padding:21px;min-width:0}
+.card h3{margin:7px 0;font-size:1.22rem}
+.card p{color:var(--muted)}
+.icon{font-size:2rem}
+.result{padding:14px;margin-top:13px;background:#101427;border:1px solid var(--line);border-radius:13px;overflow-wrap:anywhere}
+.options{display:grid;gap:9px;margin:14px 0}
+.options button{background:#242b46;color:var(--text);border:1px solid #424a67;border-radius:12px;padding:12px;text-align:left}
+.options button:hover{border-color:var(--gold)}
+input[type=text]{width:100%;background:#0f1428;color:white;border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0 13px}
+label{font-weight:650}
+.world{min-height:225px;border-radius:15px;padding:20px;display:flex;flex-direction:column;justify-content:end;gap:5px;position:relative;overflow:hidden;background:linear-gradient(135deg,#473879,#d17a99,#e6bd80);text-shadow:0 2px 12px #111;isolation:isolate}
+.world:before,.world:after{content:"";position:absolute;border-radius:50%;border:1px solid #ffffff70;width:140px;height:140px;right:12%;top:12%;z-index:-1;box-shadow:0 0 30px #ffffff40}
+.world:after{width:80px;height:80px;right:22%;top:25%}
+.world strong{font-size:1.7rem;line-height:1.2;overflow-wrap:anywhere}
+.small{font-size:.81rem;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.gameboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:16px 0}
+.star{min-height:58px;border:1px solid #424966;border-radius:12px;background:#252b46;color:var(--gold);font-size:1.5rem}
+.star:disabled{opacity:.8;cursor:default}
+.progress{height:7px;border-radius:10px;background:#303650;overflow:hidden;margin:10px 0}
+.progress>div{height:100%;width:0;background:var(--gold);transition:width .2s}
+.gallery-item{border:1px solid var(--line);background:#101427;border-radius:13px;padding:13px;margin-top:10px;overflow-wrap:anywhere}
+.gallery-item strong{display:block;color:var(--gold)}
+footer{padding:32px 0 45px;border-top:1px solid var(--line);margin-top:25px;color:var(--muted);font-size:.9rem}
+footer a{margin-right:12px}
+.notice{border-left:3px solid var(--gold);padding:10px 14px;background:#171d34;color:var(--muted);font-size:.88rem}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:500px){header{align-items:flex-start}.hero{padding-top:36px}.card{padding:16px}.gameboard{gap:6px}.star{min-height:51px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="index.html">LUCEECRESCITA X∞</a>
+  <nav aria-label="Navigazione principale">
+    <a href="#oggi">Oggi</a><a href="#quiz">Quiz</a>
+    <a href="#crea">Crea</a><a href="#gioca">Gioca</a>
+    <a href="#messaggi">Messaggi</a><a href="#raccolta">La mia raccolta</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="oggi">
+  <div class="eyebrow">EDIZIONE INTERATTIVA 2.0</div>
+  <h1>Un mondo.<br><span>Infinite sorprese.</span></h1>
+  <p>Esplora idee inattese, crea il tuo universo, mettiti alla prova e porta con te le scoperte che ti piacciono.</p>
+  <button class="btn" id="dailyBtn">✦ SCOPRI LA SORPRESA DI OGGI ✦</button>
+  <div id="dailyResult" aria-live="polite">La tua scoperta quotidiana ti aspetta.</div>
+  <div class="pills">
+    <span class="pill">✦ Creatività</span>
+    <span class="pill">◈ Mini-giochi</span>
+    <span class="pill">∞ Nuove idee</span>
+  </div>
+</section>
+
+<section id="scopri">
+  <div class="section-head">
+    <div class="eyebrow">01 · ESPLORA</div>
+    <h2>Il Click Impossibile</h2>
+    <p>Piccole esperienze da provare in pochi secondi.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <div class="icon">✨</div><h3>Generatore di idee</h3>
+      <p>Una proposta creativa da sviluppare a modo tuo.</p>
+      <button class="btn secondary" id="ideaBtn">Genera un'idea</button>
+      <div class="result" id="ideaResult" aria-live="polite">Quale sarà la prossima?</div>
+      <button class="btn small" id="saveIdea">Salva nella raccolta</button>
+    </article>
+    <article class="card">
+      <div class="icon">🧭</div><h3>Missione a sorpresa</h3>
+      <p>Una sfida breve per accendere la curiosità.</p>
+      <button class="btn secondary" id="missionBtn">Dammi una missione</button>
+      <div class="result" id="missionResult" aria-live="polite">La tua prossima missione ti aspetta.</div>
+      <button class="btn small" id="saveMission">Salva nella raccolta</button>
+    </article>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="section-head">
+    <div class="eyebrow">02 · SCOPRI</div>
+    <h2>Il tuo stile creativo</h2>
+    <p>Tre domande. Un risultato ludico da condividere.</p>
+  </div>
+  <article class="card">
+    <h3 id="question">1. Quale mondo esploreresti?</h3>
+    <div class="options" id="answers"></div>
+    <div class="progress"><div id="quizBar"></div></div>
+    <p class="small" id="quizProgress">Domanda 1 di 3</p>
+    <div class="result" id="quizResult" aria-live="polite">Scegli una risposta per iniziare.</div>
+    <div class="actions">
+      <button class="btn secondary" id="restartQuiz" hidden>Ricomincia</button>
+      <button class="btn" id="shareQuiz" hidden>Condividi risultato</button>
+      <button class="btn small" id="saveQuiz" hidden>Salva risultato</button>
+    </div>
+  </article>
+</section>
+
+<section id="crea">
+  <div class="section-head">
+    <div class="eyebrow">03 · INVENTA</div>
+    <h2>Creatore di mondi</h2>
+    <p>Ogni combinazione crea una nuova atmosfera digitale.</p>
+  </div>
+  <article class="card">
+    <label for="worldName">Dai un nome al tuo universo</label>
+    <input id="worldName" type="text" maxlength="45" placeholder="Es. Aurora Infinita">
+    <button class="btn" id="createWorld">✦ Crea il mio universo</button>
+    <div class="result">
+      <div class="world" id="worldPreview">
+        <span>IL TUO UNIVERSO</span>
+        <strong id="worldTitle">Un mondo da immaginare</strong>
+        <span id="worldCaption">Ogni creazione inizia con un'idea.</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn secondary" id="saveWorld">Salva nella mia raccolta</button>
+      <button class="btn secondary" id="downloadWorld">Scarica cartolina PNG</button>
+      <button class="btn secondary" id="shareWorld">Condividi</button>
+    </div>
+    <p class="small">Le cartoline vengono generate nel browser. Il download crea un'immagine; il salvataggio della raccolta è locale a questo dispositivo.</p>
+  </article>
+</section>
+
+<section id="gioca">
+  <div class="section-head">
+    <div class="eyebrow">04 · GIOCA</div>
+    <h2>Caccia alle stelle</h2>
+    <p>Trova le tre stelle nascoste. Hai otto tentativi.</p>
+  </div>
+  <article class="card">
+    <p id="gameStatus" aria-live="polite">Pronto per la tua missione?</p>
+    <div class="gameboard" id="gameboard"></div>
+    <div class="actions">
+      <button class="btn secondary" id="newGame">Nuova partita</button>
+      <button class="btn small" id="saveGame" disabled>Salva il risultato</button>
+    </div>
+  </article>
+</section>
+
+<section id="messaggi">
+  <div class="section-head">
+    <div class="eyebrow">05 · ISPIRATI</div>
+    <h2>Il messaggio che aspettavi</h2>
+    <p>Scegli un tema e ricevi un pensiero originale.</p>
+  </div>
+  <article class="card">
+    <div class="options" id="moodOptions">
+      <button data-mood="coraggio">🦁 Ho bisogno di coraggio</button>
+      <button data-mood="speranza">🌅 Cerco speranza</button>
+      <button data-mood="ispirazione">💡 Voglio ispirazione</button>
+      <button data-mood="serenita">🌿 Desidero serenità</button>
+    </div>
+    <div class="result" id="messageResult" aria-live="polite">Il tuo messaggio ti aspetta.</div>
+    <div class="actions">
+      <button class="btn secondary" id="anotherMessage">Un altro messaggio</button>
+      <button class="btn secondary" id="shareMessage">Condividi</button>
+      <button class="btn small" id="saveMessage">Salva nella raccolta</button>
+    </div>
+  </article>
+</section>
+
+<section id="raccolta">
+  <div class="section-head">
+    <div class="eyebrow">06 · LE TUE SCOPERTE</div>
+    <h2>La mia raccolta</h2>
+    <p>Conserva sul tuo dispositivo idee, messaggi e nomi dei mondi che vuoi ritrovare.</p>
+  </div>
+  <article class="card">
+    <div class="actions">
+      <span class="pill" id="savedCount">0 elementi salvati</span>
+      <button class="btn secondary small" id="exportCollection">Esporta raccolta</button>
+      <button class="btn secondary small" id="clearCollection">Svuota raccolta</button>
+    </div>
+    <div id="gallery" aria-live="polite"></div>
+    <p class="notice">La raccolta resta in questo browser. Se cancelli i dati del sito o cambi dispositivo, i contenuti potrebbero andare persi. Esporta una copia se vuoi conservarli.</p>
+  </article>
+</section>
+
+<section id="sostieni">
+  <div class="section-head">
+    <div class="eyebrow">07 · SOSTIENI LA CREATIVITÀ</div>
+    <h2>Porta con te un po' di luce</h2>
+    <p>Le esperienze gratuite rimangono accessibili senza acquisti obbligatori.</p>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <div class="icon">📖</div><h3>Le parole che ti cercano</h3>
+      <p>Scopri il libro digitale interattivo di luceecrescita.</p>
+      <a class="btn" href="https://payhip.com/b/iM8qS" target="_blank" rel="noopener noreferrer">Scopri il libro</a>
+    </article>
+    <article class="card">
+      <div class="icon">🚀</div><h3>InnovationPortfolio X∞</h3>
+      <p>Esplora idee e progetti dedicati all'innovazione e al futuro.</p>
+      <a class="btn secondary" href="progetti.html">Esplora i progetti</a>
+    </article>
+    <article class="card">
+      <div class="icon">🎁</div><h3>La vetrina consigliata</h3>
+      <p>Scopri prodotti selezionati nella vetrina Amazon.</p>
+      <a class="btn secondary" href="https://www.amazon.it/shop/antonello.official1/list/1KNHVVIOC5G3P?ref_=aipsflist&amp;tag=antonellosalv-21" target="_blank" rel="noopener noreferrer">Visita la vetrina</a>
+      <p class="small">In qualità di Affiliato Amazon io ricevo un guadagno dagli acquisti idonei.</p>
+    </article>
+  </div>
+  <p class="small">Gli acquisti sono facoltativi. Le commissioni dipendono dagli acquisti idonei e dalle condizioni dei programmi di affiliazione; non sono garantite.</p>
+</section>
+</main>
+
+<footer>
+  <p><strong>LUCEECRESCITA X∞</strong> — Un clic, una scoperta, una nuova idea.</p>
+  <a href="index.html">Homepage</a>
+  <a href="https://www.tiktok.com/@antonello.official1" target="_blank" rel="noopener noreferrer">TikTok</a>
+  <a href="progetti.html">InnovationPortfolio</a>
+  <p>© <span id="year"></span> luceecrescita. Tutti i diritti riservati.</p>
+  <p class="small">Quiz e risultati sono pensati per il divertimento e non costituiscono valutazioni scientifiche.</p>
+</footer>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const pick = list => list[Math.floor(Math.random()*list.length)];
+const dateKey = new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2,"0")+"-"+String(new Date().getDate()).padStart(2,"0");
+
+const dailySurprises = [
+{title:"Il pianeta delle idee",text:"Immagina un pianeta dove ogni idea diventa una luce. Quale sarebbe la prima cosa che creeresti?"},
+{title:"La macchina impossibile",text:"Inventa una macchina che risolva un piccolo problema quotidiano in un modo mai visto."},
+{title:"Il colore del futuro",text:"Scegli mentalmente tre colori e immagina una città costruita con la loro luce."},
+{title:"La porta segreta",text:"Se una porta potesse condurti in un luogo immaginario, dove vorresti arrivare?"},
+{title:"Un minuto di creatività",text:"Inventa un nome per una nuova tecnologia e descrivi a cosa potrebbe servire."},
+{title:"La missione gentile",text:"Pensa a un piccolo gesto che potrebbe rendere migliore la giornata di qualcuno."},
+{title:"L'universo nascosto",text:"Immagina una galassia con una regola speciale che non esiste nel nostro universo."},
+{title:"L'oggetto del domani",text:"Quale oggetto quotidiano riprogetteresti per renderlo più utile, semplice o sostenibile?"},
+{title:"La domanda curiosa",text:"Quale domanda vorresti porre al futuro, se potessi ricevere una risposta creativa?"},
+{title:"La città segreta",text:"Progetta una città in cui ogni edificio abbia una funzione sorprendente."},
+{title:"Il gioco nuovo",text:"Inventa un gioco che due persone possano giocare anche trovandosi in paesi diversi."},
+{title:"La scoperta inattesa",text:"Pensa a una cosa che hai sempre dato per scontata e immagina come potresti vederla diversamente."}
+];
+function dayIndex(date){
+  const nums=date.split("-").map(Number);
+  const d=new Date(nums[0],nums[1]-1,nums[2]);
+  const start=new Date(d.getFullYear(),0,0);
+  return Math.floor((d-start)/86400000);
+}
+function renderDaily(){
+  const s=dailySurprises[dayIndex(dateKey)%dailySurprises.length];
+  $("dailyResult").innerHTML="";
+  const title=document.createElement("strong");title.textContent=s.title;
+  const p=document.createElement("p");p.textContent=s.text;
+  p.style.margin="7px 0";
+  $("dailyResult").append(title,p);
+}
+$("dailyBtn").addEventListener("click",renderDaily);
+renderDaily();
+
+const ideas=[
+"Inventa un'app che aiuti a imparare qualcosa in un minuto.",
+"Immagina una città alimentata da energia pulita e condivisa.",
+"Crea un oggetto utile partendo da tre forme geometriche.",
+"Dai un nome a una costellazione e inventane la storia.",
+"Progetta un gioco che faccia collaborare persone lontane.",
+"Immagina un museo dedicato alle invenzioni del futuro.",
+"Inventa un servizio che renda più semplice un'attività quotidiana.",
+"Progetta un robot che aiuti a prendersi cura dell'ambiente."
+];
+const missions=[
+"Descrivi in una frase una cosa che vorresti migliorare nel mondo.",
+"Inventa una parola nuova e spiegane il significato.",
+"Immagina un logo usando solo tre forme.",
+"Formula una domanda a cui vorresti trovare una risposta.",
+"Progetta un piccolo oggetto che renda la vita più semplice.",
+"Immagina un luogo che unisca tecnologia e natura.",
+"Scrivi il titolo di un film ambientato nell'anno 2050.",
+"Trasforma un problema quotidiano in una sfida creativa."
+];
+$("ideaBtn").addEventListener("click",()=>$("ideaResult").textContent=pick(ideas));
+$("missionBtn").addEventListener("click",()=>$("missionResult").textContent=pick(missions));
+
+const quizQuestions=[
+{q:"1. Quale mondo esploreresti?",a:["🌌 Un universo sconosciuto","🎨 Un laboratorio di colori","🌿 Un giardino segreto"]},
+{q:"2. Quale potere creativo sceglieresti?",a:["🚀 Immaginare il futuro","🖌️ Trasformare idee in arte","🌱 Far crescere nuove possibilità"]},
+{q:"3. Come inizi un progetto?",a:["🧭 Con una grande domanda","🎨 Sperimentando combinazioni","🌿 Con calma e curiosità"]}
+];
+const profiles=[
+"Esploratore di Idee: ti incuriosiscono le possibilità nuove, le domande audaci e gli orizzonti da immaginare.",
+"Creatore di Colori: ti piace sperimentare, combinare elementi e trasformare le idee in qualcosa di originale.",
+"Coltivatore di Possibilità: ti attirano la crescita, la cura dei dettagli e le idee che possono migliorare la vita."
+];
+let qIndex=0,scores=[0,0,0],quizProfile="";
+function showQuestion(){
+  const q=quizQuestions[qIndex];
+  $("question").textContent=q.q;$("answers").innerHTML="";
+  q.a.forEach((answer,i)=>{
+    const b=document.createElement("button");b.textContent=answer;
+    b.addEventListener("click",()=>{
+      scores[i]++;qIndex++;
+      if(qIndex<quizQuestions.length)showQuestion();else finishQuiz();
+    });
+    $("answers").appendChild(b);
+  });
+  $("quizProgress").textContent=`Domanda ${qIndex+1} di ${quizQuestions.length}`;
+  $("quizBar").style.width=(qIndex/quizQuestions.length*100)+"%";
+}
+function finishQuiz(){
+  const max=Math.max(...scores);
+  const winners=scores.map((v,i)=>v===max?i:-1).filter(i=>i>=0);
+  quizProfile=pick(winners);
+  $("question").textContent="Il tuo profilo creativo";
+  $("answers").innerHTML="";
+  $("quizProgress").textContent="Percorso completato";
+  $("quizBar").style.width="100%";
+  $("quizResult").textContent=profiles[quizProfile];
+  $("restartQuiz").hidden=false;$("shareQuiz").hidden=false;$("saveQuiz").hidden=false;
+}
+function resetQuiz(){
+  qIndex=0;scores=[0,0,0];quizProfile="";
+  $("quizResult").textContent="Scegli le risposte che preferisci.";
+  $("restartQuiz").hidden=true;$("shareQuiz").hidden=true;$("saveQuiz").hidden=true;
+  showQuestion();
+}
+$("restartQuiz").addEventListener("click",resetQuiz);
+$("shareQuiz").addEventListener("click",()=>shareText("Il mio profilo creativo: "+profiles[quizProfile]));
+$("saveQuiz").addEventListener("click",()=>saveItem("Profilo creativo",profiles[quizProfile]));
+showQuestion();
+
+const palettes=[
+["#172554","#7c3aed","#f0abfc"],["#064e3b","#14b8a6","#d9f99d"],
+["#7f1d1d","#f97316","#fde68a"],["#172554","#2563eb","#67e8f9"],
+["#4c1d95","#db2777","#fbcfe8"],["#713f12","#ca8a04","#fef3c7"],
+["#164e63","#0891b2","#a5f3fc"],["#312e81","#9333ea","#f9a8d4"]
+];
+let currentWorld={name:"Un mondo da immaginare",caption:"Ogni creazione inizia con un'idea.",palette:palettes[0]};
+$("createWorld").addEventListener("click",()=>{
+  const name=$("worldName").value.trim()||pick(["Aurora Infinita","Il Giardino delle Stelle","Orizzonte Segreto","Nova","Pianeta delle Idee"]);
+  currentWorld={name,caption:pick(["Un luogo dove tutto può cominciare.","Una nuova galassia di possibilità.","La tua immaginazione ha trovato casa.","Un piccolo universo, una grande idea.","Dove la fantasia incontra il futuro."]),palette:pick(palettes)};
+  $("worldTitle").textContent=name;$("worldCaption").textContent=currentWorld.caption;
+  $("worldPreview").style.background=`radial-gradient(circle at 25% 20%,${currentWorld.palette[2]},transparent 35%),linear-gradient(135deg,${currentWorld.palette[0]},${currentWorld.palette[1]})`;
+});
+function saveItem(type,text,extra={}){
+  try{
+    const items=JSON.parse(localStorage.getItem("luceXInfinityCollection")||"[]");
+    items.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),type,text,date:new Date().toLocaleDateString("it-IT"),...extra});
+    localStorage.setItem("luceXInfinityCollection",JSON.stringify(items.slice(0,100)));
+    renderGallery();alert("Salvato nella tua raccolta su questo dispositivo.");
+  }catch(e){alert("Non è stato possibile salvare. Controlla le impostazioni del browser.");}
+}
+function getItems(){
+  try{return JSON.parse(localStorage.getItem("luceXInfinityCollection")||"[]");}
+  catch(e){return [];}
+}
+function renderGallery(){
+  const items=getItems();
+  $("savedCount").textContent=items.length+(items.length===1?" elemento salvato":" elementi salvati");
+  $("gallery").innerHTML="";
+  if(!items.length){
+    const p=document.createElement("p");p.className="muted";p.textContent="La tua raccolta è ancora vuota. Salva un'idea, un messaggio o un mondo per ritrovarlo qui.";
+    $("gallery").appendChild(p);return;
+  }
+  items.forEach(item=>{
+    const div=document.createElement("div");div.className="gallery-item";
+    const title=document.createElement("strong");title.textContent=item.type+" · "+item.date;
+    const p=document.createElement("p");p.textContent=item.text;
+    const b=document.createElement("button");b.className="btn secondary small";b.textContent="Rimuovi";
+    b.addEventListener("click",()=>{
+      const updated=getItems().filter(x=>x.id!==item.id);
+      localStorage.setItem("luceXInfinityCollection",JSON.stringify(updated));renderGallery();
+    });
+    div.append(title,p,b);$("gallery").appendChild(div);
+  });
+}
+$("saveIdea").addEventListener("click",()=>saveItem("Idea",$("ideaResult").textContent));
+$("saveMission").addEventListener("click",()=>saveItem("Missione",$("missionResult").textContent));
+$("saveQuiz").addEventListener("click",()=>saveItem("Profilo creativo",profiles[quizProfile]));
+$("saveWorld").addEventListener("click",()=>saveItem("Mondo digitale",currentWorld.name+" — "+currentWorld.caption,{palette:currentWorld.palette}));
+$("saveMessage").addEventListener("click",()=>saveItem("Messaggio",$("messageResult").textContent));
+$("exportCollection").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(getItems(),null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=url;a.download="la-mia-raccolta-luceecrescita.json";a.click();URL.revokeObjectURL(url);
+});
+$("clearCollection").addEventListener("click",()=>{
+  if(confirm("Vuoi eliminare tutti gli elementi salvati su questo dispositivo?")){
+    localStorage.removeItem("luceXInfinityCollection");renderGallery();
+  }
+});
+renderGallery();
+
+function downloadWorld(){
+  const canvas=document.createElement("canvas");canvas.width=1200;canvas.height=800;
+  const ctx=canvas.getContext("2d"),p=currentWorld.palette;
+  const gradient=ctx.createLinearGradient(0,0,1200,800);
+  gradient.addColorStop(0,p[0]);gradient.addColorStop(.55,p[1]);gradient.addColorStop(1,p[2]);
+  ctx.fillStyle=gradient;ctx.fillRect(0,0,1200,800);
+  for(let i=0;i<110;i++){
+    const x=Math.random()*1200,y=Math.random()*800,r=Math.random()*2.5+.4;
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle="#ffffff"+(Math.random()>.5?"bb":"70");ctx.fill();
+  }
+  ctx.strokeStyle="#ffffff55";ctx.lineWidth=3;
+  [140,205,270].forEach(r=>{ctx.beginPath();ctx.arc(850,280,r,0,Math.PI*2);ctx.stroke();});
+  ctx.fillStyle="#ffffff";ctx.textAlign="center";ctx.shadowColor="#00000080";ctx.shadowBlur=14;
+  ctx.font="bold 30px sans-serif";ctx.fillText("LUCEECRESCITA X∞",600,600);
+  ctx.font="bold 54px sans-serif";
+  let name=currentWorld.name;
+  while(ctx.measureText(name).width>1000&&name.length>8)name=name.slice(0,-2);
+  ctx.fillText(name,600,675);
+  ctx.font="24px sans-serif";ctx.fillText(currentWorld.caption,600,730);
+  const a=document.createElement("a");a.download="il-mio-mondo-luceecrescita.png";
+  a.href=canvas.toDataURL("image/png");a.click();
+}
+$("downloadWorld").addEventListener("click",downloadWorld);
+
+async function shareText(text){
+  const payload={title:"LUCEECRESCITA X∞",text,url:location.href};
+  if(navigator.share){
+    try{await navigator.share(payload);return;}
+    catch(e){if(e.name==="AbortError")return;}
+  }
+  try{
+    await navigator.clipboard.writeText(text+" — "+location.href);
+    alert("Testo copiato: puoi incollarlo in un messaggio o sui social.");
+  }catch(e){
+    prompt("Copia il testo per condividerlo:",text+" — "+location.href);
+  }
+}
+$("shareWorld").addEventListener("click",()=>shareText("Ho creato il mondo digitale «"+currentWorld.name+"» con LUCEECRESCITA X∞."));
+$("shareMessage").addEventListener("click",()=>shareText($("messageResult").textContent));
+$("year").textContent=new Date().getFullYear();
+
+const messages={
+coraggio:["Il coraggio non significa avere tutte le risposte: significa concederti la possibilità di iniziare.","Anche un piccolo passo può aprire una strada che prima non vedevi.","Non devi fare tutto oggi. Scegli un passo possibile e comincia da lì."],
+speranza:["Una giornata difficile non racconta tutta la tua storia.","Lascia spazio alle possibilità che ancora non hai incontrato.","A volte una nuova prospettiva inizia da una piccola luce."],
+ispirazione:["E se la tua prossima idea fosse quella che ancora non hai osato immaginare?","Una domanda curiosa può diventare l'inizio di un progetto.","Non aspettare l'idea perfetta: esplora, combina, crea."],
+serenita:["Concediti una pausa e lascia che i pensieri trovino il loro ritmo.","Non tutto deve essere risolto nello stesso momento.","A volte la semplicità è un buon posto da cui ricominciare."]
+};
+let currentMood="speranza";
+function newMessage(){ $("messageResult").textContent=pick(messages[currentMood]);}
+$("moodOptions").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-mood]");if(!b)return;
+  currentMood=b.dataset.mood;newMessage();
+});
+$("anotherMessage").addEventListener("click",newMessage);
+
+let stars=new Set(),found=0,attempts=8,gameOver=false;
+function newGame(){
+  stars=new Set();while(stars.size<3)stars.add(Math.floor(Math.random()*12));
+  found=0;attempts=8;gameOver=false;
+  $("gameboard").innerHTML="";$("saveGame").disabled=true;
+  $("gameStatus").textContent="Trova 3 stelle nascoste tra 12 caselle. Tentativi rimasti: 8.";
+  for(let i=0;i<12;i++){
+    const b=document.createElement("button");b.className="star";b.textContent="?";b.setAttribute("aria-label","Casella "+(i+1));
+    b.addEventListener("click",()=>{
+      if(gameOver||b.disabled)return;
+      attempts--;
+      if(stars.has(i)){b.textContent="⭐";found++;}
+      else b.textContent="·";
+      b.disabled=true;
+      if(found===3){
+        gameOver=true;$("gameStatus").textContent=`🎉 Hai trovato tutte le stelle in ${8-attempts} tentativi!`;
+      }else if(attempts===0){
+        gameOver=true;
+        stars.forEach(n=>{const cell=$("gameboard").children[n];if(cell.textContent==="?")cell.textContent="⭐";});
+        $("gameStatus").textContent=`Partita conclusa: ${found} stelle trovate su 3.`;
+      }else{
+        $("gameStatus").textContent=`Stelle trovate: ${found}/3 · Tentativi rimasti: ${attempts}`;
+      }
+      if(gameOver)$("saveGame").disabled=false;
+    });
+    $("gameboard").appendChild(b);
+  }
+}
+$("newGame").addEventListener("click",newGame);
+$("saveGame").addEventListener("click",()=>saveItem("Caccia alle stelle",$("gameStatus").textContent));
+newGame();
+</script>
+</body>
+</html>
