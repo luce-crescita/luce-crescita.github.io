@@ -1,1 +1,1079 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b24">
+<meta name="description" content="LUCEECRESCITA: giochi, creatività, fantasia, sfide e piccole sorprese per tutti.">
+<title>LUCEECRESCITA X∞ 4.0 | Il mondo della fantasia</title>
+
+<style>
+:root{
+  --bg:#100b24;
+  --panel:#1b1436;
+  --panel2:#241a45;
+  --gold:#ffd778;
+  --pink:#ff91d2;
+  --cyan:#80f4ff;
+  --white:#fffaf2;
+  --muted:#c7bfdc;
+  --line:rgba(255,255,255,.13);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;background:
+  radial-gradient(ellipse at 15% 0%,#38215c 0,transparent 38%),
+  radial-gradient(ellipse at 90% 30%,#152f50 0,transparent 34%),
+  var(--bg);
+  color:var(--white);font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  line-height:1.6;overflow-x:hidden
+}
+a{color:var(--cyan)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--cyan);outline-offset:3px
+}
+header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(16,11,36,.91);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line)
+}
+.nav{
+  max-width:1180px;margin:auto;padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap
+}
+.logo{font-size:1.15rem;font-weight:900;letter-spacing:1px;color:var(--gold);text-decoration:none}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{
+  color:var(--white);text-decoration:none;padding:7px 10px;
+  border-radius:12px;font-size:.9rem
+}
+nav a:hover{background:var(--panel2);color:var(--gold)}
+main{max-width:1180px;margin:auto;padding:24px 18px 60px}
+.hero{
+  min-height:400px;display:grid;place-items:center;text-align:center;
+  padding:55px 18px;position:relative;overflow:hidden
+}
+.hero:before,.hero:after{
+  content:"✦";position:absolute;color:var(--gold);font-size:2rem;
+  animation:float 5s ease-in-out infinite
+}
+.hero:before{top:16%;left:12%}
+.hero:after{bottom:16%;right:12%;color:var(--pink);animation-delay:1s}
+@keyframes float{50%{transform:translateY(-18px) rotate(20deg)}}
+.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:2px;font-size:.8rem}
+h1{font-size:clamp(2.3rem,7vw,5rem);line-height:1.08;margin:12px 0}
+h1 span{
+  background:linear-gradient(90deg,var(--gold),var(--pink),var(--cyan));
+  color:transparent;background-clip:text
+}
+h2{font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.2;margin:0 0 12px}
+h3{margin:0 0 8px}
+p{color:var(--muted)}
+.hero p{max-width:690px;margin:14px auto 24px;font-size:1.08rem}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 17px;border:1px solid var(--line);border-radius:14px;
+  background:var(--panel2);color:var(--white);text-decoration:none;font-weight:750;
+  transition:transform .18s,border-color .18s
+}
+.btn:hover{transform:translateY(-2px);border-color:var(--gold)}
+.btn.primary{background:linear-gradient(120deg,#f5ca72,#ff91d2);color:#21132d;border:0}
+.btn.small{padding:7px 11px;font-size:.9rem}
+section{margin-top:55px}
+.section-head{margin-bottom:20px}
+.section-head p{max-width:760px;margin:7px 0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{
+  background:linear-gradient(145deg,rgba(36,26,69,.96),rgba(24,17,48,.96));
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;min-width:0;box-shadow:0 12px 35px #00000014
+}
+.card p{margin:8px 0 15px}
+.emoji{font-size:2rem;display:block;margin-bottom:8px}
+.game-area{
+  background:rgba(8,7,22,.45);border:1px solid var(--line);
+  border-radius:16px;padding:14px;margin-top:12px
+}
+.status{color:var(--gold);font-weight:750;min-height:28px;margin:9px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.center{text-align:center}
+input,textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);
+  background:#100b24;color:var(--white);border-radius:12px
+}
+textarea{min-height:95px;resize:vertical}
+label{display:block;margin:9px 0 5px;color:var(--muted)}
+.canvas-wrap{overflow:hidden;border-radius:14px;background:#fff}
+canvas{display:block;width:100%;height:auto;touch-action:crosshair;cursor:crosshair}
+.colors{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.color-dot{width:30px;height:30px;border:2px solid #ffffff88;border-radius:50%}
+.color-dot[aria-pressed="true"]{outline:3px solid var(--gold);outline-offset:2px}
+.block-grid,.pixel-grid,.letter-grid,.maze-grid,.bubble-grid{
+  display:grid;gap:5px;margin:12px auto;max-width:100%
+}
+.block-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pixel-grid{grid-template-columns:repeat(8,minmax(0,1fr));max-width:320px}
+.letter-grid{grid-template-columns:repeat(6,minmax(0,1fr));max-width:360px}
+.maze-grid{grid-template-columns:repeat(5,minmax(0,1fr));max-width:300px}
+.game-cell{
+  min-width:0;min-height:38px;padding:5px 2px;border-radius:9px;
+  background:#332552;color:white;border:1px solid var(--line);font-weight:800
+}
+.game-cell:hover{border-color:var(--gold)}
+.game-cell.active{background:var(--gold);color:#21132d}
+.game-cell.found{background:#347c78;color:white}
+.pixel-cell{aspect-ratio:1;padding:0;border-radius:4px;background:#f8f4ff;border:1px solid #d9d1e8}
+.pixel-cell.active{background:var(--gold)}
+.collection-list{display:grid;gap:9px}
+.saved-item{padding:12px;border:1px solid var(--line);border-radius:12px;background:#100b24}
+.saved-item strong{color:var(--gold)}
+footer{
+  border-top:1px solid var(--line);text-align:center;
+  padding:30px 18px;color:var(--muted)
+}
+footer a{margin:0 6px}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.small-note{font-size:.86rem;color:var(--muted)}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){
+  .grid{grid-template-columns:1fr}
+  .nav{justify-content:center}
+  nav{justify-content:center}
+  .hero{min-height:340px}
+  main{padding-left:12px;padding-right:12px}
+  .card{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <a class="logo" href="index.html">LUCEECRESCITA X∞</a>
+    <nav aria-label="Navigazione principale">
+      <a href="index.html">Home</a>
+      <a href="#sette-luci">7 Luci</a>
+      <a href="#creativita">Creatività</a>
+      <a href="#nuovi-giochi">Giochi</a>
+      <a href="#galleria">Galleria</a>
+      <a href="progetti.html">Progetti</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div>
+      <div class="eyebrow">✦ UN UNIVERSO DI FANTASIA ✦</div>
+      <h1>Accendi la tua <span>immaginazione.</span></h1>
+      <p>Un luogo per giocare, inventare, disegnare e scoprire nuove idee.
+         Ogni piccola creazione può diventare una grande sorpresa.</p>
+      <div class="actions">
+        <a class="btn primary" href="#nuovi-giochi">🎮 Esplora i giochi</a>
+        <a class="btn" href="#creativita">🎨 Crea qualcosa</a>
+        <a class="btn" href="#sette-luci">✨ Accendi le 7 Luci</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="sette-luci">
+    <div class="section-head">
+      <div class="eyebrow">LA TUA MISSIONE</div>
+      <h2>✨ La sfida delle 7 Luci</h2>
+      <p>Completa le piccole missioni, una alla volta. Non serve correre: divertiti e procedi al tuo ritmo.</p>
+    </div>
+    <div class="card">
+      <div id="light-progress">Luci accese: 0 su 7</div>
+      <div style="height:10px;background:#100b24;border-radius:99px;overflow:hidden;margin:12px 0 18px">
+        <div id="light-bar" style="height:100%;width:0;background:linear-gradient(90deg,#ffd778,#ff91d2,#80f4ff);transition:width .25s"></div>
+      </div>
+      <div class="grid" id="light-list"></div>
+      <div class="actions" style="margin-top:18px">
+        <button class="btn primary" id="reset-lights">↻ Ricomincia le 7 Luci</button>
+      </div>
+      <p class="small-note">I progressi sono salvati in questo browser.</p>
+    </div>
+  </section>
+
+  <section id="creativita">
+    <div class="section-head">
+      <div class="eyebrow">LABORATORIO CREATIVO</div>
+      <h2>🎨 Dai forma alle tue idee</h2>
+      <p>Disegna, costruisci o realizza una piccola opera pixel. Puoi salvare le tue creazioni nella galleria locale.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <span class="emoji">🖍️</span>
+        <h3>Laboratorio di disegno</h3>
+        <label for="brush-size">Dimensione del tratto</label>
+        <input id="brush-size" type="range" min="2" max="28" value="6">
+        <div class="colors" id="drawing-colors"></div>
+        <div class="canvas-wrap"><canvas id="drawing-canvas" width="600" height="380" aria-label="Area per disegnare"></canvas></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn small" id="clear-drawing">Cancella</button>
+          <button class="btn small primary" id="save-drawing">Salva disegno</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🧱</span>
+        <h3>Costruisci con i blocchi</h3>
+        <p>Tocca le caselle per creare una piccola costruzione.</p>
+        <div class="block-grid" id="building-grid"></div>
+        <div class="row">
+          <button class="btn small" id="clear-building">Svuota</button>
+          <button class="btn small primary" id="save-building">Salva costruzione</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🟪</span>
+        <h3>Pixel art</h3>
+        <p>Attiva i pixel per comporre una figura originale.</p>
+        <div class="colors" id="pixel-colors"></div>
+        <div class="pixel-grid" id="pixel-grid"></div>
+        <div class="row">
+          <button class="btn small" id="clear-pixels">Cancella</button>
+          <button class="btn small primary" id="save-pixels">Salva pixel art</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="nuovi-giochi">
+    <div class="section-head">
+      <div class="eyebrow">GIOCA E SCOPRI</div>
+      <h2>🎮 Il mondo dei giochi</h2>
+      <p>Una raccolta di giochi semplici di memoria, parole, logica, creatività e attenzione. Non è una classifica ufficiale: sono proposte di generi diversi da provare.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <span class="emoji">🧠</span>
+        <h3>Memory delle stelle</h3>
+        <p>Trova tutte le coppie uguali.</p>
+        <div class="game-area">
+          <div id="memory-grid" class="block-grid" aria-label="Gioco memory"></div>
+          <div class="status" id="memory-status" aria-live="polite">Trova le coppie!</div>
+          <button class="btn small" id="memory-reset">Ricomincia</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🔢</span>
+        <h3>Continua la sequenza</h3>
+        <p>Osserva i numeri e scegli quello che viene dopo.</p>
+        <div class="game-area center">
+          <h2 id="sequence-question">2 · 4 · 6 · ?</h2>
+          <div class="row" id="sequence-options" style="justify-content:center"></div>
+          <div class="status" id="sequence-status" aria-live="polite"></div>
+          <button class="btn small" id="sequence-next">Nuova sequenza</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🔍</span>
+        <h3>Detective delle forme</h3>
+        <p>Trova la forma richiesta tra le opzioni.</p>
+        <div class="game-area center">
+          <h2 id="shape-question">Trova il cerchio</h2>
+          <div class="row" id="shape-options" style="justify-content:center"></div>
+          <div class="status" id="shape-status" aria-live="polite"></div>
+          <button class="btn small" id="shape-next">Nuova sfida</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">📖</span>
+        <h3>Inventastorie</h3>
+        <p>Inserisci tre idee e trasformale in una piccola storia.</p>
+        <label for="story-hero">Un personaggio</label>
+        <input id="story-hero" placeholder="Es. una volpe curiosa">
+        <label for="story-place">Un luogo</label>
+        <input id="story-place" placeholder="Es. un castello tra le nuvole">
+        <label for="story-object">Un oggetto speciale</label>
+        <input id="story-object" placeholder="Es. una chiave luminosa">
+        <button class="btn primary" id="make-story" style="margin-top:12px">Inventa la storia</button>
+        <div class="game-area" id="story-result" aria-live="polite">La tua storia comincerà qui.</div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🧩</span>
+        <h3>Puzzle scorrevole</h3>
+        <p>Ordina i numeri da 1 a 8 lasciando l'ultima casella vuota.</p>
+        <div class="game-area">
+          <div id="puzzle-grid" class="block-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+          <div class="status" id="puzzle-status" aria-live="polite"></div>
+          <button class="btn small" id="puzzle-reset">Nuovo puzzle</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🌱</span>
+        <h3>Giardino delle idee</h3>
+        <p>Scrivi un pensiero gentile, un desiderio o un'idea creativa.</p>
+        <textarea id="garden-input" maxlength="240" placeholder="Oggi vorrei creare..."></textarea>
+        <button class="btn primary" id="garden-save" style="margin-top:10px">Pianta il tuo seme 🌱</button>
+        <div class="collection-list" id="garden-list" style="margin-top:12px"></div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">⭐</span>
+        <h3>Labirinto delle stelle</h3>
+        <p>Raggiungi la stella dorata senza attraversare i muri.</p>
+        <div class="game-area center">
+          <div id="maze-grid" class="maze-grid"></div>
+          <div class="row" style="justify-content:center">
+            <button class="btn small" data-maze="up" aria-label="Su">⬆️</button>
+          </div>
+          <div class="row" style="justify-content:center">
+            <button class="btn small" data-maze="left" aria-label="Sinistra">⬅️</button>
+            <button class="btn small" data-maze="down" aria-label="Giù">⬇️</button>
+            <button class="btn small" data-maze="right" aria-label="Destra">➡️</button>
+          </div>
+          <div class="status" id="maze-status" aria-live="polite"></div>
+          <button class="btn small" id="maze-reset">Ricomincia labirinto</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🔤</span>
+        <h3>Caccia alle parole</h3>
+        <p>Trova le parole nascoste nella griglia. Tocca le lettere in ordine, da sinistra verso destra.</p>
+        <div class="game-area">
+          <div id="word-grid" class="letter-grid"></div>
+          <p>Parole: <strong id="word-list">LUCE · SOLE · FIORE · AMICO</strong></p>
+          <div class="status" id="word-status" aria-live="polite"></div>
+          <button class="btn small" id="word-reset">Nuova partita</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">⭕</span>
+        <h3>Tris contro il computer</h3>
+        <p>Allinea tre simboli. Tu sei X, il computer è O.</p>
+        <div class="game-area">
+          <div id="tic-grid" class="block-grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+          <div class="status" id="tic-status" aria-live="polite">Tocca una casella per iniziare.</div>
+          <button class="btn small" id="tic-reset">Nuova partita</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">🫧</span>
+        <h3>Scoppia-bolle</h3>
+        <p>Premi Avvia e tocca più bolle possibile in 15 secondi.</p>
+        <div class="game-area center">
+          <div id="bubble-grid" class="bubble-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))"></div>
+          <div class="status" id="bubble-status" aria-live="polite">Pronto? Inizia la sfida!</div>
+          <button class="btn primary" id="bubble-start">Avvia · 15 secondi</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="emoji">⚡</span>
+        <h3>Sfida dei riflessi</h3>
+        <p>Premi il pulsante solo quando diventa verde. Aspetta il segnale!</p>
+        <div class="game-area center">
+          <div class="status" id="reflex-status" aria-live="polite">Premi Inizia quando sei pronto.</div>
+          <button class="btn primary" id="reflex-button">Inizia la prova</button>
+          <div class="small-note" id="reflex-record"></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="galleria">
+    <div class="section-head">
+      <div class="eyebrow">LA TUA COLLEZIONE</div>
+      <h2>🖼️ Galleria delle creazioni</h2>
+      <p>I disegni e le opere salvati rimangono in questo browser. Non vengono pubblicati automaticamente online.</p>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <p id="gallery-count">Nessuna creazione salvata.</p>
+        <button class="btn small" id="clear-gallery">Svuota galleria</button>
+      </div>
+      <div class="grid" id="gallery-grid"></div>
+    </div>
+  </section>
+
+  <section id="missione">
+    <div class="card center">
+      <span class="emoji">💛</span>
+      <h2>Una piccola idea può illuminare una giornata.</h2>
+      <p>Esplora, crea, prova qualcosa di nuovo e condividi gentilezza.</p>
+      <div class="actions">
+        <a class="btn primary" href="#home">Torna all'inizio ↑</a>
+        <a class="btn" href="progetti.html">Scopri INNOVATIONPORTFOLIO X∞</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="risorse">
+    <div class="section-head">
+      <div class="eyebrow">SCOPRI ALTRO</div>
+      <h2>🌟 Altri mondi da esplorare</h2>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <span class="emoji">📚</span>
+        <h3>Le parole che ti cercano</h3>
+        <p>Scopri il libro digitale di Luceecrescita.</p>
+        <a class="btn primary" href="https://payhip.com/b/iM8qS" target="_blank" rel="noopener noreferrer">Scopri il libro</a>
+      </article>
+      <article class="card">
+        <span class="emoji">💡</span>
+        <h3>InnovationPortfolio X∞</h3>
+        <p>Un archivio di idee e progetti dedicati al futuro.</p>
+        <a class="btn" href="progetti.html">Entra nei progetti</a>
+      </article>
+      <article class="card">
+        <span class="emoji">🏠</span>
+        <h3>La casa di Luceecrescita</h3>
+        <p>Ritorna alla pagina principale.</p>
+        <a class="btn" href="index.html">Vai alla Home</a>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><strong style="color:var(--gold)">LUCEECRESCITA X∞</strong> · Parole, fantasia e creatività.</p>
+  <p><a href="index.html">Home</a> · <a href="progetti.html">Progetti</a></p>
+  <p class="small-note">Le attività sono pensate per il divertimento e l'apprendimento. I salvataggi sono locali al browser.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ======================================================
+   SALVATAGGIO LOCALE
+   ====================================================== */
+const STORE_KEY = "luceecrescita_x40";
+const defaultData = {lights:[],gallery:[],garden:[]};
+
+function loadData(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORE_KEY)||"{}");
+    return {
+      lights:Array.isArray(saved.lights)?saved.lights:[],
+      gallery:Array.isArray(saved.gallery)?saved.gallery:[],
+      garden:Array.isArray(saved.garden)?saved.garden:[]
+    };
+  }catch(e){return {...defaultData};}
+}
+let appData=loadData();
+
+function saveData(){
+  try{
+    localStorage.setItem(STORE_KEY,JSON.stringify(appData));
+    return true;
+  }catch(e){
+    alert("Il browser non ha spazio sufficiente per salvare. Prova a eliminare qualche creazione.");
+    return false;
+  }
+}
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
+function makeButton(text,onClick,className="btn small"){
+  const b=document.createElement("button");
+  b.type="button";b.className=className;b.textContent=text;
+  b.addEventListener("click",onClick);return b;
+}
+
+/* ======================================================
+   LE 7 LUCI
+   ====================================================== */
+const lightMissions=[
+  ["💛","Un pensiero gentile","Pensa a una cosa gentile che puoi fare."],
+  ["🎨","Un piccolo disegno","Crea qualcosa usando la fantasia."],
+  ["🌱","Una nuova idea","Immagina un progetto originale."],
+  ["📖","Una storia inventata","Dai vita a un personaggio fantastico."],
+  ["🧩","Una sfida di logica","Prova uno dei giochi della pagina."],
+  ["⭐","Una scoperta","Impara qualcosa che non conoscevi."],
+  ["✨","La tua luce","Scegli la tua attività preferita e completala."]
+];
+function renderChallenges(){
+  const list=document.getElementById("light-list");list.replaceChildren();
+  lightMissions.forEach((mission,i)=>{
+    const done=appData.lights.includes(i);
+    const card=document.createElement("article");card.className="card";
+    const icon=document.createElement("span");icon.className="emoji";icon.textContent=mission[0];
+    const title=document.createElement("h3");title.textContent=mission[1];
+    const desc=document.createElement("p");desc.textContent=mission[2];
+    const button=makeButton(done?"✓ Luce accesa":"Accendi questa luce",()=>{
+      if(appData.lights.includes(i)){
+        appData.lights=appData.lights.filter(n=>n!==i);
+      }else{appData.lights.push(i);}
+      saveData();renderChallenges();
+    },done?"btn small primary":"btn small");
+    card.append(icon,title,desc,button);list.append(card);
+  });
+  document.getElementById("light-progress").textContent=
+    `Luci accese: ${appData.lights.length} su 7`;
+  document.getElementById("light-bar").style.width=
+    `${appData.lights.length/7*100}%`;
+}
+document.getElementById("reset-lights").addEventListener("click",()=>{
+  if(confirm("Vuoi ricominciare la sfida delle 7 Luci?")){
+    appData.lights=[];saveData();renderChallenges();
+  }
+});
+
+/* ======================================================
+   GALLERIA
+   ====================================================== */
+function addCreation(title,type,content){
+  appData.gallery.unshift({
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),
+    title,type,content,created:new Date().toLocaleDateString("it-IT")
+  });
+  appData.gallery=appData.gallery.slice(0,30);
+  if(saveData())renderGallery();
+}
+function renderGallery(){
+  const grid=document.getElementById("gallery-grid");grid.replaceChildren();
+  document.getElementById("gallery-count").textContent=
+    appData.gallery.length?`${appData.gallery.length} creazioni salvate.`:"Nessuna creazione salvata.";
+  appData.gallery.forEach(item=>{
+    const card=document.createElement("article");card.className="card";
+    const title=document.createElement("h3");title.textContent=item.title;
+    const date=document.createElement("p");date.textContent=`${item.type} · ${item.created}`;
+    card.append(title,date);
+    if(item.type==="Disegno"){
+      const img=document.createElement("img");
+      img.src=item.content;img.alt=item.title;
+      img.style.cssText="width:100%;border-radius:12px;background:white";
+      card.append(img);
+    }else if(item.type==="Costruzione"||item.type==="Pixel art"){
+      const pre=document.createElement("div");
+      pre.textContent=item.content;pre.style.cssText=
+        "white-space:pre-wrap;overflow-wrap:anywhere;background:#100b24;padding:10px;border-radius:10px";
+      card.append(pre);
+    }
+    card.append(makeButton("Elimina",()=>{
+      appData.gallery=appData.gallery.filter(x=>x.id!==item.id);
+      saveData();renderGallery();
+    }));
+    grid.append(card);
+  });
+}
+document.getElementById("clear-gallery").addEventListener("click",()=>{
+  if(appData.gallery.length&&confirm("Vuoi eliminare tutte le creazioni salvate?")){
+    appData.gallery=[];saveData();renderGallery();
+  }
+});
+
+/* ======================================================
+   DISEGNO
+   ====================================================== */
+const canvas=document.getElementById("drawing-canvas");
+const ctx=canvas.getContext("2d");
+let drawColor="#36205d",drawing=false,lastPoint=null;
+ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);
+const drawingPalette=["#36205d","#f04478","#ffb703","#20a4f3","#1d9a78","#ff7043","#000000","#ffffff"];
+function buildPalette(containerId,selectedCallback){
+  const container=document.getElementById(containerId);container.replaceChildren();
+  drawingPalette.forEach(color=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="color-dot";b.style.background=color;
+    b.setAttribute("aria-label","Scegli colore "+color);
+    b.addEventListener("click",()=>{
+      container.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");selectedCallback(color);
+    });
+    if(color===drawingPalette[0])b.setAttribute("aria-pressed","true");
+    container.append(b);
+  });
+}
+buildPalette("drawing-colors",color=>drawColor=color);
+function getCanvasPoint(event){
+  const rect=canvas.getBoundingClientRect();
+  return {
+    x:(event.clientX-rect.left)*canvas.width/rect.width,
+    y:(event.clientY-rect.top)*canvas.height/rect.height
+  };
+}
+canvas.addEventListener("pointerdown",e=>{
+  drawing=true;lastPoint=getCanvasPoint(e);canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener("pointermove",e=>{
+  if(!drawing)return;
+  const point=getCanvasPoint(e);
+  ctx.strokeStyle=drawColor;
+  ctx.lineWidth=Number(document.getElementById("brush-size").value);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  ctx.beginPath();ctx.moveTo(lastPoint.x,lastPoint.y);ctx.lineTo(point.x,point.y);ctx.stroke();
+  lastPoint=point;
+});
+function stopDrawing(){drawing=false;lastPoint=null;}
+canvas.addEventListener("pointerup",stopDrawing);
+canvas.addEventListener("pointercancel",stopDrawing);
+document.getElementById("clear-drawing").addEventListener("click",()=>{
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,canvas.width,canvas.height);
+});
+document.getElementById("save-drawing").addEventListener("click",()=>{
+  try{addCreation("Disegno creativo","Disegno",canvas.toDataURL("image/jpeg",.75));}
+  catch(e){alert("Non è stato possibile salvare il disegno.");}
+});
+
+/* ======================================================
+   COSTRUZIONI A BLOCCHI
+   ====================================================== */
+const buildingEmojis=["⬜","🟨","🟦","🟥","🟩","🟪","🟫","⭐","🌳","🏠"];
+const buildingState=Array(25).fill("");
+function setupBuilding(){
+  const grid=document.getElementById("building-grid");grid.replaceChildren();
+  buildingState.forEach((value,i)=>{
+    const b=makeButton(value||"＋",()=>{
+      buildingState[i]=buildingEmojis[(buildingEmojis.indexOf(buildingState[i])+1)%buildingEmojis.length];
+      b.textContent=buildingState[i];
+    },"game-cell");
+    b.setAttribute("aria-label",`Blocco ${i+1}`);grid.append(b);
+  });
+}
+document.getElementById("clear-building").addEventListener("click",()=>{
+  buildingState.fill("");setupBuilding();
+});
+document.getElementById("save-building").addEventListener("click",()=>{
+  addCreation("La mia costruzione","Costruzione",
+    Array.from({length:5},(_,r)=>buildingState.slice(r*5,r*5+5).map(x=>x||"·").join(" ")).join("\n"));
+});
+
+/* ======================================================
+   PIXEL ART
+   ====================================================== */
+let pixelColor="#36205d";
+const pixelState=Array(64).fill("");
+buildPalette("pixel-colors",color=>pixelColor=color);
+function renderPixels(){
+  const grid=document.getElementById("pixel-grid");grid.replaceChildren();
+  pixelState.forEach((value,i)=>{
+    const b=document.createElement("button");b.type="button";b.className="pixel-cell";
+    b.style.background=value||"#f8f4ff";b.setAttribute("aria-label",`Pixel ${i+1}`);
+    b.addEventListener("click",()=>{
+      pixelState[i]=pixelState[i]?"":pixelColor;b.style.background=pixelState[i]||"#f8f4ff";
+    });
+    grid.append(b);
+  });
+}
+document.getElementById("clear-pixels").addEventListener("click",()=>{
+  pixelState.fill("");renderPixels();
+});
+document.getElementById("save-pixels").addEventListener("click",()=>{
+  const art=Array.from({length:8},(_,r)=>pixelState.slice(r*8,r*8+8).map(c=>c?"■":"·").join(" ")).join("\n");
+  addCreation("La mia pixel art","Pixel art",art);
+});
+
+/* ======================================================
+   MEMORY
+   ====================================================== */
+const memorySymbols=["🌟","🌙","🌈","🍀","🦋","🌻","🎈","💎"];
+let memoryCards=[],memoryOpen=[],memoryMatched=0,memoryLocked=false;
+function startMemory(){
+  memoryCards=[...memorySymbols,...memorySymbols].sort(()=>Math.random()-.5);
+  memoryOpen=[];memoryMatched=0;memoryLocked=false;
+  renderMemory();document.getElementById("memory-status").textContent="Trova tutte le coppie!";
+}
+function renderMemory(){
+  const grid=document.getElementById("memory-grid");grid.replaceChildren();
+  memoryCards.forEach((symbol,i)=>{
+    const b=makeButton(memoryOpen.includes(i)||bMatched(i)?symbol:"❔",()=>{
+      if(memoryLocked||memoryOpen.includes(i)||bMatched(i))return;
+      memoryOpen.push(i);renderMemory();
+      if(memoryOpen.length===2){
+        const [a,c]=memoryOpen;
+        if(memoryCards[a]===memoryCards[c]){
+          memoryMatched+=2;memoryOpen=[];renderMemory();
+          document.getElementById("memory-status").textContent=
+            memoryMatched===memoryCards.length?"🎉 Hai trovato tutte le coppie!":"Coppia trovata!";
+        }else{
+          memoryLocked=true;
+          setTimeout(()=>{memoryOpen=[];memoryLocked=false;renderMemory();},700);
+        }
+      }
+    },"game-cell");
+    b.setAttribute("aria-label","Carta "+(i+1));grid.append(b);
+  });
+}
+function bMatched(i){return memoryMatched>0&&memoryCards[i]&&matchedMemoryIndices.has(i)}
+// Manteniamo gli indici delle coppie trovate in un insieme.
+let matchedMemoryIndices=new Set();
+function startMemoryFixed(){
+  matchedMemoryIndices.clear();startMemory();
+}
+document.getElementById("memory-reset").addEventListener("click",startMemoryFixed);
+
+/* Sovrascrive la gestione Memory con un tracciamento affidabile delle coppie. */
+function startMemory(){
+  memoryCards=[...memorySymbols,...memorySymbols].sort(()=>Math.random()-.5);
+  memoryOpen=[];memoryMatched=0;memoryLocked=false;matchedMemoryIndices=new Set();
+  renderMemory();document.getElementById("memory-status").textContent="Trova tutte le coppie!";
+}
+function renderMemory(){
+  const grid=document.getElementById("memory-grid");grid.replaceChildren();
+  memoryCards.forEach((symbol,i)=>{
+    const revealed=memoryOpen.includes(i)||matchedMemoryIndices.has(i);
+    const b=makeButton(revealed?symbol:"❔",()=>{
+      if(memoryLocked||memoryOpen.includes(i)||matchedMemoryIndices.has(i))return;
+      memoryOpen.push(i);renderMemory();
+      if(memoryOpen.length===2){
+        const [a,c]=memoryOpen;
+        if(memoryCards[a]===memoryCards[c]){
+          matchedMemoryIndices.add(a);matchedMemoryIndices.add(c);
+          memoryMatched=matchedMemoryIndices.size;memoryOpen=[];renderMemory();
+          document.getElementById("memory-status").textContent=
+            memoryMatched===memoryCards.length?"🎉 Hai trovato tutte le coppie!":"Coppia trovata!";
+        }else{
+          memoryLocked=true;
+          setTimeout(()=>{memoryOpen=[];memoryLocked=false;renderMemory();},700);
+        }
+      }
+    },"game-cell");
+    b.setAttribute("aria-label","Carta "+(i+1));grid.append(b);
+  });
+}
+
+/* ======================================================
+   SEQUENZE
+   ====================================================== */
+let sequenceAnswer=8;
+function startSequence(){
+  const start=1+Math.floor(Math.random()*5);
+  const step=2+Math.floor(Math.random()*4);
+  const shown=[start,start+step,start+step*2];
+  sequenceAnswer=start+step*3;
+  document.getElementById("sequence-question").textContent=shown.join(" · ")+" · ?";
+  document.getElementById("sequence-status").textContent="";
+  const opts=[sequenceAnswer,sequenceAnswer+step,sequenceAnswer-1,sequenceAnswer+2*step]
+    .sort(()=>Math.random()-.5);
+  const area=document.getElementById("sequence-options");area.replaceChildren();
+  opts.forEach(n=>area.append(makeButton(String(n),()=>{
+    document.getElementById("sequence-status").textContent=n===sequenceAnswer?"✨ Esatto!":"Riprova: osserva la differenza tra i numeri.";
+  })));
+}
+document.getElementById("sequence-next").addEventListener("click",startSequence);
+
+/* ======================================================
+   DETECTIVE DELLE FORME
+   ====================================================== */
+const shapes=[["●","cerchio"],["■","quadrato"],["▲","triangolo"],["◆","rombo"],["★","stella"]];
+let shapeAnswer="";
+function startDetective(){
+  const answer=shapes[Math.floor(Math.random()*shapes.length)];
+  shapeAnswer=answer[1];
+  document.getElementById("shape-question").textContent="Trova: "+shapeAnswer;
+  document.getElementById("shape-status").textContent="";
+  const options=[...shapes].sort(()=>Math.random()-.5);
+  const area=document.getElementById("shape-options");area.replaceChildren();
+  options.forEach(([symbol,name])=>area.append(makeButton(symbol,()=>{
+    document.getElementById("shape-status").textContent=name===shapeAnswer?"🎉 Forma trovata!":"Non è questa: riprova!";
+  },"btn")));
+}
+document.getElementById("shape-next").addEventListener("click",startDetective);
+
+/* ======================================================
+   INVENTASTORIE
+   ====================================================== */
+document.getElementById("make-story").addEventListener("click",()=>{
+  const hero=document.getElementById("story-hero").value.trim()||"un esploratore curioso";
+  const place=document.getElementById("story-place").value.trim()||"un giardino segreto";
+  const object=document.getElementById("story-object").value.trim()||"una piccola stella";
+  document.getElementById("story-result").textContent=
+    `Un giorno ${hero} arrivò in ${place}. Lì trovò ${object}, che custodiva un mistero speciale. `+
+    "Con curiosità, fantasia e un pizzico di coraggio, iniziò una nuova avventura. "+
+    "E la cosa più bella? Il finale lo puoi inventare tu!";
+});
+
+/* ======================================================
+   PUZZLE SCORREVOLE
+   ====================================================== */
+let puzzle=[];
+function shufflePuzzle(){
+  puzzle=[1,2,3,4,5,6,7,8,0];
+  for(let i=0;i<100;i++){
+    const empty=puzzle.indexOf(0);
+    const possible=[empty-3,empty+3];
+    if(empty%3>0)possible.push(empty-1);
+    if(empty%3<2)possible.push(empty+1);
+    const valid=possible.filter(n=>n>=0&&n<9&&Math.abs(Math.floor(n/3)-Math.floor(empty/3))+Math.abs(n%3-empty%3)===1);
+    const target=valid[Math.floor(Math.random()*valid.length)];
+    [puzzle[empty],puzzle[target]]=[puzzle[target],puzzle[empty]];
+  }
+  renderPuzzle();
+}
+function renderPuzzle(){
+  const grid=document.getElementById("puzzle-grid");grid.replaceChildren();
+  puzzle.forEach((n,i)=>{
+    const b=makeButton(n?n:"·",()=>{
+      const empty=puzzle.indexOf(0);
+      if(Math.abs(Math.floor(i/3)-Math.floor(empty/3))+Math.abs(i%3-empty%3)!==1)return;
+      [puzzle[i],puzzle[empty]]=[puzzle[empty],puzzle[i]];renderPuzzle();
+    },"game-cell");
+    grid.append(b);
+  });
+  document.getElementById("puzzle-status").textContent=
+    puzzle.every((n,i)=>n===(i===8?0:i+1))?"🎉 Puzzle completato!":"";
+}
+document.getElementById("puzzle-reset").addEventListener("click",shufflePuzzle);
+
+/* ======================================================
+   GIARDINO DELLE IDEE
+   ====================================================== */
+function renderGarden(){
+  const list=document.getElementById("garden-list");list.replaceChildren();
+  appData.garden.forEach((idea,i)=>{
+    const item=document.createElement("div");item.className="saved-item";
+    const text=document.createElement("p");text.textContent="🌱 "+idea;
+    const remove=makeButton("Rimuovi",()=>{
+      appData.garden.splice(i,1);saveData();renderGarden();
+    });
+    item.append(text,remove);list.append(item);
+  });
+}
+document.getElementById("garden-save").addEventListener("click",()=>{
+  const input=document.getElementById("garden-input");
+  const value=input.value.trim();if(!value)return;
+  appData.garden.unshift(value);appData.garden=appData.garden.slice(0,20);
+  if(saveData()){input.value="";renderGarden();}
+});
+
+/* ======================================================
+   LABIRINTO DELLE STELLE
+   ====================================================== */
+const mazeMap=[
+  "S.#..",
+  "#.#.#",
+  ".....",
+  ".###.",
+  "....G"
+];
+let mazePos={r:0,c:0},mazeWon=false;
+function renderMaze(){
+  const grid=document.getElementById("maze-grid");grid.replaceChildren();
+  mazeMap.forEach((row,r)=>[...row].forEach((cell,c)=>{
+    const b=makeButton(
+      mazePos.r===r&&mazePos.c===c?"🧙":cell==="#"?"🧱":cell==="G"?"⭐":"·",
+      ()=>{}, "game-cell"
+    );
+    b.style.minHeight="42px";
+    if(cell==="#"){b.style.background="#090718";b.disabled=true;}
+    if(cell==="G")b.style.color="var(--gold)";
+    grid.append(b);
+  }));
+}
+function moveMaze(direction){
+  if(mazeWon)return;
+  const delta={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]}[direction];
+  if(!delta)return;
+  const r=mazePos.r+delta[0],c=mazePos.c+delta[1];
+  if(r<0||r>=5||c<0||c>=5||mazeMap[r][c]==="#")return;
+  mazePos={r,c};
+  if(mazeMap[r][c]==="G"){
+    mazeWon=true;
+    document.getElementById("maze-status").textContent="🎉 Hai raggiunto la stella!";
+  }else{
+    document.getElementById("maze-status").textContent="Continua a esplorare!";
+  }
+  renderMaze();
+}
+document.querySelectorAll("[data-maze]").forEach(b=>{
+  b.addEventListener("click",()=>moveMaze(b.dataset.maze));
+});
+document.getElementById("maze-reset").addEventListener("click",()=>{
+  mazePos={r:0,c:0};mazeWon=false;
+  document.getElementById("maze-status").textContent="Trova la stella!";
+  renderMaze();
+});
+document.addEventListener("keydown",e=>{
+  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)&&
+     !["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
+    const map={"ArrowUp":"up","ArrowDown":"down","ArrowLeft":"left","ArrowRight":"right"};
+    moveMaze(map[e.key]);
+  }
+});
+
+/* ======================================================
+   CACCIA ALLE PAROLE
+   ====================================================== */
+const wordRows=["LUCEAX","XSOLEB","FIOREX","XAMICO","BCDEFG","HJKLMN"];
+const targetWords=["LUCE","SOLE","FIORE","AMICO"];
+let foundWords=[],wordCurrent=[],wordCells=[];
+function startWordSearch(){
+  foundWords=[];wordCurrent=[];wordCells=[];
+  const grid=document.getElementById("word-grid");grid.replaceChildren();
+  wordRows.join("").split("").forEach((letter,i)=>{
+    const b=makeButton(letter,()=>selectLetter(i,b),"game-cell");
+    b.dataset.index=String(i);wordCells.push(b);grid.append(b);
+  });
+  document.getElementById("word-status").textContent="Trova le quattro parole!";
+  document.getElementById("word-list").textContent=targetWords.join(" · ");
+}
+function selectLetter(index,button){
+  const row=Math.floor(index/6),col=index%6;
+  if(wordCurrent.length){
+    const last=wordCurrent[wordCurrent.length-1];
+    if(row!==Math.floor(last/6)||col!==last%6+1){
+      wordCurrent=[];wordCells.forEach(b=>b.classList.remove("active"));
+    }
+  }
+  if(wordCurrent.includes(index))return;
+  wordCurrent.push(index);button.classList.add("active");
+  const current=wordCurrent.map(i=>wordRows[Math.floor(i/6)][i%6]).join("");
+  if(targetWords.includes(current)&&!foundWords.includes(current)){
+    foundWords.push(current);
+    wordCurrent.forEach(i=>wordCells[i].classList.add("found"));
+    wordCurrent=[];wordCells.forEach(b=>b.classList.remove("active"));
+    document.getElementById("word-list").textContent=
+      targetWords.map(w=>foundWords.includes(w)?"✓ "+w:w).join(" · ");
+    document.getElementById("word-status").textContent=
+      foundWords.length===targetWords.length?"🎉 Hai trovato tutte le parole!":`Trovata: ${current}!`;
+  }else if(!targetWords.some(w=>w.startsWith(current))){
+    wordCurrent=[];wordCells.forEach(b=>b.classList.remove("active"));
+    document.getElementById("word-status").textContent="Questa sequenza non forma una parola: riprova.";
+  }
+}
+document.getElementById("word-reset").addEventListener("click",startWordSearch);
+
+/* ======================================================
+   TRIS CONTRO IL COMPUTER
+   ====================================================== */
+let ticBoard=Array(9).fill(""),ticOver=false;
+function ticWinner(board){
+  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for(const line of lines){
+    const [a,b,c]=line;
+    if(board[a]&&board[a]===board[b]&&board[b]===board[c])return board[a];
+  }
+  return board.every(Boolean)?"draw":null;
+}
+function renderTic(){
+  const grid=document.getElementById("tic-grid");grid.replaceChildren();
+  ticBoard.forEach((mark,i)=>{
+    const b=makeButton(mark||"·",()=>{
+      if(ticOver||ticBoard[i])return;
+      ticBoard[i]="X";
+      if(ticCheckEnd())return;
+      const empty=ticBoard.map((v,j)=>v?null:j).filter(v=>v!==null);
+      if(empty.length){
+        const move=empty[Math.floor(Math.random()*empty.length)];
+        ticBoard[move]="O";
+      }
+      ticCheckEnd();renderTic();
+    },"game-cell");
+    b.style.minHeight="55px";grid.append(b);
+  });
+}
+function ticCheckEnd(){
+  const winner=ticWinner(ticBoard);
+  if(!winner)return false;
+  ticOver=true;
+  document.getElementById("tic-status").textContent=
+    winner==="X"?"🎉 Hai vinto!":winner==="O"?"Il computer ha vinto. Riprova!":"Pareggio!";
+  renderTic();return true;
+}
+function startTic(){
+  ticBoard=Array(9).fill("");ticOver=false;
+  document.getElementById("tic-status").textContent="Il tuo turno: X";
+  renderTic();
+}
+document.getElementById("tic-reset").addEventListener("click",startTic);
+
+/* ======================================================
+   SCOPPIA-BOLLE
+   ====================================================== */
+let bubbleScore=0,bubbleTime=15,bubbleTimer=null,bubbleActive=false;
+function renderBubbles(){
+  const grid=document.getElementById("bubble-grid");grid.replaceChildren();
+  for(let i=0;i<15;i++){
+    const b=makeButton("🫧",()=>{
+      if(!bubbleActive)return;
+      bubbleScore++;b.textContent="✨";
+      b.disabled=true;
+      document.getElementById("bubble-status").textContent=
+        `Punti: ${bubbleScore} · Tempo: ${bubbleTime}s`;
+    },"game-cell");
+    b.style.minHeight="42px";grid.append(b);
+  }
+}
+function startBubbles(){
+  clearInterval(bubbleTimer);bubbleScore=0;bubbleTime=15;bubbleActive=true;
+  renderBubbles();
+  document.getElementById("bubble-status").textContent="Punti: 0 · Tempo: 15s";
+  document.getElementById("bubble-start").disabled=true;
+  bubbleTimer=setInterval(()=>{
+    bubbleTime--;
+    if(bubbleTime<=0){
+      clearInterval(bubbleTimer);bubbleActive=false;
+      document.getElementById("bubble-status").textContent=`Tempo scaduto! Punteggio: ${bubbleScore}`;
+      document.getElementById("bubble-start").disabled=false;
+    }else{
+      document.getElementById("bubble-status").textContent=`Punti: ${bubbleScore} · Tempo: ${bubbleTime}s`;
+    }
+  },1000);
+}
+document.getElementById("bubble-start").addEventListener("click",startBubbles);
+
+/* ======================================================
+   SFIDA DEI RIFLESSI
+   ====================================================== */
+let reflexState="idle",reflexTimer=null,reflexStart=0;
+const reflexButton=document.getElementById("reflex-button");
+const reflexStatus=document.getElementById("reflex-status");
+reflexButton.addEventListener("click",()=>{
+  if(reflexState==="idle"){
+    reflexState="waiting";reflexButton.textContent="Aspetta il verde…";
+    reflexButton.className="btn";
+    reflexStatus.textContent="Non premere ancora!";
+    reflexTimer=setTimeout(()=>{
+      reflexState="ready";reflexStart=performance.now();
+      reflexButton.textContent="PREMI ORA!";
+      reflexButton.style.background="#238b63";reflexButton.style.color="#fff";
+      reflexStatus.textContent="Adesso!";
+    },1200+Math.random()*2800);
+  }else if(reflexState==="waiting"){
+    clearTimeout(reflexTimer);reflexState="idle";
+    reflexButton.textContent="Riprova";reflexButton.style.background="";
+    reflexButton.style.color="";
+    reflexStatus.textContent="Troppo presto! Aspetta il segnale verde.";
+  }else if(reflexState==="ready"){
+    const elapsed=Math.round(performance.now()-reflexStart);
+    reflexState="idle";reflexButton.textContent="Riprova";
+    reflexButton.style.background="";reflexButton.style.color="";
+    reflexStatus.textContent=`Il tuo tempo: ${elapsed} millisecondi.`;
+  }
+});
+
+/* ======================================================
+   AVVIO
+   ====================================================== */
+setupBuilding();
+renderPixels();
+renderChallenges();
+renderGallery();
+renderGarden();
+startMemory();
+startSequence();
+startDetective();
+shufflePuzzle();
+renderMaze();
+startWordSearch();
+startTic();
+renderBubbles();
+</script>
+</body>
+</html>
