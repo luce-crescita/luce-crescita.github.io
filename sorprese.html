@@ -1,1 +1,1004 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b24">
+<meta name="description" content="LUCEECRESCITA X∞: giochi creativi, sfide futuristiche, disegno e immaginazione per bambini e adulti.">
+<title>LUCEECRESCITA X∞ 6.0 | Future Play Universe</title>
+
+<style>
+:root{
+  --bg:#100b24;
+  --panel:#1c1436;
+  --panel2:#261b48;
+  --gold:#ffd166;
+  --cyan:#55f4ff;
+  --pink:#ff75d8;
+  --green:#8affc1;
+  --text:#fff9ff;
+  --muted:#c7bfdc;
+  --border:rgba(255,255,255,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(ellipse at top left,#38205c 0,transparent 42%),
+    radial-gradient(ellipse at bottom right,#123a51 0,transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  line-height:1.6;
+  min-height:100vh;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--cyan)}
+button:focus-visible,a:focus-visible,input:focus-visible,
+textarea:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+header{
+  padding:22px 5%;
+  border-bottom:1px solid var(--border);
+  background:rgba(12,8,28,.8);
+  position:relative;
+}
+.brand{font-size:clamp(1.5rem,4vw,2.6rem);font-weight:950;letter-spacing:1px}
+.brand span{color:var(--cyan)}
+.subtitle{color:var(--muted);font-size:.95rem}
+nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+nav a{
+  text-decoration:none;color:var(--text);
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--border);
+  padding:8px 13px;border-radius:999px;font-size:.88rem;
+}
+nav a:hover{border-color:var(--cyan);color:var(--cyan)}
+main{width:min(1180px,92%);margin:auto}
+section{padding:42px 0;scroll-margin-top:20px}
+.hero{text-align:center;padding:65px 0 42px}
+.eyebrow{
+  display:inline-block;border:1px solid rgba(85,244,255,.4);
+  color:var(--cyan);padding:5px 12px;border-radius:999px;
+  font-size:.8rem;letter-spacing:1px;margin-bottom:18px
+}
+h1{font-size:clamp(2.3rem,7vw,5rem);line-height:1.08;margin-bottom:18px}
+h1 span{color:var(--gold)}
+h2{font-size:clamp(1.65rem,4vw,2.5rem);margin-bottom:10px}
+h3{font-size:1.15rem;margin-bottom:9px}
+p{margin-bottom:12px}
+.lead{color:var(--muted);max-width:760px;margin:0 auto 23px}
+.section-intro{color:var(--muted);max-width:780px;margin-bottom:22px}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:20px 0}
+.btn{
+  border:0;border-radius:12px;padding:11px 17px;
+  background:linear-gradient(135deg,var(--gold),#ffad5a);
+  color:#21112e;font-weight:850;box-shadow:0 5px 0 #9c5c35;
+  transition:transform .15s;display:inline-block;text-decoration:none;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn.secondary{
+  background:linear-gradient(135deg,var(--cyan),#9bfbff);
+  box-shadow:0 5px 0 #267e95;
+}
+.btn.pink{background:linear-gradient(135deg,var(--pink),#ffb3e8);box-shadow:0 5px 0 #9b427e}
+.btn.dark{background:var(--panel2);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.small{font-size:.85rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{
+  min-width:0;background:linear-gradient(145deg,rgba(38,27,72,.96),rgba(23,17,48,.96));
+  border:1px solid var(--border);border-radius:20px;padding:20px;
+  box-shadow:0 12px 32px rgba(0,0,0,.17);
+}
+.card p{color:var(--muted)}
+.card .emoji{font-size:2rem;display:block;margin-bottom:7px}
+.pill{
+  display:inline-block;font-size:.73rem;padding:4px 9px;border-radius:999px;
+  background:rgba(85,244,255,.12);color:var(--cyan);margin-bottom:10px;
+}
+.kid{border-top:3px solid var(--green)}
+.adult{border-top:3px solid var(--pink)}
+.shared{border-top:3px solid var(--gold)}
+.game-area{
+  margin-top:18px;padding:18px;border:1px dashed rgba(255,255,255,.2);
+  border-radius:16px;background:rgba(0,0,0,.12)
+}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row>*{max-width:100%}
+label{display:block;margin:10px 0 5px;color:var(--muted)}
+input[type="text"],input[type="number"],textarea,select{
+  width:100%;max-width:100%;padding:11px 12px;
+  color:var(--text);background:#110d28;border:1px solid var(--border);
+  border-radius:10px;
+}
+input[type="range"]{width:100%;accent-color:var(--cyan)}
+textarea{resize:vertical}
+output,.result{display:block;color:var(--gold);font-weight:750;margin-top:10px;overflow-wrap:anywhere}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+.statbar{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px 0}
+.stat{padding:12px 18px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.05)}
+.stat strong{color:var(--gold);font-size:1.2rem}
+.progress{height:12px;background:#090617;border-radius:999px;overflow:hidden;margin:12px 0}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink),var(--gold));transition:width .3s}
+.light-list{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:20px 0}
+.light{
+  padding:12px 3px;border-radius:12px;text-align:center;
+  border:1px solid var(--border);background:rgba(255,255,255,.04);
+  color:var(--muted);font-size:.8rem;
+}
+.light.done{background:rgba(138,255,193,.15);border-color:var(--green);color:var(--green)}
+.light button{display:block;margin:5px auto 0;border:0;background:transparent;color:inherit;font-size:1.2rem}
+#drawingCanvas{
+  display:block;width:100%;height:300px;background:#fff;
+  border-radius:12px;touch-action:none;cursor:crosshair;
+}
+#pixelBoard{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:2px;margin-top:14px}
+.pixel{aspect-ratio:1;border:0;border-radius:2px;background:#f5f2ff;min-width:0}
+.memory-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:14px}
+.memory-card{
+  min-height:66px;border:1px solid var(--border);border-radius:12px;
+  background:#34215b;color:white;font-size:1.6rem;
+}
+.memory-card.revealed,.memory-card.matched{background:#143c48;border-color:var(--cyan)}
+.choice-list{display:grid;gap:8px;margin-top:12px}
+.choice-list button{text-align:left}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gallery-item{background:rgba(255,255,255,.05);border:1px solid var(--border);padding:12px;border-radius:12px;overflow-wrap:anywhere}
+.gallery-item img{width:100%;height:150px;object-fit:contain;background:#fff;border-radius:8px;margin-bottom:8px}
+footer{text-align:center;padding:32px 5%;border-top:1px solid var(--border);color:var(--muted)}
+footer a{margin:0 7px}
+.notice{font-size:.82rem;color:var(--muted);margin-top:10px}
+.hidden{display:none!important}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+  main{width:92%}.grid,.gallery-grid{grid-template-columns:1fr}
+  section{padding:30px 0}.hero{padding-top:45px}
+  .light-list{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #drawingCanvas{height:250px}.memory-card{min-height:56px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">LUCEECRESCITA <span>X∞</span></div>
+  <div class="subtitle">6.0 · FUTURE PLAY UNIVERSE · Immagina, crea, scopri</div>
+  <nav aria-label="Navigazione principale">
+    <a href="#home">Home</a>
+    <a href="#7luci">7 Luci</a>
+    <a href="#piccini">Piccini</a>
+    <a href="#grandi">Grandi</a>
+    <a href="#futuro">Futuro X∞</a>
+    <a href="#creativita">Creatività</a>
+    <a href="#galleria">Galleria</a>
+    <a href="#progetti">Progetti</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <span class="eyebrow">✦ UN UNIVERSO DA INVENTARE ✦</span>
+  <h1>Il futuro inizia<br><span>dalla tua fantasia.</span></h1>
+  <p class="lead">
+    Un laboratorio interattivo per esplorare, costruire, risolvere enigmi
+    e dare vita a nuove idee. Ogni età ha il suo spazio.
+  </p>
+  <div class="actions">
+    <a class="btn secondary" href="#piccini">🧒 Entra nei Piccini</a>
+    <a class="btn pink" href="#grandi">🧑 Entra nei Grandi</a>
+    <a class="btn" href="#futuro">🚀 Esplora il futuro</a>
+  </div>
+  <div class="statbar">
+    <div class="stat">✨ <strong id="statLights">0/7</strong><br><span class="small">Luci completate</span></div>
+    <div class="stat">🎨 <strong id="statCreations">0</strong><br><span class="small">Creazioni salvate</span></div>
+    <div class="stat">🪐 <strong>2050+</strong><br><span class="small">Orizzonte creativo</span></div>
+  </div>
+</section>
+
+<section id="7luci">
+  <h2>✨ La sfida delle 7 Luci</h2>
+  <p class="section-intro">Completa una piccola missione alla volta. I progressi vengono salvati nel browser di questo dispositivo.</p>
+  <div class="progress"><div id="lightProgress"></div></div>
+  <p id="lightSummary" class="result" aria-live="polite">Hai acceso 0 luci su 7.</p>
+  <div class="light-list" id="lightList"></div>
+  <div class="card shared">
+    <h3 id="lightTitle">La prima luce: immagina</h3>
+    <p id="lightDescription">Inventa qualcosa che renda il mondo un posto migliore.</p>
+    <label for="lightAnswer">La tua idea</label>
+    <textarea id="lightAnswer" rows="3" placeholder="Scrivi qui la tua idea..."></textarea>
+    <div class="actions">
+      <button class="btn" id="completeLight">Accendi questa luce ✨</button>
+      <button class="btn dark" id="restartLights">Ricomincia le 7 Luci</button>
+    </div>
+    <p class="notice">Ricominciare azzera soltanto la sfida delle 7 Luci, non la galleria.</p>
+  </div>
+</section>
+
+<section id="piccini">
+  <h2>🧒 Area Piccini</h2>
+  <p class="section-intro">Giochi semplici per allenare osservazione, memoria, immaginazione e curiosità. Anche i grandi possono giocare insieme ai bambini.</p>
+  <div class="grid">
+    <article class="card kid">
+      <span class="emoji">🧠</span><span class="pill">MEMORIA</span>
+      <h3>Memory delle stelle</h3>
+      <p>Trova le coppie e allena la memoria.</p>
+      <div class="game-area">
+        <p>Tentativi: <strong id="memoryAttempts">0</strong> · Coppie: <strong id="memoryPairs">0/6</strong></p>
+        <div class="memory-board" id="memoryBoard"></div>
+        <button class="btn dark" id="restartMemory" style="margin-top:12px">Nuova partita</button>
+        <p class="result" id="memoryResult" aria-live="polite"></p>
+      </div>
+    </article>
+
+    <article class="card kid">
+      <span class="emoji">🔎</span><span class="pill">OSSERVAZIONE</span>
+      <h3>Indovina la forma</h3>
+      <p>Leggi l'indizio e scegli la risposta giusta.</p>
+      <div class="game-area">
+        <p id="shapeQuestion">Ha tre lati e tre angoli. Che forma è?</p>
+        <div class="choice-list" id="shapeChoices">
+          <button class="btn dark" data-shape="cerchio">Cerchio</button>
+          <button class="btn dark" data-shape="triangolo">Triangolo</button>
+          <button class="btn dark" data-shape="quadrato">Quadrato</button>
+        </div>
+        <p class="result" id="shapeResult" aria-live="polite"></p>
+        <button class="btn dark" id="nextShape">Altro indovinello</button>
+      </div>
+    </article>
+
+    <article class="card kid">
+      <span class="emoji">📖</span><span class="pill">FANTASIA</span>
+      <h3>La storia magica</h3>
+      <p>Genera uno spunto e inventa il seguito.</p>
+      <div class="game-area">
+        <p id="storyPrompt">Un piccolo robot trova una stella che parla...</p>
+        <button class="btn secondary" id="newStory">Nuova idea</button>
+        <label for="storyEnding">Come continua?</label>
+        <textarea id="storyEnding" rows="3" placeholder="Continua la storia..."></textarea>
+        <button class="btn dark" id="saveStory" style="margin-top:10px">Salva la storia</button>
+      </div>
+    </article>
+
+    <article class="card kid">
+      <span class="emoji">🔢</span><span class="pill">LOGICA</span>
+      <h3>Il numero misterioso</h3>
+      <p>Trova il numero segreto tra 1 e 20.</p>
+      <div class="game-area">
+        <label for="guessNumber">La tua risposta</label>
+        <input id="guessNumber" type="number" min="1" max="20" placeholder="Da 1 a 20">
+        <div class="actions">
+          <button class="btn" id="checkGuess">Prova</button>
+          <button class="btn dark" id="newGuess">Nuovo numero</button>
+        </div>
+        <p class="result" id="guessResult" aria-live="polite"></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="grandi">
+  <h2>🧑 Area Grandi</h2>
+  <p class="section-intro">Sfide di ragionamento, pianificazione e invenzione. Non serve essere esperti: servono curiosità e voglia di provare.</p>
+  <div class="grid">
+    <article class="card adult">
+      <span class="emoji">🔐</span><span class="pill">CODICE SEGRETO</span>
+      <h3>Il codice X∞</h3>
+      <p>Decifra il codice usando l'indizio. Le soluzioni cambiano a ogni partita.</p>
+      <div class="game-area">
+        <p>Indizio: <strong id="codeClue"></strong></p>
+        <label for="codeAnswer">La tua risposta</label>
+        <input id="codeAnswer" type="text" placeholder="Scrivi la parola">
+        <div class="actions">
+          <button class="btn pink" id="checkCode">Decifra</button>
+          <button class="btn dark" id="newCode">Nuovo codice</button>
+        </div>
+        <p class="result" id="codeResult" aria-live="polite"></p>
+      </div>
+    </article>
+
+    <article class="card adult">
+      <span class="emoji">💡</span><span class="pill">PROBLEM SOLVING</span>
+      <h3>La sfida delle idee</h3>
+      <p>Trasforma un problema quotidiano in un progetto realizzabile.</p>
+      <div class="game-area">
+        <p id="ideaChallenge">Come ridurre gli sprechi d'acqua in una città?</p>
+        <button class="btn secondary" id="newChallenge">Cambia sfida</button>
+        <label for="ideaAnswer">La tua soluzione</label>
+        <textarea id="ideaAnswer" rows="4" placeholder="Descrivi il problema, la soluzione e chi potrebbe beneficiarne..."></textarea>
+        <button class="btn dark" id="saveIdea" style="margin-top:10px">Salva il progetto</button>
+      </div>
+    </article>
+
+    <article class="card adult">
+      <span class="emoji">🧩</span><span class="pill">PENSIERO STRATEGICO</span>
+      <h3>Tre scelte per il futuro</h3>
+      <p>Gestisci un budget immaginario per rendere migliore una città.</p>
+      <div class="game-area">
+        <p>Budget iniziale: <strong>12 punti</strong></p>
+        <label for="energyChoice">Energia pulita — 4 punti</label>
+        <input type="checkbox" id="energyChoice">
+        <label for="greenChoice">Parchi e alberi — 3 punti</label>
+        <input type="checkbox" id="greenChoice">
+        <label for="schoolChoice">Scuole innovative — 5 punti</label>
+        <input type="checkbox" id="schoolChoice">
+        <label for="transportChoice">Trasporto pubblico — 4 punti</label>
+        <input type="checkbox" id="transportChoice">
+        <p class="result" id="budgetResult">Punti spesi: 0 su 12.</p>
+        <button class="btn pink" id="checkBudget">Valuta il piano</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="futuro">
+  <h2>🚀 Laboratorio Futuristico X∞</h2>
+  <p class="section-intro">Sperimenta concept creativi ambientati nel futuro. Sono simulazioni ludiche: i risultati sono generati localmente e non sono previsioni scientifiche.</p>
+  <div class="grid">
+    <article class="card shared">
+      <span class="emoji">🪐</span><span class="pill">PLANET DESIGNER</span>
+      <h3>Crea un pianeta vivente</h3>
+      <p>Regola gli elementi del tuo mondo e scopri quale ambiente hai immaginato.</p>
+      <div class="game-area">
+        <label for="waterRange">Acqua: <span id="waterValue">60</span>%</label>
+        <input type="range" id="waterRange" min="0" max="100" value="60">
+        <label for="natureRange">Natura: <span id="natureValue">70</span>%</label>
+        <input type="range" id="natureRange" min="0" max="100" value="70">
+        <label for="energyRange">Energia pulita: <span id="energyValue">50</span>%</label>
+        <input type="range" id="energyRange" min="0" max="100" value="50">
+        <div style="text-align:center;font-size:4rem;margin:12px" id="planetEmoji">🌎</div>
+        <p class="result" id="planetResult" aria-live="polite">Un mondo pronto a essere esplorato.</p>
+        <button class="btn secondary" id="savePlanet">Salva il mio pianeta</button>
+      </div>
+    </article>
+
+    <article class="card shared">
+      <span class="emoji">🏙️</span><span class="pill">MISSIONE 2050</span>
+      <h3>Progetta una eco-città</h3>
+      <p>Ogni decisione modifica il profilo della città immaginaria.</p>
+      <div class="game-area">
+        <p>La città ha risorse limitate. Scegli la tua priorità:</p>
+        <div class="choice-list" id="cityChoices">
+          <button class="btn dark" data-city="green">🌳 Più spazi verdi</button>
+          <button class="btn dark" data-city="energy">☀️ Energia rinnovabile</button>
+          <button class="btn dark" data-city="mobility">🚲 Mobilità sostenibile</button>
+          <button class="btn dark" data-city="community">🤝 Servizi di comunità</button>
+        </div>
+        <p class="result" id="cityResult" aria-live="polite">Scegli il primo investimento.</p>
+        <p class="small">Investimenti scelti: <strong id="cityScore">0</strong>/4</p>
+        <button class="btn secondary" id="resetCity">Nuovo progetto</button>
+      </div>
+    </article>
+
+    <article class="card shared">
+      <span class="emoji">🌌</span><span class="pill">PORTALE DELLE IDEE</span>
+      <h3>La macchina delle possibilità</h3>
+      <p>Combina tre elementi casuali per inventare una nuova invenzione.</p>
+      <div class="game-area">
+        <div style="font-size:2rem;margin:10px 0" id="inventionEmoji">⚙️✨🌱</div>
+        <p id="inventionPrompt">Una serra intelligente che viaggia nello spazio.</p>
+        <button class="btn pink" id="generateInvention">Genera un'invenzione</button>
+        <label for="inventionExpansion">Come funzionerebbe?</label>
+        <textarea id="inventionExpansion" rows="3" placeholder="Aggiungi la tua idea..."></textarea>
+        <button class="btn dark" id="saveInvention" style="margin-top:10px">Salva l'invenzione</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="creativita">
+  <h2>🎨 Laboratorio Creativo</h2>
+  <p class="section-intro">Disegna, sperimenta con i pixel e salva le tue opere nella galleria del dispositivo.</p>
+  <div class="grid">
+    <article class="card shared" style="grid-column:span 2">
+      <span class="emoji">🖌️</span>
+      <h3>Disegno libero</h3>
+      <p>Usa il dito sul telefono o il mouse sul computer.</p>
+      <div class="row">
+        <label for="drawColor">Colore</label>
+        <input type="color" id="drawColor" value="#5638e8" style="width:54px;height:42px">
+        <label for="drawSize">Spessore</label>
+        <input type="range" id="drawSize" min="2" max="28" value="6" style="max-width:150px">
+      </div>
+      <div class="game-area">
+        <canvas id="drawingCanvas" aria-label="Area bianca per disegnare"></canvas>
+      </div>
+      <div class="actions">
+        <button class="btn dark" id="undoDrawing">Annulla</button>
+        <button class="btn dark" id="clearDrawing">Cancella</button>
+        <button class="btn secondary" id="saveDrawing">Salva nella galleria</button>
+        <button class="btn" id="downloadDrawing">Scarica PNG</button>
+      </div>
+    </article>
+
+    <article class="card shared">
+      <span class="emoji">🟪</span>
+      <h3>Pixel art</h3>
+      <p>Crea un disegno pixel per pixel.</p>
+      <label for="pixelColor">Colore del pixel</label>
+      <input type="color" id="pixelColor" value="#ff75d8" style="width:60px;height:42px">
+      <div id="pixelBoard" aria-label="Griglia per pixel art"></div>
+      <div class="actions">
+        <button class="btn dark" id="clearPixels">Pulisci</button>
+        <button class="btn secondary" id="savePixels">Salva pixel art</button>
+        <button class="btn" id="downloadPixels">Scarica PNG</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="galleria">
+  <h2>🖼️ La tua galleria</h2>
+  <p class="section-intro">Le creazioni salvate restano nel browser di questo dispositivo. Per conservarle altrove, scarica anche i file PNG quando disponibile.</p>
+  <div class="row" style="margin-bottom:18px">
+    <button class="btn dark" id="refreshGallery">Aggiorna galleria</button>
+    <button class="btn dark" id="exportGallery">Esporta elenco JSON</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+  <p id="galleryEmpty" class="small">La galleria è vuota. Crea qualcosa nel laboratorio o salva un progetto.</p>
+  <p class="notice">I dati sono locali al browser. La cancellazione dei dati del browser o il cambio di dispositivo potrebbe farli perdere.</p>
+</section>
+
+<section id="progetti">
+  <h2>💫 Continua a esplorare</h2>
+  <div class="grid">
+    <article class="card shared">
+      <span class="emoji">♾️</span>
+      <h3>INNOVATIONPORTFOLIO X∞</h3>
+      <p>Scopri l'archivio di progetti e idee tecnologiche per il futuro.</p>
+      <a class="btn secondary" href="https://luce-crescita.github.io/progetti.html">Apri il portfolio</a>
+    </article>
+    <article class="card shared">
+      <span class="emoji">💛</span>
+      <h3>Le parole che ti cercano</h3>
+      <p>Scopri il libro digitale di Luceecrescita.</p>
+      <a class="btn" href="https://payhip.com/b/iM8qS" target="_blank" rel="noopener noreferrer">Scopri il libro</a>
+    </article>
+    <article class="card shared">
+      <span class="emoji">🌟</span>
+      <h3>Una nuova idea ogni giorno</h3>
+      <p>La creatività cresce quando osserviamo il mondo con curiosità.</p>
+      <a class="btn dark" href="#home">Torna all'inizio ↑</a>
+    </article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p><strong>LUCEECRESCITA X∞ 6.0</strong> · Parole, idee e fantasia.</p>
+  <p>Un progetto creativo indipendente.</p>
+  <p><a href="https://luce-crescita.github.io/">Home</a>
+     <a href="https://luce-crescita.github.io/progetti.html">Portfolio</a></p>
+  <p class="notice">Le attività sono pensate per l'intrattenimento e la creatività. I bambini dovrebbero usare il sito con la supervisione di un adulto.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ======================================================
+   LUCEECRESCITA X∞ 6.0
+   Giochi, creatività e salvataggi locali
+   ====================================================== */
+
+const $ = id => document.getElementById(id);
+
+function safeLoad(key, fallback){
+  try{
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  }catch(error){ return fallback; }
+}
+function safeSave(key, value){
+  try{
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  }catch(error){
+    alert("Non è stato possibile salvare. Il browser potrebbe avere lo spazio esaurito o bloccare i dati locali.");
+    return false;
+  }
+}
+function randomItem(array){return array[Math.floor(Math.random()*array.length)]}
+function shuffle(array){
+  const copy=[...array];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+function downloadBlob(blob, filename){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function downloadText(text, filename, type="text/plain"){
+  downloadBlob(new Blob([text],{type}),filename);
+}
+
+/* GALLERIA: mantiene la chiave storica della versione precedente. */
+const GALLERY_KEY="luceecrescita_x40";
+let gallery=safeLoad(GALLERY_KEY,[]);
+if(!Array.isArray(gallery)) gallery=[];
+function saveGalleryItem(item){
+  gallery=safeLoad(GALLERY_KEY,[]);
+  if(!Array.isArray(gallery)) gallery=[];
+  gallery.unshift({...item,id:Date.now()+"_"+Math.random().toString(36).slice(2,8),date:new Date().toLocaleString("it-IT")});
+  gallery=gallery.slice(0,80);
+  if(safeSave(GALLERY_KEY,gallery)){renderGallery();updateStats();return true}
+  return false;
+}
+function updateStats(){
+  const lights=safeLoad("luceecrescita_7luci",[]);
+  $("statLights").textContent=(Array.isArray(lights)?lights.length:0)+"/7";
+  $("statCreations").textContent=Array.isArray(safeLoad(GALLERY_KEY,[]))?safeLoad(GALLERY_KEY,[]).length:0;
+}
+function renderGallery(){
+  gallery=safeLoad(GALLERY_KEY,[]);
+  if(!Array.isArray(gallery))gallery=[];
+  const root=$("galleryGrid");
+  root.replaceChildren();
+  $("galleryEmpty").classList.toggle("hidden",gallery.length>0);
+  gallery.forEach(item=>{
+    const card=document.createElement("article");
+    card.className="gallery-item";
+    const title=document.createElement("h3");
+    title.textContent=item.title||item.type||"Creazione";
+    card.appendChild(title);
+    if(item.image){
+      const img=document.createElement("img");
+      img.src=item.image;img.alt=title.textContent;
+      card.appendChild(img);
+    }
+    if(item.text){
+      const p=document.createElement("p");
+      p.textContent=item.text;
+      card.appendChild(p);
+    }
+    if(item.date){
+      const small=document.createElement("p");
+      small.className="small";small.textContent=item.date;
+      card.appendChild(small);
+    }
+    const del=document.createElement("button");
+    del.className="btn dark";del.textContent="Elimina";
+    del.addEventListener("click",()=>{
+      if(!confirm("Vuoi eliminare questa creazione dalla galleria?"))return;
+      gallery=gallery.filter(entry=>entry.id!==item.id);
+      safeSave(GALLERY_KEY,gallery);renderGallery();updateStats();
+    });
+    card.appendChild(del);
+    root.appendChild(card);
+  });
+}
+$("refreshGallery").addEventListener("click",renderGallery);
+$("exportGallery").addEventListener("click",()=>{
+  gallery=safeLoad(GALLERY_KEY,[]);
+  downloadText(JSON.stringify(gallery,null,2),"luceecrescita-galleria.json","application/json");
+});
+
+/* SFIDA DELLE 7 LUCI */
+const lights=[
+  {title:"La luce dell'immaginazione",desc:"Inventa qualcosa che potrebbe rendere il mondo migliore."},
+  {title:"La luce della gentilezza",desc:"Pensa a un gesto gentile che puoi fare per qualcuno."},
+  {title:"La luce della curiosità",desc:"Scrivi una domanda a cui vorresti trovare risposta."},
+  {title:"La luce della creatività",desc:"Immagina un oggetto che ancora non esiste nella tua storia."},
+  {title:"La luce del coraggio",desc:"Pensa a qualcosa di nuovo che vorresti provare in sicurezza."},
+  {title:"La luce della collaborazione",desc:"Immagina un progetto che sarebbe bello realizzare insieme."},
+  {title:"La luce della speranza",desc:"Scrivi un desiderio positivo per il tuo futuro."}
+];
+let completedLights=safeLoad("luceecrescita_7luci",[]);
+if(!Array.isArray(completedLights))completedLights=[];
+let activeLight=0;
+function renderLights(){
+  const root=$("lightList");root.replaceChildren();
+  lights.forEach((light,index)=>{
+    const box=document.createElement("div");
+    box.className="light"+(completedLights.includes(index)?" done":"");
+    const label=document.createElement("div");
+    label.textContent="Luce "+(index+1);
+    const btn=document.createElement("button");
+    btn.textContent=completedLights.includes(index)?"✦":"☆";
+    btn.setAttribute("aria-label","Apri luce "+(index+1));
+    btn.addEventListener("click",()=>selectLight(index));
+    box.append(label,btn);root.appendChild(box);
+  });
+  $("lightProgress").style.width=(completedLights.length/7*100)+"%";
+  $("lightSummary").textContent=`Hai acceso ${completedLights.length} luci su 7.`;
+  updateStats();
+}
+function selectLight(index){
+  activeLight=index;
+  $("lightTitle").textContent=lights[index].title;
+  $("lightDescription").textContent=lights[index].desc;
+  $("lightAnswer").value="";
+}
+$("completeLight").addEventListener("click",()=>{
+  if(!$("lightAnswer").value.trim()){
+    alert("Scrivi prima una tua idea, anche breve.");return;
+  }
+  if(!completedLights.includes(activeLight))completedLights.push(activeLight);
+  safeSave("luceecrescita_7luci",completedLights);
+  renderLights();
+  if(completedLights.length===7){
+    $("lightTitle").textContent="🌟 Hai acceso tutte le 7 Luci!";
+    $("lightDescription").textContent="Complimenti! Puoi ricominciare quando vuoi e inventare nuove risposte.";
+  }else{
+    const next=lights.findIndex((_,i)=>!completedLights.includes(i));
+    if(next>=0)selectLight(next);
+  }
+});
+$("restartLights").addEventListener("click",()=>{
+  if(!confirm("Vuoi ricominciare la sfida delle 7 Luci?"))return;
+  completedLights=[];safeSave("luceecrescita_7luci",completedLights);
+  selectLight(0);renderLights();
+});
+
+/* MEMORY */
+const memorySymbols=["🌙","🚀","🌈","⭐","🪐","🦋"];
+let memoryDeck=[],memoryOpen=[],memoryFound=new Set(),memoryCount=0,memoryLock=false;
+function startMemory(){
+  memoryDeck=shuffle([...memorySymbols,...memorySymbols]);
+  memoryOpen=[];memoryFound=new Set();memoryCount=0;memoryLock=false;
+  $("memoryAttempts").textContent="0";$("memoryPairs").textContent="0/6";
+  $("memoryResult").textContent="";
+  const board=$("memoryBoard");board.replaceChildren();
+  memoryDeck.forEach((symbol,index)=>{
+    const btn=document.createElement("button");
+    btn.className="memory-card";btn.textContent="❔";
+    btn.setAttribute("aria-label","Carta coperta");
+    btn.addEventListener("click",()=>flipMemory(index,btn));
+    board.appendChild(btn);
+  });
+}
+function flipMemory(index,btn){
+  if(memoryLock||memoryFound.has(index)||memoryOpen.some(item=>item.index===index))return;
+  btn.textContent=memoryDeck[index];btn.classList.add("revealed");
+  memoryOpen.push({index,btn});
+  if(memoryOpen.length===2){
+    memoryCount++;$("memoryAttempts").textContent=memoryCount;
+    const [a,b]=memoryOpen;
+    if(memoryDeck[a.index]===memoryDeck[b.index]){
+      memoryFound.add(a.index);memoryFound.add(b.index);
+      a.btn.classList.add("matched");b.btn.classList.add("matched");
+      memoryOpen=[];$("memoryPairs").textContent=(memoryFound.size/2)+"/6";
+      if(memoryFound.size===memoryDeck.length)$("memoryResult").textContent="Fantastico! Hai trovato tutte le coppie!";
+    }else{
+      memoryLock=true;
+      setTimeout(()=>{
+        a.btn.textContent="❔";b.btn.textContent="❔";
+        a.btn.classList.remove("revealed");b.btn.classList.remove("revealed");
+        memoryOpen=[];memoryLock=false;
+      },700);
+    }
+  }
+}
+$("restartMemory").addEventListener("click",startMemory);
+
+/* FORME */
+const shapeQuestions=[
+  {q:"Ha tre lati e tre angoli. Che forma è?",a:["Cerchio","Triangolo","Quadrato"],correct:"Triangolo"},
+  {q:"Ha quattro lati uguali e quattro angoli retti.",a:["Quadrato","Triangolo","Ovale"],correct:"Quadrato"},
+  {q:"Non ha angoli e assomiglia a una ruota vista di fronte.",a:["Rettangolo","Cerchio","Stella"],correct:"Cerchio"},
+  {q:"Ha cinque punte nella sua forma più comune.",a:["Stella","Cerchio","Triangolo"],correct:"Stella"}
+];
+let shapeIndex=0;
+function renderShape(){
+  const q=shapeQuestions[shapeIndex];
+  $("shapeQuestion").textContent=q.q;$("shapeResult").textContent="";
+  const root=$("shapeChoices");root.replaceChildren();
+  shuffle(q.a).forEach(answer=>{
+    const btn=document.createElement("button");btn.className="btn dark";btn.textContent=answer;
+    btn.addEventListener("click",()=>{
+      $("shapeResult").textContent=answer===q.correct?"Esatto! Ottima osservazione!":"Riprova: osserva bene l'indizio.";
+    });
+    root.appendChild(btn);
+  });
+}
+$("nextShape").addEventListener("click",()=>{shapeIndex=(shapeIndex+1)%shapeQuestions.length;renderShape()});
+
+/* STORIE */
+const storyPrompts=[
+ "Un piccolo robot trova una stella che parla...",
+ "Una volpe scopre una porta segreta in un albero...",
+ "Nel 2050 una città decide di piantare un giardino sulle nuvole...",
+ "Una bambina trova una mappa che cambia ogni notte...",
+ "Un esploratore spaziale incontra un pianeta fatto di musica...",
+ "Un inventore costruisce una macchina capace di raccogliere i sogni..."
+];
+$("newStory").addEventListener("click",()=>{$("storyPrompt").textContent=randomItem(storyPrompts);$("storyEnding").value=""});
+$("saveStory").addEventListener("click",()=>{
+  const text=$("storyEnding").value.trim();
+  if(!text){alert("Scrivi il seguito della storia prima di salvarla.");return}
+  saveGalleryItem({type:"Storia",title:"La storia magica",text:$("storyPrompt").textContent+"\n\n"+text});
+  alert("La storia è stata salvata nella galleria.");
+});
+
+/* NUMERO MISTERIOSO */
+let secretNumber=1;
+function newSecret(){
+  secretNumber=1+Math.floor(Math.random()*20);
+  $("guessNumber").value="";$("guessResult").textContent="";
+}
+$("newGuess").addEventListener("click",newSecret);
+$("checkGuess").addEventListener("click",()=>{
+  const value=Number($("guessNumber").value);
+  if(!Number.isInteger(value)||value<1||value>20){$("guessResult").textContent="Inserisci un numero intero da 1 a 20.";return}
+  if(value===secretNumber)$("guessResult").textContent="Hai indovinato! 🎉 Premi Nuovo numero per giocare ancora.";
+  else $("guessResult").textContent=value<secretNumber?"Troppo piccolo! Prova un numero più alto.":"Troppo grande! Prova un numero più basso.";
+});
+
+/* CODICE SEGRETO */
+const codes=[
+ {word:"LUCE",clue:"Illumina il buio e dà il nome al progetto."},
+ {word:"IDEA",clue:"È l'inizio di un'invenzione."},
+ {word:"FUTURO",clue:"È il tempo che deve ancora arrivare."},
+ {word:"PIANETA",clue:"È un mondo che può orbitare attorno a una stella."},
+ {word:"ENERGIA",clue:"Serve per far funzionare molte tecnologie."},
+ {word:"NATURA",clue:"Comprende piante, animali e ambienti naturali."}
+];
+let activeCode;
+function newCode(){
+  activeCode=randomItem(codes);
+  $("codeClue").textContent=activeCode.clue;
+  $("codeAnswer").value="";$("codeResult").textContent="";
+}
+$("newCode").addEventListener("click",newCode);
+$("checkCode").addEventListener("click",()=>{
+  const answer=$("codeAnswer").value.trim().toLocaleUpperCase("it-IT");
+  $("codeResult").textContent=answer===activeCode.word
+    ?"Codice decifrato! 🔓":"Non ancora. Rileggi l'indizio e riprova.";
+});
+
+/* SFIDA DELLE IDEE */
+const challenges=[
+ "Come ridurre gli sprechi d'acqua in una città?",
+ "Come rendere più semplice aiutare una persona anziana con la tecnologia?",
+ "Come creare un quartiere più silenzioso e piacevole?",
+ "Come ridurre i rifiuti durante una festa?",
+ "Come aiutare le persone a imparare qualcosa di nuovo ogni giorno?",
+ "Come rendere gli spostamenti quotidiani più sostenibili?"
+];
+$("newChallenge").addEventListener("click",()=>{
+  $("ideaChallenge").textContent=randomItem(challenges);$("ideaAnswer").value="";
+});
+$("saveIdea").addEventListener("click",()=>{
+  const text=$("ideaAnswer").value.trim();
+  if(!text){alert("Scrivi la tua soluzione prima di salvarla.");return}
+  saveGalleryItem({type:"Progetto",title:"La sfida delle idee",text:$("ideaChallenge").textContent+"\n\n"+text});
+  alert("Progetto salvato nella galleria.");
+});
+
+/* BUDGET ECO-CITTÀ */
+const budgetItems=[
+  {id:"energyChoice",cost:4,name:"Energia pulita"},
+  {id:"greenChoice",cost:3,name:"Parchi e alberi"},
+  {id:"schoolChoice",cost:5,name:"Scuole innovative"},
+  {id:"transportChoice",cost:4,name:"Trasporto pubblico"}
+];
+function calculateBudget(){
+  return budgetItems.filter(item=>$(item.id).checked).reduce((sum,item)=>sum+item.cost,0);
+}
+function updateBudget(){
+  const spent=calculateBudget();
+  $("budgetResult").textContent=`Punti spesi: ${spent} su 12.`+(spent>12?" Hai superato il budget.":` Ti restano ${12-spent} punti.`);
+}
+budgetItems.forEach(item=>$(item.id).addEventListener("change",updateBudget));
+$("checkBudget").addEventListener("click",()=>{
+  const spent=calculateBudget();
+  if(spent>12){$("budgetResult").textContent="Il piano supera il budget: rivedi le priorità.";return}
+  if(spent===0){$("budgetResult").textContent="Scegli almeno un investimento per iniziare.";return}
+  $("budgetResult").textContent=`Piano valido! Hai investito ${spent} punti e ne restano ${12-spent}. Ora spiega perché hai scelto queste priorità.`;
+});
+
+/* PLANET DESIGNER */
+function updatePlanet(){
+  const water=+$("waterRange").value,nature=+$("natureRange").value,energy=+$("energyRange").value;
+  $("waterValue").textContent=water;$("natureValue").textContent=nature;$("energyValue").textContent=energy;
+  const average=(water+nature+energy)/3;
+  $("planetEmoji").textContent=average>75?"🌍":water<25?"🏜️":nature<25?"🪨":energy>75?"🌎":"🪐";
+  let desc;
+  if(water<25)desc="Un mondo arido: immagina sistemi per recuperare e conservare l'acqua.";
+  else if(nature>75&&water>60)desc="Un pianeta ricco di natura: proteggere gli ecosistemi è la tua priorità.";
+  else if(energy>75)desc="Un mondo con molta energia pulita: come distribuirla in modo equo?";
+  else desc="Un pianeta in evoluzione: scegli come bilanciare acqua, natura ed energia.";
+  $("planetResult").textContent=desc;
+}
+["waterRange","natureRange","energyRange"].forEach(id=>$(id).addEventListener("input",updatePlanet));
+$("savePlanet").addEventListener("click",()=>{
+  const text=`Acqua ${$("waterRange").value}%, natura ${$("natureRange").value}%, energia pulita ${$("energyRange").value}%. ${$("planetResult").textContent}`;
+  saveGalleryItem({type:"Pianeta",title:"Il mio pianeta X∞",text});
+  alert("Il profilo del tuo pianeta è stato salvato.");
+});
+
+/* MISSIONE ECO-CITTÀ */
+const cityDescriptions={
+ green:"La tua città investe sulla natura: pensa anche a come mantenere e irrigare i parchi.",
+ energy:"La tua città punta sulle rinnovabili: considera accumulo, costi e accesso per tutti.",
+ mobility:"La tua città facilita gli spostamenti sostenibili: progetta percorsi sicuri e accessibili.",
+ community:"La tua città rafforza i servizi di comunità: immagina spazi condivisi per persone di tutte le età."
+};
+let cityPicks=[];
+function updateCity(){
+  $("cityScore").textContent=cityPicks.length;
+  $("cityResult").textContent=cityPicks.length
+    ?cityPicks.map(key=>cityDescriptions[key]).join(" ")
+    :"Scegli il primo investimento.";
+}
+$("cityChoices").querySelectorAll("button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const key=btn.dataset.city;
+    if(cityPicks.includes(key))cityPicks=cityPicks.filter(item=>item!==key);
+    else if(cityPicks.length<4)cityPicks.push(key);
+    btn.style.borderColor=cityPicks.includes(key)?"#55f4ff":"";
+    updateCity();
+  });
+});
+$("resetCity").addEventListener("click",()=>{
+  cityPicks=[];$("cityChoices").querySelectorAll("button").forEach(btn=>btn.style.borderColor="");
+  updateCity();
+});
+
+/* PORTALE DELLE IDEE */
+const inventions=[
+ {emoji:"🌱🚀🛰️",text:"Una serra intelligente che viaggia nello spazio."},
+ {emoji:"🌊🤖☀️",text:"Un robot che raccoglie energia dal mare e dal sole."},
+ {emoji:"🏙️🌳💧",text:"Edifici che recuperano acqua piovana e ospitano giardini."},
+ {emoji:"📚✨🧠",text:"Una biblioteca interattiva che trasforma le domande in percorsi di apprendimento."},
+ {emoji:"♻️🧩🤖",text:"Un laboratorio che aiuta a riutilizzare oggetti trasformandoli in nuove creazioni."},
+ {emoji:"🚲🌈🔋",text:"Una rete di mobilità leggera alimentata da energia rinnovabile."},
+ {emoji:"🌌🎨🪐",text:"Un atelier virtuale per creare mondi immaginari da esplorare."}
+];
+let activeInvention=inventions[0];
+$("generateInvention").addEventListener("click",()=>{
+  activeInvention=randomItem(inventions);
+  $("inventionEmoji").textContent=activeInvention.emoji;
+  $("inventionPrompt").textContent=activeInvention.text;
+  $("inventionExpansion").value="";
+});
+$("saveInvention").addEventListener("click",()=>{
+  const extra=$("inventionExpansion").value.trim();
+  saveGalleryItem({type:"Invenzione",title:"Invenzione X∞",text:activeInvention.text+(extra?"\n\nLa mia idea: "+extra:"")});
+  alert("Invenzione salvata nella galleria.");
+});
+
+/* DISEGNO SU CANVAS: supporto mouse e touch */
+const canvas=$("drawingCanvas");
+const ctx=canvas.getContext("2d");
+let drawing=false,lastPoint=null,undoStack=[];
+function setupCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+  let oldImage=null;
+  try{oldImage=canvas.toDataURL()}catch(error){}
+  canvas.width=Math.round(rect.width*dpr);
+  canvas.height=Math.round(rect.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.lineCap="round";ctx.lineJoin="round";
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,rect.width,rect.height);
+  if(oldImage){
+    const img=new Image();
+    img.onload=()=>{
+      ctx.fillStyle="#fff";ctx.fillRect(0,0,rect.width,rect.height);
+      ctx.drawImage(img,0,0,rect.width,rect.height);
+    };
+    img.src=oldImage;
+  }
+}
+function canvasPoint(event){
+  const rect=canvas.getBoundingClientRect();
+  return {x:event.clientX-rect.left,y:event.clientY-rect.top};
+}
+function startDraw(event){
+  event.preventDefault();
+  drawing=true;canvas.setPointerCapture?.(event.pointerId);
+  undoStack.push(canvas.toDataURL());
+  if(undoStack.length>20)undoStack.shift();
+  lastPoint=canvasPoint(event);
+}
+function moveDraw(event){
+  if(!drawing)return;
+  event.preventDefault();
+  const point=canvasPoint(event);
+  ctx.strokeStyle=$("drawColor").value;
+  ctx.lineWidth=+$("drawSize").value;
+  ctx.beginPath();ctx.moveTo(lastPoint.x,lastPoint.y);ctx.lineTo(point.x,point.y);ctx.stroke();
+  lastPoint=point;
+}
+function endDraw(){drawing=false;lastPoint=null}
+canvas.addEventListener("pointerdown",startDraw);
+canvas.addEventListener("pointermove",moveDraw);
+canvas.addEventListener("pointerup",endDraw);
+canvas.addEventListener("pointercancel",endDraw);
+canvas.addEventListener("lostpointercapture",endDraw);
+$("undoDrawing").addEventListener("click",()=>{
+  const previous=undoStack.pop();
+  if(!previous)return;
+  const img=new Image();
+  img.onload=()=>{
+    const rect=canvas.getBoundingClientRect();
+    ctx.clearRect(0,0,rect.width,rect.height);
+    ctx.drawImage(img,0,0,rect.width,rect.height);
+  };
+  img.src=previous;
+});
+$("clearDrawing").addEventListener("click",()=>{
+  const rect=canvas.getBoundingClientRect();
+  undoStack.push(canvas.toDataURL());
+  ctx.fillStyle="#fff";ctx.fillRect(0,0,rect.width,rect.height);
+});
+function canvasPNG(){
+  return new Promise(resolve=>canvas.toBlob(blob=>resolve(blob),"image/png"));
+}
+$("saveDrawing").addEventListener("click",async()=>{
+  const blob=await canvasPNG();
+  if(!blob){alert("Non è stato possibile esportare il disegno.");return}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const ok=saveGalleryItem({type:"Disegno",title:"Il mio disegno",image:reader.result});
+    if(ok)alert("Disegno salvato nella galleria.");
+  };
+  reader.readAsDataURL(blob);
+});
+$("downloadDrawing").addEventListener("click",async()=>{
+  const blob=await canvasPNG();
+  if(blob)downloadBlob(blob,"luceecrescita-disegno.png");
+});
+
+/* PIXEL ART */
+const PIXEL_COUNT=16*16;
+const pixelColors=Array(PIXEL_COUNT).fill("#f5f2ff");
+const pixelBoard=$("pixelBoard");
+function renderPixels(){
+  pixelBoard.replaceChildren();
+  pixelColors.forEach((color,index)=>{
+    const btn=document.createElement("button");
+    btn.className="pixel";btn.style.background=color;
+    btn.setAttribute("aria-label","Pixel "+(index+1));
+    btn.addEventListener("click",()=>{
+      pixelColors[index]=$("pixelColor").value;btn.style.background=pixelColors[index];
+    });
+    pixelBoard.appendChild(btn);
+  });
+}
+function clearPixels(){
+  pixelColors.fill("#f5f2ff");renderPixels();
+}
+$("clearPixels").addEventListener("click",clearPixels);
+function pixelCanvas(){
+  const off=document.createElement("canvas");
+  off.width=320;off.height=320;
+  const pctx=off.getContext("2d");
+  const cell=20;
+  pixelColors.forEach((color,index)=>{
+    pctx.fillStyle=color;
+    pctx.fillRect((index%16)*cell,Math.floor(index/16)*cell,cell,cell);
+  });
+  return off;
+}
+$("savePixels").addEventListener("click",()=>{
+  const image=pixelCanvas().toDataURL("image/png");
+  const ok=saveGalleryItem({type:"Pixel art PNG",title:"La mia pixel art",image});
+  if(ok)alert("Pixel art salvata nella galleria.");
+});
+$("downloadPixels").addEventListener("click",()=>{
+  pixelCanvas().toBlob(blob=>{if(blob)downloadBlob(blob,"luceecrescita-pixel-art.png")},"image/png");
+});
+
+/* INIZIALIZZAZIONE */
+function init(){
+  renderLights();
+  selectLight(lights.findIndex((_,i)=>!completedLights.includes(i))<0?0:lights.findIndex((_,i)=>!completedLights.includes(i)));
+  startMemory();renderShape();newSecret();newCode();updateBudget();
+  updatePlanet();updateCity();renderPixels();renderGallery();updateStats();
+  setupCanvas();
+}
+window.addEventListener("resize",()=>{
+  if(window.matchMedia("(min-width: 1px)").matches)setupCanvas();
+});
+init();
+</script>
+</body>
+</html>
