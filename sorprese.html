@@ -1,1 +1,1205 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111632">
+<meta name="description" content="LUCEECRESCITA X∞: disegna, costruisci, crea pixel art, gioca e scopri nuove idee.">
+<title>LUCEECRESCITA X∞ 3.2 | Creatività per tutti</title>
+
+<style>
+:root{
+  --bg:#10152f;
+  --panel:#1b2345;
+  --gold:#ffda88;
+  --text:#faf8ff;
+  --muted:#c5cce6;
+  --line:#3a456f;
+  --purple:#b5a4ff;
+  --mint:#a6f0cb
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  line-height:1.6;
+  font-family:Arial,Helvetica,sans-serif;
+  background:radial-gradient(ellipse at top,#303568 0%,var(--bg) 60%)
+}
+header{
+  padding:14px 5%;
+  background:#10152ff0;
+  border-bottom:1px solid var(--line)
+}
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap
+}
+nav a{color:var(--text);text-decoration:none;font-size:.9rem}
+.brand{font-weight:900;color:var(--gold);letter-spacing:1px;font-size:1rem}
+.links{display:flex;gap:12px;flex-wrap:wrap}
+main{width:min(1080px,92%);margin:auto}
+section{padding:42px 0;scroll-margin-top:15px}
+.hero{text-align:center;padding-top:65px}
+.eyebrow{color:var(--gold);font-weight:bold;letter-spacing:2px;font-size:.82rem}
+h1{font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.08;margin:16px 0}
+h2{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.2}
+h3{margin-top:0}
+p{color:var(--muted)}
+.panel,.card{
+  background:linear-gradient(145deg,#20294f,#151b38);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 12px 30px #0002
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));
+  gap:16px
+}
+button,.button{
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,#ffdf9b,#f3b95d);
+  color:#211735;
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  font-size:.95rem
+}
+button:hover,.button:hover{filter:brightness(1.07)}
+button:disabled{opacity:.6;cursor:default}
+.secondary{background:#303b68!important;color:white!important;border:1px solid #526091!important}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.result{
+  padding:14px;
+  background:#10152f;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin-top:14px;
+  min-height:44px
+}
+.small{font-size:.86rem;color:var(--muted)}
+.badge{
+  display:inline-block;
+  border:1px solid var(--line);
+  border-radius:99px;
+  padding:5px 10px;
+  color:var(--gold);
+  font-size:.84rem
+}
+.progress{
+  height:12px;
+  border-radius:99px;
+  background:#0a0e20;
+  overflow:hidden;
+  margin:15px 0
+}
+.progress span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--purple),var(--gold));
+  width:0;
+  transition:width .25s
+}
+.challenge{border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}
+.challenge.done{border-color:var(--mint)}
+label{display:block;font-weight:bold;margin-top:10px}
+input,select{
+  max-width:100%;
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#0f1530;
+  color:white;
+  font-size:1rem;
+  margin:6px 0 12px
+}
+input[type="range"]{padding:0}
+canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:12px;
+  background:white;
+  touch-action:none
+}
+.canvas-wrap{background:#0e132a;padding:10px;border-radius:16px;margin-top:14px}
+.color-row{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.color-dot{
+  width:35px;height:35px;
+  border:3px solid white;
+  border-radius:50%;
+  padding:0
+}
+.color-dot.selected{outline:3px solid var(--gold);outline-offset:2px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.toolbar button{margin:2px}
+.block-grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:2px;
+  max-width:540px;
+  margin:18px auto
+}
+.block-grid button{
+  padding:0;
+  aspect-ratio:1;
+  border-radius:3px;
+  background:#e7e9f2;
+  border:1px solid #ccd1df;
+  min-width:0
+}
+.pixel-grid{
+  display:grid;
+  grid-template-columns:repeat(16,minmax(0,1fr));
+  gap:2px;
+  max-width:540px;
+  margin:18px auto
+}
+.pixel-grid button{
+  padding:0;
+  aspect-ratio:1;
+  border-radius:2px;
+  background:white;
+  border:1px solid #d5d9e6;
+  min-width:0
+}
+.star-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+.star-grid button{min-height:56px;background:#303b68;color:white;font-size:1.2rem}
+.star-grid .found{background:#31634f;color:white}
+.star-grid .miss{background:#242a43;color:#aeb7d7}
+.gallery-image{
+  width:100%;
+  height:auto;
+  display:block;
+  background:white;
+  border-radius:12px;
+  margin:12px 0
+}
+footer{text-align:center;border-top:1px solid var(--line);padding:30px 5%;color:var(--muted)}
+footer a{color:var(--gold);margin:0 7px}
+hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+[hidden]{display:none!important}
+@media(max-width:600px){
+  header{padding:14px 4%}
+  nav{align-items:flex-start}
+  .links{gap:9px}
+  .links a{font-size:.82rem}
+  section{padding:30px 0}
+  .panel,.card{padding:15px}
+  .block-grid,.pixel-grid{gap:2px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<nav>
+  <a class="brand" href="index.html">LUCEECRESCITA X∞</a>
+  <div class="links">
+    <a href="#sette-luci">7 Luci</a>
+    <a href="#kids">Kids</a>
+    <a href="#disegna">Disegna</a>
+    <a href="#costruisci">Costruisci</a>
+    <a href="#pixel">Pixel art</a>
+    <a href="#raccolta">Raccolta</a>
+  </div>
+</nav>
+</header>
+
+<main>
+<section class="hero" id="oggi">
+  <div class="eyebrow">EDIZIONE 3.2 · CREATIVITÀ PER TUTTI</div>
+  <h1>Immagina.<br>Crea. Sorprenditi.</h1>
+  <p>Un universo di idee, giochi e laboratori creativi. Disegna quello che vuoi, costruisci con i blocchi e trasforma i quadratini in opere colorate.</p>
+  <div class="actions" style="justify-content:center">
+    <a class="button" href="#kids">Entra nei laboratori 🎨</a>
+    <a class="button secondary" href="#sette-luci">Scopri le 7 Luci ✨</a>
+  </div>
+
+  <div class="panel" style="text-align:left;margin-top:25px">
+    <span class="badge">LA LUCE DI OGGI</span>
+    <h2 id="dailyTitle">Una nuova possibilità</h2>
+    <p id="dailyText"></p>
+    <button onclick="saveDaily()">Salva il pensiero</button>
+  </div>
+</section>
+
+<section id="kids">
+  <div class="eyebrow">LUCEECRESCITA KIDS</div>
+  <h2>Il laboratorio della fantasia 🌈</h2>
+  <p>Qui puoi sperimentare liberamente. Non servono materiali, iscrizioni o acquisti: scegli un laboratorio e comincia a creare.</p>
+  <div class="grid">
+    <article class="card">
+      <h3>🖌️ Disegna quello che vuoi</h3>
+      <p>Colori, pennello e gomma per creare un disegno tutto tuo.</p>
+      <a class="button" href="#disegna">Apri il disegno</a>
+    </article>
+    <article class="card">
+      <h3>🧱 Costruisci con i blocchi</h3>
+      <p>Combina mattoncini colorati per inventare case, castelli, robot e paesaggi.</p>
+      <a class="button" href="#costruisci">Costruisci ora</a>
+    </article>
+    <article class="card">
+      <h3>🟪 Crea una pixel art</h3>
+      <p>Colora una griglia e crea un animale, un fiore, un razzo o un personaggio.</p>
+      <a class="button" href="#pixel">Crea pixel art</a>
+    </article>
+  </div>
+  <p class="small">Suggerimento per genitori e insegnanti: sono strumenti creativi semplici, non giochi ufficiali LEGO. I bambini piccoli dovrebbero usare il sito con la supervisione di un adulto.</p>
+</section>
+
+<section id="disegna">
+  <div class="eyebrow">LABORATORIO 01</div>
+  <h2>Disegna liberamente 🖌️</h2>
+  <p>Trascina il dito o il mouse sulla tela. Scegli un colore, modifica lo spessore e dai forma alla tua idea.</p>
+  <div class="panel">
+    <div class="color-row" id="drawColors"></div>
+    <div class="toolbar">
+      <label for="brushSize">Spessore</label>
+      <input id="brushSize" type="range" min="2" max="36" value="7" style="width:130px;margin:0">
+      <button class="secondary" onclick="setEraser(false)">Pennello</button>
+      <button class="secondary" onclick="setEraser(true)">Gomma</button>
+      <button class="secondary" onclick="clearDrawing()">Cancella tutto</button>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="drawCanvas" width="900" height="520" aria-label="Tela per disegnare"></canvas>
+    </div>
+    <div class="actions">
+      <button onclick="downloadCanvas('drawCanvas','il-mio-disegno.png')">Scarica il disegno PNG</button>
+      <button class="secondary" onclick="saveArtwork('Disegno','drawCanvas')">🎨 Salva nella galleria</button>
+    </div>
+    <div class="result">Idea del giorno: disegna un animale che non esiste ancora!</div>
+  </div>
+</section>
+
+<section id="costruisci">
+  <div class="eyebrow">LABORATORIO 02</div>
+  <h2>Costruisci con i mattoncini 🧱</h2>
+  <p>Scegli un colore e tocca le caselle per posizionare i blocchi.</p>
+  <div class="panel">
+    <div class="color-row" id="blockColors"></div>
+    <div class="toolbar">
+      <button class="secondary" onclick="setBlockEraser(true)">Rimuovi blocchi</button>
+      <button class="secondary" onclick="setBlockEraser(false)">Posiziona blocchi</button>
+      <button class="secondary" onclick="clearBlocks()">Ricominciamo</button>
+    </div>
+    <div class="block-grid" id="blockGrid" aria-label="Griglia per costruire con i mattoncini"></div>
+    <div class="actions">
+      <button onclick="downloadGrid('blockGrid','il-mio-mondo-di-blocchi.png',12)">Scarica la costruzione PNG</button>
+      <button class="secondary" onclick="saveArtwork('Costruzione','blockGrid')">🧱 Salva nella galleria</button>
+    </div>
+    <div class="result"><strong>Sfida creativa:</strong> riesci a costruire una casa con un tetto colorato, una porta e due finestre?</div>
+  </div>
+</section>
+
+<section id="pixel">
+  <div class="eyebrow">LABORATORIO 03</div>
+  <h2>Pixel art colorata 🟪</h2>
+  <p>Ogni quadratino è un pixel. Colorane tanti per creare un piccolo capolavoro.</p>
+  <div class="panel">
+    <div class="color-row" id="pixelColors"></div>
+    <div class="toolbar">
+      <button class="secondary" onclick="clearPixels()">Pulisci la griglia</button>
+      <button class="secondary" onclick="presetPixel('cuore')">Modello: cuore ❤️</button>
+      <button class="secondary" onclick="presetPixel('fiore')">Modello: fiore 🌼</button>
+      <button class="secondary" onclick="presetPixel('razzo')">Modello: razzo 🚀</button>
+    </div>
+    <div class="pixel-grid" id="pixelGrid" aria-label="Griglia per creare pixel art"></div>
+    <div class="actions">
+      <button onclick="downloadGrid('pixelGrid','la-mia-pixel-art.png',16)">Scarica pixel art PNG</button>
+      <button class="secondary" onclick="saveArtwork('Pixel art','pixelGrid')">🟪 Salva nella galleria</button>
+    </div>
+    <div class="result"><strong>Sfida creativa:</strong> inventa un personaggio usando solo cinque colori!</div>
+  </div>
+</section>
+
+<section id="sette-luci">
+  <div class="eyebrow">ESPERIENZA SPECIALE</div>
+  <h2>La Sfida delle 7 Luci ✨</h2>
+  <p>Completa sette missioni creative al tuo ritmo. Ogni tappa accende una stella.</p>
+  <div class="panel">
+    <strong id="progressLabel">0 di 7 luci</strong>
+    <div class="progress"><span id="progressBar"></span></div>
+    <div id="challengeList"></div>
+    <div class="actions">
+      <button class="secondary" onclick="resetChallenge()">🔄 Ricomincia le 7 Luci</button>
+    </div>
+    <div class="result" id="finalReward" hidden>
+      <h3>🌟 Hai acceso tutte le luci!</h3>
+      <p>La tua ricompensa: continua a immaginare, creare e condividere gentilezza.</p>
+      <button onclick="shareText('Ho completato la Sfida delle 7 Luci di LUCEECRESCITA X∞!')">Condividi il traguardo</button>
+    </div>
+  </div>
+</section>
+
+<section id="altre">
+  <div class="eyebrow">ALTRE ESPERIENZE</div>
+  <h2>Idee, quiz e mini-giochi</h2>
+  <div class="grid">
+    <article class="card">
+      <h3>✨ Generatore di idee</h3>
+      <p>Una proposta creativa inattesa.</p>
+      <button onclick="generateIdea()">Genera un'idea</button>
+      <div class="result" id="ideaResult" aria-live="polite">La tua prossima idea ti aspetta.</div>
+      <button class="secondary" onclick="saveResult('Idea',textOf('ideaResult'))">Salva</button>
+    </article>
+
+    <article class="card">
+      <h3>🧭 Missione a sorpresa</h3>
+      <p>Una piccola sfida positiva.</p>
+      <button onclick="generateMission()">Dammi una missione</button>
+      <div class="result" id="missionResult" aria-live="polite">Pronto a esplorare?</div>
+      <button class="secondary" onclick="saveResult('Missione',textOf('missionResult'))">Salva</button>
+    </article>
+
+    <article class="card" id="quiz">
+      <h3>🎨 Il tuo stile creativo</h3>
+      <label for="q1">Quale mondo esploreresti?</label>
+      <select id="q1">
+        <option value="sogni">🌌 Universo sconosciuto</option>
+        <option value="colori">🎨 Laboratorio di colori</option>
+        <option value="natura">🌿 Giardino segreto</option>
+      </select>
+      <label for="q2">Come nasce un'idea?</label>
+      <select id="q2">
+        <option value="sogni">Immaginando possibilità</option>
+        <option value="colori">Sperimentando</option>
+        <option value="natura">Osservando con calma</option>
+      </select>
+      <label for="q3">Scegli una parola</label>
+      <select id="q3">
+        <option value="sogni">Meraviglia</option>
+        <option value="colori">Energia</option>
+        <option value="natura">Armonia</option>
+      </select>
+      <button onclick="runQuiz()">Scopri il risultato</button>
+      <div class="result" id="quizResult">Il tuo profilo creativo ti aspetta.</div>
+      <div class="actions">
+        <button class="secondary" onclick="saveResult('Quiz',textOf('quizResult'))">Salva</button>
+        <button class="secondary" onclick="shareText(textOf('quizResult'))">Condividi</button>
+      </div>
+    </article>
+
+    <article class="card" id="gioca">
+      <h3>⭐ Caccia alle stelle</h3>
+      <p>Trova tre stelle nascoste. Hai otto tentativi.</p>
+      <div id="gameStatus" class="result" aria-live="polite">Tentativi rimasti: 8</div>
+      <div class="star-grid" id="starGrid"></div>
+      <button onclick="newGame()">Nuova partita</button>
+    </article>
+
+    <article class="card" id="messaggi">
+      <h3>💌 Un messaggio per te</h3>
+      <p>Scegli come vuoi sentirti.</p>
+      <div class="actions">
+        <button onclick="newMessage('coraggio')">Coraggio</button>
+        <button onclick="newMessage('speranza')">Speranza</button>
+        <button onclick="newMessage('ispirazione')">Ispirazione</button>
+        <button onclick="newMessage('serenita')">Serenità</button>
+      </div>
+      <div class="result" id="messageResult">Il tuo messaggio ti aspetta.</div>
+      <div class="actions">
+        <button class="secondary" onclick="saveResult('Messaggio',textOf('messageResult'))">Salva</button>
+        <button class="secondary" onclick="shareText(textOf('messageResult'))">Condividi</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="raccolta">
+  <div class="eyebrow">LE TUE SCOPERTE</div>
+  <h2>La mia raccolta</h2>
+  <p>Ritrova i testi e le attività che hai deciso di salvare.</p>
+  <div class="panel">
+    <strong id="savedCount">0 elementi salvati</strong>
+    <div class="actions">
+      <button onclick="exportCollection()">Esporta raccolta JSON</button>
+      <button class="secondary" onclick="clearCollection()">Svuota raccolta</button>
+    </div>
+    <div id="collectionList"></div>
+
+    <hr>
+
+    <h3>🎨 La mia galleria</h3>
+    <p>Qui puoi ritrovare le tue creazioni, rivederle e scaricarle nuovamente.</p>
+    <p class="small">La galleria conserva fino a 12 creazioni nel browser di questo dispositivo.</p>
+    <div id="galleryCount" class="badge">0 creazioni</div>
+    <div class="actions">
+      <button class="secondary" onclick="clearGallery()">Svuota galleria</button>
+    </div>
+    <div id="galleryList" class="grid" style="margin-top:16px"></div>
+
+    <p class="small">I testi e le immagini vengono salvati nel browser di questo dispositivo, non su un server. Per conservarli anche altrove, scarica le immagini e usa l'esportazione della raccolta.</p>
+  </div>
+</section>
+
+<section id="sostieni">
+  <div class="eyebrow">SOSTIENI LA CREATIVITÀ</div>
+  <h2>Porta con te un po' di luce</h2>
+  <p>Tutte le attività creative sono gratuite. Se lo desideri, puoi anche scoprire questi progetti.</p>
+  <div class="grid">
+    <article class="card">
+      <h3>📖 Le parole che ti cercano</h3>
+      <p>Scopri il libro digitale interattivo.</p>
+      <a class="button" href="https://payhip.com/b/iM8qS" target="_blank" rel="noopener noreferrer">Scopri il libro</a>
+    </article>
+    <article class="card">
+      <h3>🚀 InnovationPortfolio X∞</h3>
+      <p>Idee e progetti dedicati all'innovazione e al futuro.</p>
+      <a class="button" href="https://luce-crescita.github.io/progetti.html">Esplora i progetti</a>
+    </article>
+    <article class="card">
+      <h3>🎁 Vetrina consigliata</h3>
+      <p>Scopri la selezione nella vetrina Amazon.</p>
+      <a class="button" href="https://www.amazon.it/shop/antonello.official1/list/1KNHVVIOC5G3P?ref_=aipsflist&amp;tag=antonellosalv-21" target="_blank" rel="noopener noreferrer">Visita la vetrina</a>
+      <p class="small">In qualità di Affiliato Amazon io ricevo un guadagno dagli acquisti idonei.</p>
+    </article>
+  </div>
+  <p class="small">Gli acquisti sono facoltativi. Le commissioni dipendono dagli acquisti idonei e dalle condizioni dei programmi di affiliazione; non sono garantite.</p>
+</section>
+</main>
+
+<footer>
+  <strong>LUCEECRESCITA X∞</strong> — Un clic, una scoperta, una nuova idea.
+  <p>
+    <a href="index.html">Homepage</a>
+    <a href="https://www.tiktok.com/@antonello.official1" target="_blank" rel="noopener noreferrer">TikTok</a>
+    <a href="progetti.html">InnovationPortfolio</a>
+  </p>
+  <p>© 2026 luceecrescita. Tutti i diritti riservati.</p>
+  <p class="small">Quiz e risultati sono pensati per il divertimento e non costituiscono valutazioni scientifiche.</p>
+</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const KEY = "luceecrescita_x32";
+
+const palette = [
+  "#202020","#ffffff","#ef4444","#f97316",
+  "#facc15","#22c55e","#14b8a6","#3b82f6",
+  "#6366f1","#a855f7","#ec4899","#8b5e3c"
+];
+
+const challenges = [
+  ["Prima luce · Immagina","Inventa un nome per un luogo fantastico."],
+  ["Seconda luce · Osserva","Nota tre dettagli interessanti intorno a te."],
+  ["Terza luce · Crea","Combina due idee per inventare qualcosa."],
+  ["Quarta luce · Incoraggia","Pensa a una frase gentile da dedicare a qualcuno."],
+  ["Quinta luce · Esplora","Scopri qualcosa che non conoscevi."],
+  ["Sesta luce · Sogna","Immagina un piccolo progetto che vorresti realizzare."],
+  ["Settima luce · Celebra","Riconosci una cosa positiva che hai fatto o imparato."]
+];
+
+const daily = [
+  ["La missione gentile","Pensa a un piccolo gesto che potrebbe rendere migliore la giornata di qualcuno."],
+  ["Una nuova prospettiva","Osserva un oggetto comune e immagina tre modi insoliti per utilizzarlo."],
+  ["Un momento di calma","Concediti qualche minuto per notare qualcosa di bello intorno a te."],
+  ["Una parola luminosa","Scegli una parola positiva e inventa una frase incoraggiante."],
+  ["Un'idea coraggiosa","Scrivi una cosa nuova che ti piacerebbe imparare."],
+  ["La bellezza nascosta","Trova un piccolo dettaglio che di solito passa inosservato."],
+  ["Un pensiero da condividere","Prepara un messaggio gentile, se ti fa piacere."]
+];
+
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(KEY) || "{}");
+    return {
+      completed: Array.isArray(s.completed)
+        ? s.completed.filter(n => Number.isInteger(n) && n >= 0 && n < 7)
+        : [],
+      collection: Array.isArray(s.collection) ? s.collection : [],
+      artworks: Array.isArray(s.artworks) ? s.artworks : []
+    };
+  }catch(e){
+    return {completed:[],collection:[],artworks:[]};
+  }
+}
+
+let state = loadState();
+
+function persist(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    return true;
+  }catch(e){
+    alert("Non c'è spazio sufficiente nel browser per salvare tutti i dati. Scarica le creazioni importanti ed elimina qualche elemento.");
+    return false;
+  }
+}
+
+function textOf(id){
+  return $(id).textContent.trim();
+}
+
+function initPalette(id,callback){
+  const host = $(id);
+  palette.forEach((color,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "color-dot" + (i===0 ? " selected" : "");
+    b.style.background = color;
+    b.setAttribute("aria-label","Colore "+color);
+    b.addEventListener("click",()=>{
+      host.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));
+      b.classList.add("selected");
+      callback(color);
+    });
+    host.append(b);
+  });
+}
+
+function addSaved(type,text){
+  if(!text || /ti aspetta|pronto a esplorare/i.test(text)){
+    alert("Prima crea o scegli un contenuto.");
+    return;
+  }
+
+  state.collection.unshift({
+    type,
+    text,
+    created:new Date().toLocaleDateString("it-IT")
+  });
+
+  state.collection = state.collection.slice(0,200);
+  if(persist()) renderCollection();
+}
+
+function saveResult(type,text){
+  addSaved(type,text);
+}
+
+function saveDaily(){
+  addSaved("Luce di oggi",textOf("dailyTitle")+": "+textOf("dailyText"));
+}
+
+function renderCollection(){
+  const host = $("collectionList");
+  host.replaceChildren();
+  $("savedCount").textContent = state.collection.length+" elementi salvati";
+
+  if(!state.collection.length){
+    const p = document.createElement("p");
+    p.textContent = "La raccolta è vuota. Salva un'idea o un messaggio per ritrovarlo qui.";
+    host.append(p);
+    return;
+  }
+
+  state.collection.forEach((item,i)=>{
+    const card = document.createElement("article");
+    card.className = "challenge";
+
+    const h = document.createElement("h3");
+    h.textContent = item.type+" · "+item.created;
+
+    const p = document.createElement("p");
+    p.textContent = item.text;
+
+    const b = document.createElement("button");
+    b.className = "secondary";
+    b.textContent = "Elimina";
+    b.onclick = ()=>{
+      state.collection.splice(i,1);
+      if(persist()) renderCollection();
+    };
+
+    card.append(h,p,b);
+    host.append(card);
+  });
+}
+
+function exportCollection(){
+  const blob = new Blob([
+    JSON.stringify({
+      app:"LUCEECRESCITA X∞",
+      version:3.2,
+      completed:state.completed,
+      collection:state.collection
+    },null,2)
+  ],{type:"application/json"});
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "luceecrescita-raccolta.json";
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function clearCollection(){
+  if(!confirm("Vuoi eliminare tutti i testi della raccolta?")) return;
+  const old = state.collection;
+  state.collection = [];
+  if(persist()) renderCollection();
+  else state.collection = old;
+}
+
+function renderChallenges(){
+  const host = $("challengeList");
+  host.replaceChildren();
+
+  challenges.forEach((c,i)=>{
+    const done = state.completed.includes(i);
+    const box = document.createElement("article");
+    box.className = "challenge"+(done ? " done" : "");
+
+    const h = document.createElement("h3");
+    h.textContent = (done ? "⭐ " : "✦ ")+c[0];
+
+    const p = document.createElement("p");
+    p.textContent = c[1];
+
+    const b = document.createElement("button");
+    b.textContent = done ? "Completata ✓" : "Accendi questa luce";
+    b.disabled = done;
+
+    if(done) b.className = "secondary";
+
+    b.onclick = ()=>{
+      if(!state.completed.includes(i)){
+        state.completed.push(i);
+        if(persist()) renderChallenges();
+      }
+    };
+
+    box.append(h,p,b);
+    host.append(box);
+  });
+
+  const n = state.completed.length;
+  $("progressLabel").textContent = n+" di 7 luci";
+  $("progressBar").style.width = (n/7*100)+"%";
+  $("finalReward").hidden = n!==7;
+}
+
+function resetChallenge(){
+  if(!confirm("Vuoi ricominciare la Sfida delle 7 Luci da zero? La raccolta e la galleria resteranno intatte.")) return;
+
+  const previous = [...state.completed];
+  state.completed = [];
+
+  if(persist()){
+    renderChallenges();
+  }else{
+    state.completed = previous;
+  }
+}
+
+function generateIdea(){
+  const ideas = [
+    "Inventa un animale che vive tra le nuvole.",
+    "Disegna una città costruita sugli alberi.",
+    "Immagina un robot che aiuta a riordinare i giochi.",
+    "Combina due colori e inventa un nome per il nuovo colore.",
+    "Crea una storia partendo da una piccola stella.",
+    "Inventa un oggetto che semplifica una piccola attività."
+  ];
+  $("ideaResult").textContent = ideas[Math.floor(Math.random()*ideas.length)];
+}
+
+function generateMission(){
+  const missions = [
+    "Disegna un fiore con cinque colori.",
+    "Costruisci una casa usando almeno tre colori.",
+    "Inventa un nome per un pianeta.",
+    "Crea una faccia buffa con forme geometriche.",
+    "Trova tre cose belle nella tua giornata.",
+    "Crea una pixel art usando solo quattro colori."
+  ];
+  $("missionResult").textContent = missions[Math.floor(Math.random()*missions.length)];
+}
+
+function runQuiz(){
+  const counts = {sogni:0,colori:0,natura:0};
+  ["q1","q2","q3"].forEach(id=>counts[$(id).value]++);
+
+  const best = Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
+
+  $("quizResult").textContent = {
+    sogni:"Il visionario: ti piace immaginare mondi e possibilità nuove.",
+    colori:"Il creatore: ami sperimentare e trasformare le idee in qualcosa di originale.",
+    natura:"L'esploratore: trovi ispirazione nei dettagli e nell'osservazione."
+  }[best];
+}
+
+function newMessage(topic){
+  const messages = {
+    coraggio:[
+      "Puoi fare un passo alla volta.",
+      "Provare è già un modo per imparare.",
+      "Ogni nuova idea inizia con un primo tentativo."
+    ],
+    speranza:[
+      "Una piccola luce può illuminare una nuova strada.",
+      "C'è sempre qualcosa di nuovo da scoprire.",
+      "Lascia spazio a nuove possibilità."
+    ],
+    ispirazione:[
+      "La fantasia può trasformare anche le idee più semplici.",
+      "La curiosità è un ottimo inizio.",
+      "Non serve essere perfetti per creare."
+    ],
+    serenita:[
+      "Fai una pausa e riparti con calma.",
+      "Anche un momento tranquillo può portare nuove idee.",
+      "Concediti il tempo di immaginare."
+    ]
+  };
+
+  const list = messages[topic];
+  $("messageResult").textContent = list[Math.floor(Math.random()*list.length)];
+}
+
+async function shareText(text){
+  const msg = (text || "Scopri LUCEECRESCITA X∞!").trim()+
+    " — https://luce-crescita.github.io/sorprese.html";
+
+  if(navigator.share){
+    try{
+      await navigator.share({title:"LUCEECRESCITA X∞",text:msg});
+      return;
+    }catch(e){
+      if(e.name==="AbortError") return;
+    }
+  }
+
+  try{
+    await navigator.clipboard.writeText(msg);
+    alert("Testo copiato: puoi incollarlo dove vuoi.");
+  }catch(e){
+    prompt("Copia questo testo:",msg);
+  }
+}
+
+function downloadCanvas(id,name){
+  const c = $(id);
+  const a = document.createElement("a");
+  a.download = name;
+  a.href = c.toDataURL("image/png");
+  a.click();
+}
+
+function setupDrawing(){
+  const c = $("drawCanvas");
+  const ctx = c.getContext("2d");
+
+  let drawing = false;
+  let color = "#202020";
+  let eraser = false;
+  let last = null;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,c.width,c.height);
+
+  initPalette("drawColors",v=>{
+    color = v;
+    eraser = false;
+  });
+
+  function point(e){
+    const r = c.getBoundingClientRect();
+    return {
+      x:(e.clientX-r.left)*c.width/r.width,
+      y:(e.clientY-r.top)*c.height/r.height
+    };
+  }
+
+  c.addEventListener("pointerdown",e=>{
+    drawing = true;
+    c.setPointerCapture(e.pointerId);
+    last = point(e);
+
+    ctx.beginPath();
+    ctx.arc(last.x,last.y,Number($("brushSize").value)/2,0,Math.PI*2);
+    ctx.fillStyle = eraser ? "#ffffff" : color;
+    ctx.fill();
+  });
+
+  c.addEventListener("pointermove",e=>{
+    if(!drawing) return;
+
+    const p = point(e);
+    ctx.beginPath();
+    ctx.moveTo(last.x,last.y);
+    ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle = eraser ? "#ffffff" : color;
+    ctx.lineWidth = Number($("brushSize").value);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.stroke();
+    last = p;
+  });
+
+  function stop(){
+    drawing = false;
+    last = null;
+  }
+
+  c.addEventListener("pointerup",stop);
+  c.addEventListener("pointercancel",stop);
+
+  window.setEraser = v=>{eraser=v;};
+
+  window.clearDrawing = ()=>{
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0,0,c.width,c.height);
+  };
+}
+
+function makeGrid(id,count,kind){
+  const host = $(id);
+  host.replaceChildren();
+  const data = [];
+
+  for(let i=0;i<count*count;i++){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label","Casella "+(i+1));
+    b.style.background = "#ffffff";
+    b.dataset.color = "#ffffff";
+
+    b.onclick = ()=>{
+      if(kind==="blocks" && blockEraser){
+        b.style.background = "#ffffff";
+        b.dataset.color = "#ffffff";
+      }else{
+        const chosen = kind==="blocks" ? blockColor : pixelColor;
+        b.style.background = chosen;
+        b.dataset.color = chosen;
+      }
+    };
+
+    host.append(b);
+    data.push(b);
+  }
+
+  return data;
+}
+
+let blockColor = "#ef4444";
+let pixelColor = "#202020";
+let blockEraser = false;
+let blockCells = [];
+let pixelCells = [];
+
+function setBlockEraser(v){
+  blockEraser = v;
+}
+
+function clearBlocks(){
+  blockCells.forEach(b=>{
+    b.style.background = "#ffffff";
+    b.dataset.color = "#ffffff";
+  });
+}
+
+function clearPixels(){
+  pixelCells.forEach(b=>{
+    b.style.background = "#ffffff";
+    b.dataset.color = "#ffffff";
+  });
+}
+
+function setupGrids(){
+  blockCells = makeGrid("blockGrid",12,"blocks");
+  pixelCells = makeGrid("pixelGrid",16,"pixels");
+
+  initPalette("blockColors",v=>{
+    blockColor = v;
+    blockEraser = false;
+  });
+
+  initPalette("pixelColors",v=>pixelColor=v);
+}
+
+function downloadGrid(id,name,n){
+  const host = $(id);
+  const cells = Array.from(host.children);
+  const size = 32;
+  const pad = 16;
+
+  const c = document.createElement("canvas");
+  c.width = n*size+pad*2;
+  c.height = n*size+pad*2;
+
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,c.width,c.height);
+
+  cells.forEach((b,i)=>{
+    ctx.fillStyle = b.dataset.color || "#ffffff";
+    ctx.fillRect(
+      pad+(i%n)*size,
+      pad+Math.floor(i/n)*size,
+      size-1,
+      size-1
+    );
+  });
+
+  const a = document.createElement("a");
+  a.download = name;
+  a.href = c.toDataURL("image/png");
+  a.click();
+}
+
+function presetPixel(which){
+  clearPixels();
+
+  const patterns = {
+    cuore:[
+      "0011001100110000","0111111111111000","1111111111111100",
+      "1111111111111100","0111111111111000","0011111111110000",
+      "0001111111100000","0000111111000000","0000011110000000",
+      "0000001100000000"
+    ],
+    fiore:[
+      "0000001100000000","0000111111000000","0001111111100000",
+      "0011111111110000","0000111111000000","0000001100000000",
+      "0000001100000000","0000001100000000","0000001100000000",
+      "0000011110000000","0000110011000000"
+    ],
+    razzo:[
+      "0000001100000000","0000011110000000","0000111111000000",
+      "0000111111000000","0001111111100000","0001111111100000",
+      "0001111111100000","0000111111000000","0000111111000000",
+      "0000011110000000","0000010010000000","0000100010000000"
+    ]
+  };
+
+  const pattern = patterns[which] || [];
+
+  pattern.forEach((row,y)=>{
+    [...row].forEach((bit,x)=>{
+      if(bit==="1"){
+        const b = pixelCells[y*16+x];
+        const color = which==="cuore"
+          ? "#ec4899"
+          : which==="fiore"
+            ? (y>6 ? "#22c55e" : "#facc15")
+            : "#3b82f6";
+
+        b.style.background = color;
+        b.dataset.color = color;
+      }
+    });
+  });
+}
+
+function newGame(){
+  const host = $("starGrid");
+  host.replaceChildren();
+
+  const stars = new Set();
+  while(stars.size<3) stars.add(Math.floor(Math.random()*12));
+
+  let tries = 8;
+  let found = 0;
+  let ended = false;
+
+  for(let i=0;i<12;i++){
+    const b = document.createElement("button");
+    b.textContent = "✦";
+    b.setAttribute("aria-label","Casella "+(i+1));
+
+    b.onclick = ()=>{
+      if(ended || b.disabled) return;
+
+      b.disabled = true;
+
+      if(stars.has(i)){
+        b.textContent = "⭐";
+        b.classList.add("found");
+        found++;
+      }else{
+        b.textContent = "·";
+        b.classList.add("miss");
+        tries--;
+      }
+
+      $("gameStatus").textContent =
+        "Stelle trovate: "+found+"/3 · Tentativi rimasti: "+tries+".";
+
+      if(found===3){
+        ended = true;
+        $("gameStatus").textContent = "Hai trovato tutte le stelle! ✨";
+      }else if(tries===0){
+        ended = true;
+        $("gameStatus").textContent = "Partita terminata. Puoi giocare ancora!";
+      }
+    };
+
+    host.append(b);
+  }
+
+  $("gameStatus").textContent = "Stelle trovate: 0/3 · Tentativi rimasti: 8.";
+}
+
+/* GALLERIA CREATIVA */
+
+function createArtworkCanvas(id){
+  if(id==="drawCanvas"){
+    return $(id);
+  }
+
+  const n = id==="blockGrid" ? 12 : 16;
+  const size = 32;
+  const pad = 16;
+  const source = $(id);
+  const canvas = document.createElement("canvas");
+
+  canvas.width = n*size+pad*2;
+  canvas.height = n*size+pad*2;
+
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  Array.from(source.children).forEach((cell,i)=>{
+    ctx.fillStyle = cell.dataset.color || "#ffffff";
+    ctx.fillRect(
+      pad+(i%n)*size,
+      pad+Math.floor(i/n)*size,
+      size-1,
+      size-1
+    );
+  });
+
+  return canvas;
+}
+
+function saveArtwork(type,id){
+  try{
+    const canvas = createArtworkCanvas(id);
+    const image = canvas.toDataURL("image/jpeg",0.85);
+
+    const entry = {
+      id:Date.now().toString()+"-"+Math.random().toString(36).slice(2,7),
+      type,
+      image,
+      created:new Date().toLocaleString("it-IT")
+    };
+
+    if(!Array.isArray(state.artworks)) state.artworks = [];
+
+    const previous = [...state.artworks];
+    state.artworks.unshift(entry);
+    state.artworks = state.artworks.slice(0,12);
+
+    if(!persist()){
+      state.artworks = previous;
+      return;
+    }
+
+    renderGallery();
+    alert("Creazione salvata nella tua galleria!");
+  }catch(e){
+    alert("Non è stato possibile salvare la creazione. Prova a scaricarla in PNG.");
+  }
+}
+
+function renderGallery(){
+  const host = $("galleryList");
+  if(!host) return;
+
+  host.replaceChildren();
+
+  if(!Array.isArray(state.artworks)) state.artworks = [];
+
+  $("galleryCount").textContent = state.artworks.length+" creazioni";
+
+  if(!state.artworks.length){
+    const p = document.createElement("p");
+    p.textContent = "La galleria è vuota. Crea un disegno, una costruzione o una pixel art e premi «Salva nella galleria».";
+    host.append(p);
+    return;
+  }
+
+  state.artworks.forEach(art=>{
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = art.type;
+
+    const date = document.createElement("p");
+    date.className = "small";
+    date.textContent = art.created;
+
+    const img = document.createElement("img");
+    img.className = "gallery-image";
+    img.src = art.image;
+    img.alt = "Anteprima della creazione: "+art.type;
+    img.loading = "lazy";
+
+    const download = document.createElement("button");
+    download.textContent = "Scarica immagine";
+    download.onclick = ()=>{
+      const a = document.createElement("a");
+      a.href = art.image;
+      a.download = "luceecrescita-creazione.jpg";
+      a.click();
+    };
+
+    const remove = document.createElement("button");
+    remove.className = "secondary";
+    remove.textContent = "Elimina";
+    remove.onclick = ()=>{
+      if(!confirm("Vuoi eliminare questa creazione dalla galleria?")) return;
+
+      const previous = [...state.artworks];
+      state.artworks = state.artworks.filter(item=>item.id!==art.id);
+
+      if(persist()) renderGallery();
+      else state.artworks = previous;
+    };
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    actions.append(download,remove);
+
+    card.append(title,date,img,actions);
+    host.append(card);
+  });
+}
+
+function clearGallery(){
+  if(!confirm("Vuoi eliminare tutte le creazioni della galleria? Questa operazione non può essere annullata.")) return;
+
+  const previous = [...state.artworks];
+  state.artworks = [];
+
+  if(persist()){
+    renderGallery();
+  }else{
+    state.artworks = previous;
+  }
+}
+
+/* AVVIO */
+
+const dayIndex = (new Date().getDay()+new Date().getDate())%daily.length;
+$("dailyTitle").textContent = daily[dayIndex][0];
+$("dailyText").textContent = daily[dayIndex][1];
+
+setupDrawing();
+setupGrids();
+renderChallenges();
+renderCollection();
+renderGallery();
+newGame();
+</script>
+</body>
+</html>
