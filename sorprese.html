@@ -1,1 +1,1008 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100b24">
+<meta name="description" content="LUCEECRESCITA X∞: giochi creativi, memoria, quiz, disegno, avventura e fantasia per tutti.">
+<title>LUCEECRESCITA X∞ 7.0 | Future Play Universe</title>
+
+<style>
+:root {
+  --bg:#100b24;
+  --panel:#1d1639;
+  --panel2:#29204b;
+  --gold:#f5cf77;
+  --cyan:#69e7ef;
+  --white:#fffaf0;
+  --muted:#c7bfdc;
+  --green:#83efb0;
+  --pink:#ff8fd5;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0;
+  font-family:system-ui,-apple-system,Arial,sans-serif;
+  color:var(--white);
+  background:
+    radial-gradient(ellipse at top,#30205b 0%,transparent 55%),
+    var(--bg);
+}
+button,input,textarea,select {font:inherit}
+button {
+  cursor:pointer;
+  border:1px solid #65558f;
+  border-radius:13px;
+  padding:11px 15px;
+  color:var(--white);
+  background:#35265b;
+  transition:transform .15s,background .15s;
+}
+button:hover {background:#4a3476;transform:translateY(-1px)}
+button:focus-visible,a:focus-visible,input:focus-visible {
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+a {color:var(--cyan)}
+header {
+  padding:28px 16px 22px;
+  text-align:center;
+  border-bottom:1px solid #493864;
+}
+.logo {
+  color:var(--gold);
+  font-size:clamp(27px,6vw,48px);
+  font-weight:900;
+  letter-spacing:1px;
+}
+.subtitle {color:var(--cyan);font-weight:700}
+header p {color:var(--muted)}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:13px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#100b24ed;
+  border-bottom:1px solid #44335e;
+}
+nav a {
+  text-decoration:none;
+  padding:9px 12px;
+  border-radius:20px;
+  background:#251b40;
+  font-size:14px;
+}
+main {max-width:1100px;margin:auto;padding:18px}
+.hero {
+  padding:25px 18px;
+  text-align:center;
+  border:1px solid #68558a;
+  border-radius:24px;
+  background:linear-gradient(135deg,#39245f,#17122f 70%);
+}
+.hero h1 {font-size:clamp(28px,6vw,46px);margin:5px}
+.hero p {color:var(--muted)}
+.stats {
+  display:flex;justify-content:center;flex-wrap:wrap;gap:9px;
+  margin:17px 0;
+}
+.pill {
+  padding:8px 12px;
+  border-radius:30px;
+  background:#30234e;
+  border:1px solid #5e4c7e;
+  font-size:13px;
+}
+h2 {color:var(--gold);margin:30px 0 15px}
+h3 {color:var(--cyan)}
+.games {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:14px;
+}
+.game {
+  padding:17px;
+  border:1px solid #493864;
+  border-radius:19px;
+  background:linear-gradient(145deg,#21183c,#17112e);
+  min-width:0;
+}
+.game p {color:var(--muted);line-height:1.5}
+.game.wide {grid-column:1/-1}
+.actions {display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.result {
+  min-height:28px;
+  margin-top:12px;
+  color:var(--green);
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+.big {
+  text-align:center;
+  font-size:42px;
+  margin:12px 0;
+}
+input,textarea,select {
+  width:100%;
+  padding:11px;
+  border-radius:10px;
+  color:var(--white);
+  background:#110d25;
+  border:1px solid #645282;
+  margin:5px 0;
+}
+.small {font-size:13px;color:var(--muted)}
+canvas {
+  display:block;
+  width:100%;
+  max-width:100%;
+  border:1px solid #65558f;
+  border-radius:13px;
+  background:#100b24;
+  touch-action:manipulation;
+}
+.memory {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+.memory button {font-size:26px;min-height:62px;padding:5px}
+.quiz-option {display:block;width:100%;margin:7px 0;text-align:left}
+.pixel-grid {
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:2px;
+  margin-top:10px;
+}
+.pixel {
+  aspect-ratio:1;
+  border:0;
+  padding:0;
+  border-radius:2px;
+  background:#21183c;
+}
+footer {
+  padding:28px 15px;
+  text-align:center;
+  color:var(--muted);
+  border-top:1px solid #493864;
+  margin-top:30px;
+}
+footer a {text-decoration:none}
+[hidden] {display:none!important}
+@media(max-width:500px) {
+  main {padding:12px}
+  .game {padding:13px}
+  .memory {gap:5px}
+  .memory button {min-height:53px;font-size:22px}
+}
+</style>
+</head>
+
+<body>
+<header id="home">
+  <div class="logo">LUCEECRESCITA X∞</div>
+  <div class="subtitle">7.0 · FUTURE PLAY UNIVERSE</div>
+  <p>Immagina. Gioca. Crea. Scopri nuove possibilità.</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#giochi">Tutti i giochi</a>
+  <a href="#avventura">Avventura</a>
+  <a href="#creativita">Creatività</a>
+  <a href="#laboratorio">Laboratorio</a>
+  <a href="https://luce-crescita.github.io/">Sito principale</a>
+</nav>
+
+<main>
+<section class="hero">
+  <h1>Benvenuto nel tuo universo!</h1>
+  <p>Un mondo di enigmi, sfide, colori, storie e piccoli esperimenti digitali.</p>
+  <div class="stats">
+    <span class="pill">🎮 Giochi interattivi</span>
+    <span class="pill">🎨 Creatività</span>
+    <span class="pill">🚀 Avventura</span>
+    <span class="pill">✨ Fantasia infinita</span>
+  </div>
+  <a href="#giochi"><button>🚀 ENTRA NEL MONDO DEI GIOCHI</button></a>
+</section>
+
+<h2 id="giochi">🎮 Giochi di logica e divertimento</h2>
+<div class="games">
+
+<section class="game">
+<h3>1. 🧠 Memory delle stelle</h3>
+<p>Trova tutte le coppie uguali.</p>
+<div class="memory" id="memoryBoard"></div>
+<div class="result" id="memoryResult">Coppie trovate: 0</div>
+<button onclick="newMemory()">Nuova partita</button>
+</section>
+
+<section class="game">
+<h3>2. 🔢 Numero misterioso</h3>
+<p>Indovina il numero segreto da 1 a 100.</p>
+<input id="guessInput" type="number" min="1" max="100" placeholder="Scrivi un numero">
+<div class="actions">
+<button onclick="guessNumber()">Prova</button>
+<button onclick="newGuess()">Ricomincia</button>
+</div>
+<div class="result" id="guessResult"></div>
+</section>
+
+<section class="game">
+<h3>3. ❌ Tris</h3>
+<p>Gioca contro il computer. Cerca di fare tre simboli in fila.</p>
+<div class="memory" id="ticBoard"></div>
+<div class="result" id="ticResult">Tocca una casella per iniziare.</div>
+<button onclick="newTic()">Nuova partita</button>
+</section>
+
+<section class="game">
+<h3>4. ✊ Carta, forbici e sasso</h3>
+<p>Scegli la tua mossa contro il computer.</p>
+<div class="actions">
+<button onclick="rps('carta')">✋ Carta</button>
+<button onclick="rps('forbici')">✌️ Forbici</button>
+<button onclick="rps('sasso')">✊ Sasso</button>
+</div>
+<div class="result" id="rpsResult"></div>
+</section>
+
+<section class="game">
+<h3>5. ➕ Sfida matematica</h3>
+<p>Risolvi l'operazione prima di passare alla successiva.</p>
+<div class="big" id="mathQuestion"></div>
+<input id="mathAnswer" type="number" placeholder="La tua risposta">
+<div class="actions">
+<button onclick="checkMath()">Controlla</button>
+<button onclick="newMath()">Prossima sfida</button>
+</div>
+<div class="result" id="mathResult"></div>
+</section>
+
+<section class="game">
+<h3>6. 🧩 Quiz delle curiosità</h3>
+<p id="quizQuestion"></p>
+<div id="quizOptions"></div>
+<div class="result" id="quizResult"></div>
+<button onclick="nextQuiz()">Altra domanda</button>
+</section>
+
+<section class="game">
+<h3>7. ⚡ Riflessi lampo</h3>
+<p>Premi il pulsante verde quando appare. Non anticipare!</p>
+<div class="big" id="reactionFace">⏳</div>
+<button id="reactionButton" onclick="reactionClick()">Avvia la sfida</button>
+<div class="result" id="reactionResult"></div>
+</section>
+
+<section class="game">
+<h3>8. 🎯 Bersaglio mobile</h3>
+<p>Hai 15 secondi per colpire più bersagli possibile.</p>
+<canvas id="targetCanvas" width="360" height="230"></canvas>
+<div class="actions">
+<button onclick="startTargets()">Inizia</button>
+</div>
+<div class="result" id="targetResult">Punti: 0</div>
+</section>
+
+<section class="game">
+<h3>9. 🔤 Parola mescolata</h3>
+<p>Riordina le lettere per scoprire la parola.</p>
+<div class="big" id="scrambleWord"></div>
+<input id="scrambleInput" placeholder="Scrivi la parola corretta">
+<div class="actions">
+<button onclick="checkScramble()">Controlla</button>
+<button onclick="newScramble()">Nuova parola</button>
+</div>
+<div class="result" id="scrambleResult"></div>
+</section>
+
+<section class="game">
+<h3>10. 🌈 Indovina il colore</h3>
+<p>Trova il colore corrispondente al codice RGB.</p>
+<div class="big" id="colorPreview">🎨</div>
+<p id="colorQuestion"></p>
+<div id="colorOptions"></div>
+<div class="result" id="colorResult"></div>
+<button onclick="newColor()">Nuovo colore</button>
+</section>
+
+<section class="game">
+<h3>11. 🪨 La torre dei numeri</h3>
+<p>Completa la sequenza logica.</p>
+<div class="big" id="sequenceQuestion"></div>
+<input id="sequenceInput" type="number" placeholder="Qual è il prossimo numero?">
+<div class="actions">
+<button onclick="checkSequence()">Rispondi</button>
+<button onclick="newSequence()">Nuova sequenza</button>
+</div>
+<div class="result" id="sequenceResult"></div>
+</section>
+
+<section class="game">
+<h3>12. 🌟 La ruota delle idee</h3>
+<p>Estrai una piccola missione creativa.</p>
+<div class="big">🎡</div>
+<button onclick="spinIdea()">Estrai una missione</button>
+<div class="result" id="ideaResult"></div>
+</section>
+
+</div>
+
+<h2 id="avventura">🚀 Avventura e movimento</h2>
+<div class="games">
+
+<section class="game wide">
+<h3>13. ✈️ Il volo dell'aereo</h3>
+<p>L'aereo vola mentre nuvole, stelle e paesaggio scorrono. Usa i comandi per salire o scendere ed evita gli ostacoli.</p>
+<canvas id="planeCanvas" width="700" height="300" aria-label="Gioco di volo dell'aereo"></canvas>
+<div class="actions">
+<button onclick="startPlane()">▶ Vola</button>
+<button onclick="pausePlane()">⏸ Pausa</button>
+<button onclick="movePlane(-1)">⬆️ Sali</button>
+<button onclick="movePlane(1)">⬇️ Scendi</button>
+<button onclick="resetPlane()">↻ Ricomincia</button>
+</div>
+<p class="small">Puoi usare anche le frecce della tastiera. Su telefono usa i pulsanti.</p>
+<div class="result" id="planeResult">Pronto al decollo!</div>
+</section>
+
+<section class="game">
+<h3>14. 🏓 Pong spaziale</h3>
+<p>Muovi la racchetta con il dito o con il mouse e non lasciar cadere la pallina.</p>
+<canvas id="pongCanvas" width="360" height="250"></canvas>
+<div class="result" id="pongResult">Punti: 0</div>
+<button onclick="startPong()">Nuova partita</button>
+</section>
+
+<section class="game">
+<h3>15. 🧭 Il labirinto</h3>
+<p>Raggiungi la stella evitando i muri. Usa i pulsanti direzionali.</p>
+<canvas id="mazeCanvas" width="300" height="300"></canvas>
+<div class="actions">
+<button onclick="moveMaze(0,-1)">⬆️</button>
+<button onclick="moveMaze(-1,0)">⬅️</button>
+<button onclick="moveMaze(1,0)">➡️</button>
+<button onclick="moveMaze(0,1)">⬇️</button>
+<button onclick="newMaze()">Nuovo labirinto</button>
+</div>
+<div class="result" id="mazeResult"></div>
+</section>
+
+<section class="game">
+<h3>16. 🪐 Acchiappa le stelle</h3>
+<p>Tocca le stelle che compaiono. Quante ne trovi?</p>
+<div class="big" id="starArena">✨</div>
+<button onclick="catchStar()">Acchiappa!</button>
+<div class="result" id="starResult">Stelle: 0</div>
+<button onclick="resetStars()">Ricomincia</button>
+</section>
+
+</div>
+
+<h2 id="creativita">🎨 Spazio della creatività</h2>
+<div class="games">
+
+<section class="game">
+<h3>17. 🖌️ Disegna liberamente</h3>
+<p>Disegna con il mouse o con il dito.</p>
+<canvas id="drawCanvas" width="360" height="250"></canvas>
+<input id="drawColor" type="color" value="#69e7ef" aria-label="Colore del disegno">
+<div class="actions">
+<button onclick="clearDrawing()">Cancella disegno</button>
+<button onclick="downloadDrawing()">Salva disegno</button>
+</div>
+</section>
+
+<section class="game">
+<h3>18. 🟪 Pixel Art</h3>
+<p>Tocca i quadratini per creare un'immagine pixel.</p>
+<input id="pixelColor" type="color" value="#f5cf77" aria-label="Colore pixel art">
+<div class="pixel-grid" id="pixelGrid"></div>
+<button onclick="clearPixels()">Cancella pixel art</button>
+</section>
+
+<section class="game">
+<h3>19. 📖 Inventastorie</h3>
+<p>Genera personaggi e ambientazioni per inventare una storia.</p>
+<div class="big">📚</div>
+<button onclick="makeStory()">Inventa una storia</button>
+<textarea id="storyText" rows="6" placeholder="La tua storia apparirà qui. Puoi modificarla!"></textarea>
+<button onclick="copyStory()">Copia storia</button>
+</section>
+
+<section class="game">
+<h3>20. 💡 Generatore di invenzioni</h3>
+<p>Combina idee per immaginare una nuova invenzione.</p>
+<button onclick="makeInvention()">Crea un'invenzione</button>
+<div class="result" id="inventionResult"></div>
+</section>
+
+<section class="game">
+<h3>21. 🌱 Il giardino delle idee</h3>
+<p>Scrivi un desiderio o un progetto da far crescere.</p>
+<input id="gardenInput" placeholder="La mia idea è...">
+<button onclick="plantIdea()">Pianta la tua idea</button>
+<div id="gardenList"></div>
+</section>
+
+<section class="game">
+<h3>22. ✨ Diario delle 7 Luci</h3>
+<p>Scegli una luce e scrivi un pensiero positivo o un obiettivo per oggi.</p>
+<select id="lightChoice">
+<option>🌞 Luce della speranza</option>
+<option>💙 Luce della gentilezza</option>
+<option>💜 Luce della creatività</option>
+<option>💚 Luce del coraggio</option>
+<option>💛 Luce della gratitudine</option>
+<option>🩵 Luce della curiosità</option>
+<option>🤍 Luce della crescita</option>
+</select>
+<textarea id="lightText" rows="3" placeholder="Oggi vorrei..."></textarea>
+<button onclick="saveLight()">Aggiungi al diario</button>
+<div id="lightDiary"></div>
+<p class="small">I pensieri restano in questo browser, se la memoria locale è disponibile.</p>
+</section>
+
+</div>
+
+<h2 id="laboratorio">🧪 Piccolo laboratorio mentale</h2>
+<div class="games">
+
+<section class="game">
+<h3>23. 🧮 Calcolatrice</h3>
+<p>Effettua semplici operazioni.</p>
+<input id="calcA" type="number" placeholder="Primo numero">
+<select id="calcOp">
+<option value="+">Addizione +</option>
+<option value="-">Sottrazione −</option>
+<option value="*">Moltiplicazione ×</option>
+<option value="/">Divisione ÷</option>
+</select>
+<input id="calcB" type="number" placeholder="Secondo numero">
+<button onclick="calculate()">Calcola</button>
+<div class="result" id="calcResult"></div>
+</section>
+
+<section class="game">
+<h3>24. 🔐 Codice segreto</h3>
+<p>Trova il codice di tre cifre. Le cifre sono tutte diverse. Il gioco ti dirà quante sono al posto giusto e quante sono presenti nel codice.</p>
+<input id="codeInput" inputmode="numeric" maxlength="3" placeholder="Tre cifre diverse">
+<button onclick="tryCode()">Verifica codice</button>
+<div class="result" id="codeResult"></div>
+<button onclick="newCode()">Nuovo codice</button>
+</section>
+
+<section class="game">
+<h3>25. 🧠 Allenamento della memoria</h3>
+<p>Osserva la sequenza e ripetila senza guardarla.</p>
+<div class="big" id="sequenceMemory">🌟</div>
+<button onclick="showMemorySequence()">Mostra sequenza</button>
+<input id="sequenceMemoryInput" placeholder="Riscrivi le emoji nell'ordine">
+<button onclick="checkMemorySequence()">Controlla</button>
+<div class="result" id="sequenceMemoryResult"></div>
+</section>
+
+<section class="game">
+<h3>26. 🕵️ Enigma del giorno</h3>
+<p id="riddleText"></p>
+<input id="riddleInput" placeholder="La tua risposta">
+<button onclick="checkRiddle()">Risolvi</button>
+<button onclick="newRiddle()">Altro enigma</button>
+<div class="result" id="riddleResult"></div>
+</section>
+
+</div>
+
+<div class="hero" style="margin-top:28px">
+  <h2>🌟 Ogni idea può diventare una scoperta</h2>
+  <p>Gioca con fantasia, rispetta gli altri e continua a imparare.</p>
+  <a href="https://luce-crescita.github.io/"><button>✦ Torna a LUCEECRESCITA</button></a>
+</div>
+</main>
+
+<footer>
+  <p><a href="https://luce-crescita.github.io/">LUCEECRESCITA</a> · Parole, pensieri e futuro.</p>
+  <p>© <span id="year"></span> Antonello Salvatore Mastropaolo · Diritti riservati.</p>
+  <p class="small">Testi, grafica e giochi originali di questa pagina. È vietata la ripubblicazione o l'utilizzazione commerciale non autorizzata.</p>
+</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const rand = n => Math.floor(Math.random()*n);
+const pick = arr => arr[rand(arr.length)];
+$("year").textContent = new Date().getFullYear();
+
+/* MEMORY */
+let memoryValues=[],memoryOpen=[],memoryFound=0,memoryLock=false;
+function newMemory(){
+  const emojis=["🌟","🚀","🌈","🪐","💎","🦋","🌻","🎈"];
+  memoryValues=[...emojis,...emojis].sort(()=>Math.random()-.5);
+  memoryOpen=[];memoryFound=0;memoryLock=false;renderMemory();
+}
+function renderMemory(){
+  const b=$("memoryBoard");b.innerHTML="";
+  memoryValues.forEach((v,i)=>{
+    const btn=document.createElement("button");
+    btn.textContent=memoryFoundIndices.has(i)||memoryOpen.includes(i)?v:"❔";
+    btn.setAttribute("aria-label","Carta "+(i+1));
+    btn.onclick=()=>flipMemory(i);
+    b.appendChild(btn);
+  });
+  $("memoryResult").textContent="Coppie trovate: "+memoryFound+" / 8";
+}
+let memoryFoundIndices=new Set();
+function flipMemory(i){
+  if(memoryLock||memoryFoundIndices.has(i)||memoryOpen.includes(i))return;
+  memoryOpen.push(i);renderMemory();
+  if(memoryOpen.length===2){
+    memoryLock=true;
+    const [a,b]=memoryOpen;
+    if(memoryValues[a]===memoryValues[b]){
+      memoryFoundIndices.add(a);memoryFoundIndices.add(b);
+      memoryFound++;memoryOpen=[];memoryLock=false;renderMemory();
+    }else setTimeout(()=>{memoryOpen=[];memoryLock=false;renderMemory()},700);
+  }
+}
+const oldNewMemory=newMemory;
+newMemory=function(){memoryFoundIndices=new Set();oldNewMemory()};
+newMemory();
+
+/* NUMBER GUESS */
+let secret=rand(100)+1,guessCount=0;
+function newGuess(){secret=rand(100)+1;guessCount=0;$("guessInput").value="";$("guessResult").textContent="Nuovo numero scelto!"}
+function guessNumber(){
+  const n=Number($("guessInput").value);
+  if(!Number.isInteger(n)||n<1||n>100){$("guessResult").textContent="Inserisci un numero da 1 a 100.";return}
+  guessCount++;
+  $("guessResult").textContent=n===secret?`🎉 Esatto! Tentativi: ${guessCount}.`:(n<secret?"Troppo piccolo! Prova più in alto.":"Troppo grande! Prova più in basso.");
+}
+newGuess();
+
+/* TIC TAC TOE */
+let tic=[],ticOver=false;
+function newTic(){tic=Array(9).fill("");ticOver=false;$("ticResult").textContent="Sei X. Tocca una casella.";renderTic()}
+function renderTic(){
+  const b=$("ticBoard");b.innerHTML="";
+  tic.forEach((v,i)=>{const x=document.createElement("button");x.textContent=v||"　";x.onclick=()=>ticMove(i);b.appendChild(x)});
+}
+function ticWinner(){
+  for(const [a,b,c] of [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]])
+    if(tic[a]&&tic[a]===tic[b]&&tic[a]===tic[c])return tic[a];
+  return "";
+}
+function ticMove(i){
+  if(ticOver||tic[i])return;
+  tic[i]="X";
+  if(ticWinner()){ticOver=true;$("ticResult").textContent="Hai vinto! 🎉";renderTic();return}
+  if(tic.every(Boolean)){ticOver=true;$("ticResult").textContent="Pareggio!";renderTic();return}
+  let available=tic.map((v,i)=>v?null:i).filter(v=>v!==null);
+  const win=ticWinner();
+  tic[pick(available)]="O";
+  if(ticWinner()){ticOver=true;$("ticResult").textContent="Il computer ha vinto. Riprova!";renderTic();return}
+  if(tic.every(Boolean)){ticOver=true;$("ticResult").textContent="Pareggio!";renderTic();return}
+  $("ticResult").textContent="Tocca a te!";
+  renderTic();
+}
+newTic();
+
+/* ROCK PAPER SCISSORS */
+function rps(me){
+  const all=["carta","forbici","sasso"],cpu=pick(all);
+  let msg=me===cpu?"Pareggio!":(
+    (me==="carta"&&cpu==="sasso")||(me==="forbici"&&cpu==="carta")||(me==="sasso"&&cpu==="forbici")
+    ?"Hai vinto! 🎉":"Ha vinto il computer.");
+  $("rpsResult").textContent=`Tu: ${me} · Computer: ${cpu}. ${msg}`;
+}
+
+/* MATH */
+let mathCorrect=0;
+function newMath(){
+  const a=rand(12)+1,b=rand(12)+1,ops=["+","−","×"],op=pick(ops);
+  mathCorrect=op==="+"?a+b:op==="−"?a-b:a*b;
+  $("mathQuestion").textContent=`${a} ${op} ${b} = ?`;
+  $("mathAnswer").value="";$("mathResult").textContent="";
+}
+function checkMath(){
+  const val=$("mathAnswer").value;
+  if(val==="")return;
+  $("mathResult").textContent=Number(val)===mathCorrect?"Corretto! 🌟":"Non ancora. Riprova!";
+}
+newMath();
+
+/* QUIZ */
+const quizzes=[
+ {q:"Qual è il pianeta più vicino al Sole?",a:["Mercurio","Marte","Saturno"],c:0},
+ {q:"Quanti lati ha un esagono?",a:["Cinque","Sei","Otto"],c:1},
+ {q:"Quale animale è un mammifero?",a:["Delfino","Trota","Tartaruga"],c:0},
+ {q:"Qual è la capitale d'Italia?",a:["Milano","Roma","Napoli"],c:1},
+ {q:"Quanti minuti ci sono in un'ora?",a:["30","60","100"],c:1},
+ {q:"Quale stella illumina la Terra di giorno?",a:["Sole","Sirio","Polare"],c:0},
+ {q:"Quale forma ha tre lati?",a:["Quadrato","Cerchio","Triangolo"],c:2},
+ {q:"Quale gas assorbono le piante nella fotosintesi?",a:["Anidride carbonica","Elio","Neon"],c:0},
+ {q:"Quanto fa 9 × 7?",a:["56","63","72"],c:1},
+ {q:"Quale oceano è il più grande?",a:["Indiano","Artico","Pacifico"],c:2}
+];
+let quizCurrent;
+function nextQuiz(){
+  quizCurrent=pick(quizzes);
+  $("quizQuestion").textContent=quizCurrent.q;
+  $("quizOptions").innerHTML="";
+  $("quizResult").textContent="";
+  quizCurrent.a.forEach((v,i)=>{
+    const b=document.createElement("button");b.className="quiz-option";b.textContent=v;
+    b.onclick=()=>{$("quizResult").textContent=i===quizCurrent.c?"Risposta corretta! 🌟":"Non è questa. Prova ancora o passa alla prossima.";};
+    $("quizOptions").appendChild(b);
+  });
+}
+nextQuiz();
+
+/* REACTION */
+let reactionReady=false,reactionTimer=null,reactionStart=0;
+function reactionClick(){
+  if(!reactionReady){
+    clearTimeout(reactionTimer);
+    reactionReady=true;$("reactionButton").textContent="Aspetta il verde...";
+    $("reactionFace").textContent="⏳";
+    $("reactionResult").textContent="";
+    reactionTimer=setTimeout(()=>{
+      $("reactionFace").textContent="🟢";
+      $("reactionButton").textContent="PREMI!";
+      reactionStart=performance.now();
+    },1000+rand(2500));
+  }else{
+    if(!$("reactionFace").textContent.includes("🟢")){
+      clearTimeout(reactionTimer);reactionReady=false;
+      $("reactionResult").textContent="Troppo presto! Riprova.";
+      $("reactionButton").textContent="Riprova";$("reactionFace").textContent="⏳";return;
+    }
+    const ms=Math.round(performance.now()-reactionStart);
+    $("reactionResult").textContent=`Tempo di reazione: ${ms} millisecondi.`;
+    $("reactionFace").textContent="⚡";$("reactionButton").textContent="Gioca ancora";reactionReady=false;
+  }
+}
+
+/* TARGET */
+const tc=$("targetCanvas"),tx=tc.getContext("2d");
+let targets=[],targetScore=0,targetEnd=0,targetLoop=null;
+function drawTargets(){
+  tx.clearRect(0,0,tc.width,tc.height);
+  tx.fillStyle="#15102d";tx.fillRect(0,0,tc.width,tc.height);
+  targets.forEach(t=>{tx.fillStyle="#69e7ef";tx.beginPath();tx.arc(t.x,t.y,t.r,0,Math.PI*2);tx.fill();tx.fillStyle="#f5cf77";tx.beginPath();tx.arc(t.x,t.y,t.r/2,0,Math.PI*2);tx.fill()});
+}
+function startTargets(){
+  targetScore=0;targetEnd=Date.now()+15000;targets=[];
+  for(let i=0;i<5;i++)targets.push({x:20+rand(320),y:20+rand(190),r:12+rand(8)});
+  clearInterval(targetLoop);
+  targetLoop=setInterval(()=>{
+    if(Date.now()>=targetEnd){clearInterval(targetLoop);$("targetResult").textContent=`Tempo finito! Punti: ${targetScore}`;return}
+    targets.forEach(t=>{t.x+=rand(11)-5;t.y+=rand(11)-5;t.x=Math.max(t.r,Math.min(tc.width-t.r,t.x));t.y=Math.max(t.r,Math.min(tc.height-t.r,t.y))});
+    drawTargets();$("targetResult").textContent=`Punti: ${targetScore} · Secondi: ${Math.ceil((targetEnd-Date.now())/1000)}`;
+  },70);
+}
+tc.addEventListener("pointerdown",e=>{
+  const r=tc.getBoundingClientRect(),x=(e.clientX-r.left)*tc.width/r.width,y=(e.clientY-r.top)*tc.height/r.height;
+  targets=targets.filter(t=>{
+    if(Math.hypot(t.x-x,t.y-y)<t.r){targetScore++;return false}return true
+  });
+  while(targets.length<5)targets.push({x:15+rand(330),y:15+rand(200),r:12+rand(8)});
+  drawTargets();
+});
+drawTargets();
+
+/* SCRAMBLE */
+const words=["STELLA","FUTURO","AMICIZIA","FANTASIA","PIANETA","SORRISO","GALASSIA","COLORE","SCOPERTA","AVVENTURA"];
+let scrambleAnswer="";
+function newScramble(){
+  scrambleAnswer=pick(words);
+  let mixed=scrambleAnswer.split("").sort(()=>Math.random()-.5).join("");
+  if(mixed===scrambleAnswer)mixed=scrambleAnswer.slice(1)+scrambleAnswer[0];
+  $("scrambleWord").textContent=mixed.split("").join(" · ");
+  $("scrambleInput").value="";$("scrambleResult").textContent="";
+}
+function checkScramble(){
+  $("scrambleResult").textContent=$("scrambleInput").value.trim().toUpperCase()===scrambleAnswer?"Esatto! 🎉":"Non ancora. Riprova!";
+}
+newScramble();
+
+/* COLOR */
+const colorNames=["Rosso","Verde","Blu","Giallo","Viola","Arancione","Rosa","Turchese"];
+let colorCorrect="";
+function newColor(){
+  const opts=[...colorNames].sort(()=>Math.random()-.5).slice(0,4);
+  colorCorrect=pick(opts);
+  const map={"Rosso":"#f04444","Verde":"#35c878","Blu":"#3987ff","Giallo":"#f5cf30","Viola":"#a66cff","Arancione":"#ff8a28","Rosa":"#ff75be","Turchese":"#38dfd0"};
+  $("colorPreview").textContent="";$("colorPreview").style.height="80px";
+  $("colorPreview").style.background=map[colorCorrect];
+  $("colorQuestion").textContent="Qual è il nome di questo colore?";
+  $("colorOptions").innerHTML="";$("colorResult").textContent="";
+  opts.forEach(v=>{const b=document.createElement("button");b.textContent=v;b.style.margin="4px";b.onclick=()=>{$("colorResult").textContent=v===colorCorrect?"Perfetto! 🎨":"Prova ancora."};$("colorOptions").appendChild(b)});
+}
+newColor();
+
+/* SEQUENCE */
+let sequenceAnswer=0;
+function newSequence(){
+  const start=rand(10)+1,step=rand(8)+2;
+  sequenceAnswer=start+step*4;
+  $("sequenceQuestion").textContent=[0,1,2,3].map(i=>start+step*i).join(" · ")+" · ?";
+  $("sequenceInput").value="";$("sequenceResult").textContent="";
+}
+function checkSequence(){
+  $("sequenceResult").textContent=Number($("sequenceInput").value)===sequenceAnswer?"Sequenza corretta! 🌟":"Riprova: cerca la regola.";
+}
+newSequence();
+
+/* IDEAS */
+const ideas=["Disegna una città del futuro.","Inventa un robot gentile.","Scrivi una storia ambientata sulla Luna.","Pensa a un modo per ridurre gli sprechi.","Crea un animale immaginario.","Inventa un gioco da fare in famiglia.","Immagina una scuola del futuro.","Scrivi tre cose per cui sei grato.","Disegna un pianeta mai visto.","Inventa un oggetto che aiuti gli altri."];
+function spinIdea(){$("ideaResult").textContent=pick(ideas)}
+
+/* PLANE FLIGHT */
+const pc=$("planeCanvas"),px=pc.getContext("2d");
+let planeY=145,planeV=0,planeWorld=0,planeRunning=false,planeLast=0,planeScore=0,planeObstacles=[],planeClouds=[],planeRAF=0,planeHit=false;
+function initPlane(){
+  planeClouds=Array.from({length:8},(_,i)=>({x:i*120+rand(80),y:25+rand(110),s:.6+Math.random()}));
+  planeObstacles=[];planeY=145;planeV=0;planeWorld=0;planeScore=0;planeHit=false;
+  $("planeResult").textContent="Pronto al decollo!";
+  drawPlane();
+}
+function movePlane(dir){planeV=dir*2.8;if(!planeRunning){planeY=Math.max(35,Math.min(265,planeY+dir*12));drawPlane()}}
+function startPlane(){
+  if(planeHit)initPlane();
+  if(planeRunning)return;
+  planeRunning=true;planeLast=performance.now();planeRAF=requestAnimationFrame(planeFrame);
+  $("planeResult").textContent="Volo in corso! Evita gli ostacoli.";
+}
+function pausePlane(){planeRunning=false;cancelAnimationFrame(planeRAF);$("planeResult").textContent="Volo in pausa."}
+function resetPlane(){pausePlane();initPlane()}
+function drawPlane(){
+  const w=pc.width,h=pc.height;
+  const sky=px.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#171044");sky.addColorStop(1,"#327eae");
+  px.fillStyle=sky;px.fillRect(0,0,w,h);
+  // Stelle e nuvole si muovono in senso opposto al volo.
+  px.fillStyle="#fff5be";
+  for(let i=0;i<45;i++){
+    let x=((i*83-planeWorld*.25)%(w+30)+w+30)%(w+30);
+    let y=(i*47)%180;px.fillRect(x,y,2,2);
+  }
+  planeClouds.forEach(c=>{
+    let x=((c.x-planeWorld*.6)%(w+130)+w+130)%(w+130)-45;
+    px.fillStyle="#ffffffb9";
+    px.beginPath();px.ellipse(x,c.y,25*c.s,10*c.s,0,0,Math.PI*2);px.ellipse(x+17*c.s,c.y-7*c.s,18*c.s,13*c.s,0,0,Math.PI*2);px.ellipse(x+32*c.s,c.y,22*c.s,9*c.s,0,0,Math.PI*2);px.fill();
+  });
+  // Montagne e terreno in scorrimento.
+  px.fillStyle="#283a65";px.beginPath();px.moveTo(0,h);
+  for(let x=0;x<=w+10;x+=10){let y=215+Math.sin((x+planeWorld*.8)*.025)*19+Math.sin((x+planeWorld*.5)*.07)*9;px.lineTo(x,y)}
+  px.lineTo(w,h);px.closePath();px.fill();
+  px.fillStyle="#173f47";px.fillRect(0,255,w,45);
+  px.fillStyle="#6de0ac";
+  for(let x=0;x<w;x+=32){let xx=((x-planeWorld*1.8)%w+w)%w;px.fillRect(xx,266,14,3);px.fillRect(xx+10,284,12,2)}
+  // Ostacoli
+  planeObstacles.forEach(o=>{
+    px.fillStyle="#ff8fd5";px.beginPath();px.arc(o.x,o.y,o.r,0,Math.PI*2);px.fill();
+    px.fillStyle="#fff";px.beginPath();px.arc(o.x-3,o.y-3,3,0,Math.PI*2);px.fill();
+  });
+  // Aereo sempre in posizione orizzontale: l'ambiente scorre.
+  const ax=155,ay=planeY;
+  px.save();px.translate(ax,ay);px.rotate(Math.max(-.25,Math.min(.25,planeV*.07)));
+  px.fillStyle="#f5cf77";px.beginPath();px.moveTo(-35,0);px.lineTo(10,-7);px.lineTo(34,-3);px.lineTo(42,0);px.lineTo(31,5);px.lineTo(-28,7);px.closePath();px.fill();
+  px.fillStyle="#69e7ef";px.beginPath();px.moveTo(-3,-4);px.lineTo(8,-23);px.lineTo(19,-22);px.lineTo(14,-4);px.closePath();px.fill();
+  px.fillStyle="#e7faff";px.beginPath();px.moveTo(-15,3);px.lineTo(-4,19);px.lineTo(5,19);px.lineTo(2,3);px.closePath();px.fill();
+  px.fillStyle="#ff8fd5";px.fillRect(-30,-10,5,20);
+  // Elica rotante
+  px.strokeStyle="#ffffff";px.lineWidth=3;px.beginPath();px.moveTo(41,-12);px.lineTo(41,12);px.stroke();
+  px.restore();
+  px.fillStyle="#fff";px.font="bold 15px system-ui";px.fillText("DISTANZA: "+Math.floor(planeScore)+" km",12,22);
+}
+function planeFrame(now){
+  if(!planeRunning)return;
+  const dt=Math.min(40,now-planeLast);planeLast=now;
+  planeY+=planeV*dt*.055;planeV*=.91;
+  planeY=Math.max(32,Math.min(248,planeY));
+  planeWorld+=dt*.22;planeScore+=dt*.012;
+  if(Math.random()<.025)planeObstacles.push({x:pc.width+10,y:35+rand(200),r:11});
+  planeObstacles.forEach(o=>o.x-=dt*.22);
+  planeObstacles=planeObstacles.filter(o=>o.x>-20);
+  if(planeObstacles.some(o=>Math.hypot(o.x-155,o.y-planeY)<o.r+20)){
+    planeRunning=false;planeHit=true;
+    $("planeResult").textContent="💫 Hai incontrato un ostacolo! Distanza: "+Math.floor(planeScore)+" km. Premi Ricomincia per ripartire.";
+    drawPlane();return;
+  }
+  drawPlane();
+  planeRAF=requestAnimationFrame(planeFrame);
+}
+document.addEventListener("keydown",e=>{
+  if(["ArrowUp","ArrowDown"].includes(e.key)&&$("planeCanvas")){
+    e.preventDefault();movePlane(e.key==="ArrowUp"?-1:1);
+  }
+});
+initPlane();
+
+/* PONG */
+const pong=$("pongCanvas"),gx=pong.getContext("2d");
+let pongBall={x:180,y:125,vx:3,vy:3},pongPaddle=180,pongScore=0,pongActive=false,pongRAF=0;
+function startPong(){
+  cancelAnimationFrame(pongRAF);pongBall={x:180,y:125,vx:3,vy:3};pongPaddle=180;pongScore=0;pongActive=true;drawPong();
+}
+function drawPong(){
+  gx.fillStyle="#100b24";gx.fillRect(0,0,pong.width,pong.height);
+  gx.fillStyle="#69e7ef";gx.fillRect(pongPaddle-38,225,76,9);
+  gx.fillStyle="#f5cf77";gx.beginPath();gx.arc(pongBall.x,pongBall.y,8,0,Math.PI*2);gx.fill();
+  gx.fillStyle="#fff";gx.font="16px system-ui";gx.fillText("Punti: "+pongScore,10,22);
+  if(!pongActive)return;
+  pongBall.x+=pongBall.vx;pongBall.y+=pongBall.vy;
+  if(pongBall.x<8||pongBall.x>pong.width-8)pongBall.vx*=-1;
+  if(pongBall.y<8)pongBall.vy*=-1;
+  if(pongBall.y>215&&pongBall.y<238&&Math.abs(pongBall.x-pongPaddle)<45){pongBall.vy=-Math.abs(pongBall.vy);pongScore++;$("pongResult").textContent="Punti: "+pongScore}
+  if(pongBall.y>pong.height){pongActive=false;$("pongResult").textContent="Partita terminata! Punti: "+pongScore;return}
+  pongRAF=requestAnimationFrame(drawPong);
+}
+pong.addEventListener("pointermove",e=>{const r=pong.getBoundingClientRect();pongPaddle=(e.clientX-r.left)*pong.width/r.width;pongPaddle=Math.max(38,Math.min(pong.width-38,pongPaddle));if(!pongActive)drawPong()});
+pong.addEventListener("pointerdown",e=>{const r=pong.getBoundingClientRect();pongPaddle=(e.clientX-r.left)*pong.width/r.width;pongPaddle=Math.max(38,Math.min(pong.width-38,pongPaddle))});
+drawPong();
+
+/* MAZE */
+const mc=$("mazeCanvas"),mz=mc.getContext("2d");
+let mazePlayer={x:0,y:0},mazeWalls=[];
+function newMaze(){
+  mazeWalls=Array.from({length:10},()=>Array.from({length:10},()=>Math.random()<.22));
+  mazeWalls[0][0]=false;mazeWalls[9][9]=false;
+  // Percorso sicuro fino all'arrivo.
+  for(let i=0;i<10;i++){mazeWalls[i][0]=false;mazeWalls[9][i]=false}
+  mazePlayer={x:0,y:0};drawMaze();$("mazeResult").textContent="Raggiungi la stella!";
+}
+function drawMaze(){
+  mz.fillStyle="#17112e";mz.fillRect(0,0,300,300);
+  for(let y=0;y<10;y++)for(let x=0;x<10;x++){
+    mz.fillStyle=mazeWalls[y][x]?"#51406e":"#21183c";mz.fillRect(x*30+1,y*30+1,28,28);
+  }
+  mz.font="22px system-ui";mz.fillText("⭐",9*30+3,9*30+24);mz.fillText("🧑",mazePlayer.x*30+3,mazePlayer.y*30+24);
+}
+function moveMaze(dx,dy){
+  const x=mazePlayer.x+dx,y=mazePlayer.y+dy;
+  if(x<0||y<0||x>9||y>9||mazeWalls[y][x])return;
+  mazePlayer={x,y};drawMaze();
+  if(x===9&&y===9)$("mazeResult").textContent="Complimenti! Hai trovato la stella! 🌟";
+}
+newMaze();
+
+/* STARS */
+let starScore=0;
+function catchStar(){
+  starScore++;$("starArena").textContent=pick(["🌟","✨","💫","⭐","🌠"]);
+  $("starResult").textContent="Stelle raccolte: "+starScore;
+}
+function resetStars(){starScore=0;$("starResult").textContent="Stelle: 0";$("starArena").textContent="✨"}
+
+/* DRAWING */
+const dc=$("drawCanvas"),dctx=dc.getContext("2d");
+dctx.fillStyle="#fff";dctx.fillRect(0,0,dc.width,dc.height);
+let drawing=false,lastPoint=null;
+function canvasPoint(canvas,e){
+  const r=canvas.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};
+}
+dc.addEventListener("pointerdown",e=>{drawing=true;lastPoint=canvasPoint(dc,e);dc.setPointerCapture(e.pointerId)});
+dc.addEventListener("pointermove",e=>{
+  if(!drawing)return;
+  const p=canvasPoint(dc,e);dctx.strokeStyle=$("drawColor").value;dctx.lineWidth=4;dctx.lineCap="round";
+  dctx.beginPath();dctx.moveTo(lastPoint.x,lastPoint.y);dctx.lineTo(p.x,p.y);dctx.stroke();lastPoint=p;
+});
+dc.addEventListener("pointerup",()=>{drawing=false;lastPoint=null});
+dc.addEventListener("pointercancel",()=>{drawing=false;lastPoint=null});
+function clearDrawing(){dctx.clearRect(0,0,dc.width,dc.height);dctx.fillStyle="#fff";dctx.fillRect(0,0,dc.width,dc.height)}
+function downloadDrawing(){
+  const a=document.createElement("a");a.download="luceecrescita-disegno.png";a.href=dc.toDataURL("image/png");a.click();
+}
+
+/* PIXEL ART */
+const pixelGrid=$("pixelGrid");
+for(let i=0;i<144;i++){
+  const b=document.createElement("button");b.className="pixel";b.setAttribute("aria-label","Pixel "+(i+1));
+  b.onclick=()=>b.style.background=$("pixelColor").value;pixelGrid.appendChild(b);
+}
+function clearPixels(){pixelGrid.querySelectorAll(".pixel").forEach(b=>b.style.background="#21183c")}
+
+/* STORIES AND INVENTIONS */
+const characters=["una giovane esploratrice","un robot curioso","un gatto astronomo","un inventore gentile","una piccola astronauta","un drago colorato"];
+const places=["su un pianeta lontano","in una città sospesa tra le nuvole","in una foresta luminosa","sotto il mare","in una biblioteca magica","in un futuro pieno di idee"];
+const events=["scoprì una porta segreta","incontrò un amico inaspettato","inventò una macchina straordinaria","trovò una mappa misteriosa","salvò un giardino dimenticato","accese una stella addormentata"];
+function makeStory(){
+  $("storyText").value=`C'era una volta ${pick(characters)}, ${pick(places)}. Un giorno ${pick(events)}. Con coraggio, fantasia e l'aiuto dei nuovi amici, trasformò il problema in un'opportunità. Da quel momento tutti impararono che anche una piccola idea può illuminare il futuro.`;
+}
+function copyStory(){
+  const t=$("storyText");t.select();
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t.value).then(()=>alert("Storia copiata!")).catch(()=>alert("Seleziona e copia il testo."));
+  else alert("Seleziona il testo e usa Copia.");
+}
+function makeInvention(){
+  const things=["un ombrello che raccoglie l'acqua piovana","un robot che aiuta a riordinare","una lampada alimentata dal sole","un traduttore per comunicare con gli animali immaginari","un giardino verticale automatico","una bicicletta che produce energia"];
+  const powers=["che impara nuove funzioni","che si adatta alle necessità delle persone","che usa materiali riciclati","che funziona con energia rinnovabile","che aiuta a risparmiare acqua","che rende più facile studiare"];
+  $("inventionResult").textContent="Invenzione: "+pick(things)+" "+pick(powers)+". Disegna come potrebbe funzionare!";
+}
+
+/* GARDEN */
+function plantIdea(){
+  const val=$("gardenInput").value.trim();if(!val)return;
+  const item=document.createElement("p");item.textContent="🌱 "+val;
+  $("gardenList").prepend(item);$("gardenInput").value="";
+}
+
+/* LOCAL DIARY */
+function saveLight(){
+  const text=$("lightText").value.trim();if(!text)return;
+  const item=document.createElement("p");item.textContent=$("lightChoice").value+": "+text;
+  $("lightDiary").prepend(item);$("lightText").value="";
+}
+
+/* CALCULATOR */
+function calculate(){
+  const a=Number($("calcA").value),b=Number($("calcB").value),op=$("calcOp").value;
+  if($("calcA").value===""||$("calcB").value===""){$("calcResult").textContent="Inserisci entrambi i numeri.";return}
+  if(op==="/"&&b===0){$("calcResult").textContent="Non si può dividere per zero.";return}
+  const res=op==="+"?a+b:op==="-"?a-b:op==="*"?a*b:a/b;
+  $("calcResult").textContent="Risultato: "+res;
+}
+
+/* SECRET CODE */
+let secretCode="";
+function newCode(){
+  const digits=["0","1","2","3","4","5","6","7","8","9"].sort(()=>Math.random()-.5);
+  secretCode=digits.slice(0,3).join("");
+  $("codeInput").value="";$("codeResult").textContent="Ho scelto un nuovo codice.";
+}
+function tryCode(){
+  const v=$("codeInput").value.trim();
+  if(!/^\d{3}$/.test(v)||new Set(v).size!==3){$("codeResult").textContent="Inserisci tre cifre diverse.";return}
+  let exact=0,found=0;
+  for(let i=0;i<3;i++){if(v[i]===secretCode[i])exact++;else if(secretCode.includes(v[i]))found++}
+  if(exact===3)$("codeResult").textContent="🔓 Codice trovato!";
+  else $("codeResult").textContent=`Al posto giusto: ${exact}. Presenti ma in altro posto: ${found}.`;
+}
+newCode();
+
+/* MEMORY SEQUENCE */
+let memSequence=[];
+function showMemorySequence(){
+  memSequence=Array.from({length:4},()=>pick(["🌟","🚀","🌈","🪐","💎","🦋"]));
+  $("sequenceMemory").textContent=memSequence.join(" ");
+  $("sequenceMemoryInput").value="";$("sequenceMemoryResult").textContent="Osserva, poi premi di nuovo per nascondere.";
+}
+function checkMemorySequence(){
+  const val=$("sequenceMemoryInput").value.replace(/\s/g,"");
+  $("sequenceMemoryResult").textContent=val===memSequence.join("")?"Memoria eccellente! 🎉":"Non è esatta. Mostra la sequenza e riprova.";
+}
+showMemorySequence();
+
+/* RIDDLES */
+const riddles=[
+ {q:"Ha le lancette ma non cuce. Che cos'è?",a:["orologio","un orologio"]},
+ {q:"Più ne togli, più diventa grande. Che cos'è?",a:["buco","un buco"]},
+ {q:"Ha tanti denti ma non mangia. Che cos'è?",a:["pettine","un pettine"]},
+ {q:"Ti segue alla luce ma scompare al buio. Che cos'è?",a:["ombra","un'ombra","l'ombra"]},
+ {q:"Ha pagine ma non è un albero. Che cos'è?",a:["libro","un libro"]}
+];
+let currentRiddle;
+function newRiddle(){currentRiddle=pick(riddles);$("riddleText").textContent=currentRiddle.q;$("riddleInput").value="";$("riddleResult").textContent=""}
+function checkRiddle(){
+  const v=$("riddleInput").value.trim().toLowerCase();
+  $("riddleResult").textContent=currentRiddle.a.includes(v)?"Esatto! 🕵️":"Non è questa. Prova ancora!";
+}
+newRiddle();
+
+/* Stop accidental page zoom on rapid game double taps where possible. */
+</script>
+</body>
+</html>
