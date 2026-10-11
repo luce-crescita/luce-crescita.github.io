@@ -1,1 +1,691 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100b24">
+<meta name="description" content="LUCEECRESCITA X∞ 7.2: 37 giochi, avventure spaziali, sfide creative e laboratori interattivi.">
+<title>LUCEECRESCITA X∞ 7.2 · Future Play Universe</title>
+<style>
+:root{--bg:#100b24;--panel:#21183d;--gold:#f4cf78;--cyan:#70e6ed;--pink:#ed9be9;--text:#f7f3ff;--muted:#c5bbdf;--line:#4b3b70;--green:#9bf0bf}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at top,#302052,#100b24 68%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
+a{color:var(--cyan)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:1px solid #75619d;background:linear-gradient(135deg,#38285e,#241a43);color:var(--text);padding:.8rem 1rem;border-radius:13px;font-weight:750;min-height:46px}
+button:hover{border-color:var(--gold);filter:brightness(1.12)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.primary{background:linear-gradient(135deg,#f4cf78,#b88b3d);color:#1a1230;border:0}
+.wrap{width:min(1320px,96%);margin:auto}
+.hero{text-align:center;padding:2.2rem 0 1.4rem}
+.logo{font-size:clamp(2.2rem,7vw,4.5rem);font-weight:950;letter-spacing:.025em;line-height:1.1;background:linear-gradient(90deg,var(--gold),#fff,var(--cyan));color:transparent;background-clip:text}
+.eyebrow{color:var(--cyan);letter-spacing:.13em;font-size:.85rem;font-weight:850}
+.hero p{color:var(--muted);max-width:780px;margin:.8rem auto 1rem;font-size:1.08rem}
+.nav,.row,.stats,.pad{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.nav{justify-content:center;margin:1.2rem auto}
+.nav a{text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.65rem 1rem}
+.stats{justify-content:center}
+.pill{padding:.55rem .85rem;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.toolbar{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;margin:1.3rem 0}
+.search{flex:1;min-width:190px}
+.field,.search{padding:.8rem .9rem;border:1px solid var(--line);border-radius:12px;background:#100b24;color:var(--text);max-width:100%;min-height:46px}
+textarea.field{width:100%;resize:vertical}
+.section-title{margin:1.8rem 0 1rem;font-size:clamp(1.5rem,4vw,2rem)}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr));gap:1.2rem;padding-bottom:2.5rem}
+.game{background:linear-gradient(155deg,#2a204b,#181130);border:1px solid var(--line);border-radius:22px;padding:1.25rem;min-width:0;box-shadow:0 12px 28px #0003}
+.game[hidden]{display:none}
+.game h3{margin:0 0 .4rem;font-size:1.22rem}
+.desc{color:var(--muted);font-size:.98rem;margin:.3rem 0 .9rem}
+.output{background:#110c25;border:1px solid #382a5a;border-radius:14px;padding:.85rem;margin:.8rem 0;min-height:3.2rem;overflow-wrap:anywhere}
+.big{font-size:clamp(1.6rem,5vw,2.3rem);font-weight:900;color:var(--gold);margin:.6rem 0}
+.board{display:grid;gap:7px;margin:.9rem auto;max-width:440px}
+.board.three{grid-template-columns:repeat(3,1fr)}
+.board.four{grid-template-columns:repeat(4,1fr)}
+.board.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.cell{min-width:0;aspect-ratio:1;padding:0;font-size:clamp(1.2rem,4vw,1.8rem);border-radius:12px}
+.memory-card{min-height:65px;font-size:1.8rem}
+canvas{display:block;width:100%;height:auto;background:#090718;border:1px solid #59427d;border-radius:16px;touch-action:none;user-select:none}
+.game-canvas{width:100%;margin:.8rem auto}
+.game-canvas canvas{max-width:720px;margin:auto}
+.pad{justify-content:center;margin:.7rem 0}
+.pad button{flex:1;min-width:65px}
+.small{font-size:.88rem;color:var(--muted)}
+#mazeBoard{max-width:390px}
+#hangLetters button{min-width:39px;padding:.5rem}
+#simonPads button,#rhythmPads button{flex:1;min-height:65px;font-size:1.4rem}
+#toast{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);background:var(--gold);color:#1a1230;padding:.8rem 1.1rem;border-radius:14px;font-weight:850;z-index:20;display:none;max-width:92vw}
+.footer{border-top:1px solid var(--line);padding:1.7rem 0 2rem;color:var(--muted);font-size:.9rem;text-align:center}
+.footer p{margin:.4rem}
+@media(min-width:1000px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.game{padding:1.5rem}}
+@media(max-width:520px){.hero{padding-top:1.4rem}.game{padding:1rem}.toolbar{align-items:stretch}.logo{letter-spacing:0}.nav a{padding:.55rem .7rem}.game-grid{grid-template-columns:1fr}.memory-card{min-height:55px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero wrap" id="home">
+<div class="eyebrow">FUTURE PLAY UNIVERSE · VERSIONE 7.2</div>
+<div class="logo">LUCEECRESCITA X∞</div>
+<p>Immagina, crea, scopri. 37 giochi, nuove avventure e laboratori per allenare fantasia, curiosità, logica e riflessi.</p>
+<nav class="nav" aria-label="Navigazione">
+<a href="#home">Home</a>
+<a href="#giochi">Tutti i giochi</a>
+<a href="#nuove-avventure">Nuove avventure</a>
+<a href="#crea">Laboratori creativi</a>
+<a href="#sette-luci">7 Luci</a>
+<a href="https://luce-crescita.github.io/">Sito principale</a>
+</nav>
+<div class="stats"><span class="pill">🎮 37 attività</span><span class="pill">📱 Campi più grandi</span><span class="pill">💾 Salvataggi locali</span></div>
+</header>
+
+<main class="wrap" id="giochi">
+<div class="toolbar">
+<input class="search" id="search" type="search" placeholder="Cerca un gioco…" aria-label="Cerca un gioco">
+<span class="pill" id="visibleCount">37 giochi visibili</span>
+<span class="pill">Punti: <b id="totalScore">0</b></span>
+</div>
+<h2 class="section-title">✨ Scegli la tua avventura</h2>
+<div class="game-grid">
+
+<section class="game" data-tags="memory memoria stelle carte coppie">
+<h3>🌟 1. Memory delle stelle</h3><p class="desc">Trova tutte le coppie di simboli.</p>
+<div id="memoryBoard" class="board four"></div><button onclick="newMemory()">Nuova partita</button><div class="output" id="memoryStatus">Coppie: 0/8</div>
+</section>
+
+<section class="game" data-tags="numero misterioso indovina">
+<h3>🔢 2. Numero misterioso</h3><p class="desc">Indovina il numero da 1 a 100.</p>
+<div class="row"><input id="guessInput" class="field" type="number" min="1" max="100" placeholder="Il tuo numero"><button class="primary" onclick="guessNumber()">Prova</button><button onclick="newGuess()">Ricomincia</button></div><div class="output" id="guessStatus"></div>
+</section>
+
+<section class="game" data-tags="tris tic tac toe strategia">
+<h3>⭕ 3. Tris galattico</h3><p class="desc">Allinea tre simboli: tu sei ✕, il computer è ○.</p>
+<div id="ticBoard" class="board three"></div><button onclick="newTic()">Nuova partita</button><div class="output" id="ticStatus"></div>
+</section>
+
+<section class="game" data-tags="sasso carta forbici sfida">
+<h3>✊ 4. Sasso, carta e forbici</h3><p class="desc">Sfida il computer.</p>
+<div class="row"><button onclick="rps('sasso')">✊ Sasso</button><button onclick="rps('carta')">✋ Carta</button><button onclick="rps('forbici')">✌️ Forbici</button></div><div class="output" id="rpsStatus">Pronto?</div>
+</section>
+
+<section class="game" data-tags="matematica calcolo quiz">
+<h3>🧠 5. Sfida matematica</h3><p class="desc">Risolvi il calcolo.</p>
+<div class="big" id="mathQuestion"></div><div class="row"><input class="field" id="mathAnswer" type="number" placeholder="Risposta"><button class="primary" onclick="checkMath()">Rispondi</button><button onclick="newMath()">Altro</button></div><div class="output" id="mathStatus"></div>
+</section>
+
+<section class="game" data-tags="quiz curiosità cultura conoscenza">
+<h3>🌍 6. Quiz delle meraviglie</h3><p class="desc">Una domanda curiosa alla volta.</p>
+<div id="quizQuestion" class="output"></div><div id="quizOptions" class="row"></div><div class="output" id="quizStatus"></div><button onclick="newQuiz()">Altra domanda</button>
+</section>
+
+<section class="game" data-tags="reazione riflessi velocità">
+<h3>⚡ 7. Riflessi lampo</h3><p class="desc">Aspetta il verde e poi tocca il pulsante.</p>
+<button class="primary" id="reactionButton" onclick="reactionClick()">Avvia prova</button><div class="output" id="reactionStatus">Non toccare prima del verde!</div>
+</section>
+
+<section class="game" data-tags="bersaglio mira target precisione">
+<h3>🎯 8. Colpisci il bersaglio</h3><p class="desc">Tocca il bersaglio nel campo.</p>
+<div class="game-canvas"><canvas id="targetCanvas" width="640" height="340"></canvas></div><button onclick="startTarget()">Avvia / ricomincia</button><div class="output" id="targetStatus">Punti: 0</div>
+</section>
+
+<section class="game" data-tags="parole anagramma lettere puzzle">
+<h3>🔤 9. Parola scompigliata</h3><p class="desc">Riordina le lettere.</p>
+<div class="big" id="scrambleWord"></div><div class="row"><input class="field" id="scrambleInput" placeholder="Scrivi la parola"><button class="primary" onclick="checkScramble()">Controlla</button><button onclick="newScramble()">Altra</button></div><div class="output" id="scrambleStatus"></div>
+</section>
+
+<section class="game" data-tags="colori memoria colore">
+<h3>🎨 10. Indovina il colore</h3><p class="desc">Trova il nome del colore mostrato.</p>
+<div id="colorSwatch" style="height:100px;border-radius:15px;border:1px solid #ffffff44;margin:.7rem 0"></div><div id="colorOptions" class="row"></div><div class="output" id="colorStatus"></div><button onclick="newColor()">Nuovo colore</button>
+</section>
+
+<section class="game" data-tags="sequenza numeri logica">
+<h3>🔮 11. Sequenza logica</h3><p class="desc">Completa la sequenza.</p>
+<div class="big" id="sequenceQuestion"></div><div class="row"><input class="field" id="sequenceInput" type="number" placeholder="Numero"><button class="primary" onclick="checkSequence()">Controlla</button><button onclick="newSequence()">Nuova</button></div><div class="output" id="sequenceStatus"></div>
+</section>
+
+<section class="game" data-tags="ruota idee creatività casuale">
+<h3>🎡 12. Ruota delle idee</h3><p class="desc">Estrai uno spunto creativo.</p>
+<div class="big" id="ideaWheel">✨</div><button class="primary" onclick="spinIdea()">Gira la ruota</button><div class="output" id="ideaStatus">Quale idea nascerà?</div>
+</section>
+
+<section class="game" data-tags="aereo aeroplano volo arcade ostacoli">
+<h3>✈️ 13. Volo tra le nuvole PRO</h3>
+<p class="desc">L'aereo avanza continuamente! Evita gli ostacoli, raccogli stelle e prova a superare il tuo record. Trascina il dito sul campo o usa i comandi.</p>
+<div class="game-canvas"><canvas id="planeCanvas" width="840" height="420"></canvas></div>
+<div class="pad"><button onclick="planeMove(-1)">⬆️ Sali</button><button class="primary" onclick="planeStart()">▶ Avvia</button><button onclick="planeMove(1)">⬇️ Scendi</button><button onclick="planeReset()">↻ Ricomincia</button></div><div class="output" id="planeStatus">Premi Avvia per decollare.</div>
+</section>
+
+<section class="game" data-tags="pong pallina racchetta arcade">
+<h3>🏓 14. Pong spaziale</h3><p class="desc">Difendi la porta con la racchetta. Usa il dito o i pulsanti.</p>
+<div class="game-canvas"><canvas id="pongCanvas" width="640" height="380"></canvas></div>
+<div class="pad"><button onclick="pongMove(-1)">⬆️ Su</button><button class="primary" onclick="pongStart()">▶ Avvia</button><button onclick="pongMove(1)">⬇️ Giù</button><button onclick="pongReset()">↻ Reset</button></div><div class="output" id="pongStatus">Punti: 0 · Premi Avvia.</div>
+</section>
+
+<section class="game" data-tags="labirinto maze percorso">
+<h3>🌀 15. Labirinto luminoso</h3><p class="desc">Porta il punto blu all'uscita verde.</p>
+<div id="mazeBoard" class="board four"></div><div class="pad"><button onclick="mazeMove(-1,0)">⬅️</button><button onclick="mazeMove(0,-1)">⬆️</button><button onclick="mazeMove(0,1)">⬇️</button><button onclick="mazeMove(1,0)">➡️</button><button onclick="newMaze()">Nuovo</button></div><div class="output" id="mazeStatus"></div>
+</section>
+
+<section class="game" data-tags="stelle raccogli arcade catch">
+<h3>🌠 16. Cattura le stelle</h3><p class="desc">Muovi il cestino e raccogli le stelle cadenti.</p>
+<div class="game-canvas"><canvas id="starsCanvas" width="640" height="340"></canvas></div><div class="pad"><button onclick="starsMove(-1)">⬅️ Sinistra</button><button class="primary" onclick="starsStart()">▶ Avvia</button><button onclick="starsMove(1)">Destra ➡️</button><button onclick="starsReset()">↻ Reset</button></div><div class="output" id="starsStatus">Punti: 0</div>
+</section>
+
+<section class="game" data-tags="disegno pennello arte canvas">
+<h3>🖌️ 17. Disegna la tua luce</h3><p class="desc">Disegna con dito o mouse e salva sul dispositivo.</p>
+<div class="row"><input type="color" id="drawColor" value="#70e6ed" class="field" aria-label="Colore pennello"><button onclick="clearDraw()">Cancella</button><button onclick="saveCanvas('drawCanvas','disegno-luceecrescita.png')">Salva PNG</button></div><div class="game-canvas"><canvas id="drawCanvas" width="840" height="480"></canvas></div>
+</section>
+
+<section class="game" data-tags="pixel art mosaico disegno">
+<h3>🟪 18. Pixel art</h3><p class="desc">Colora i quadratini per creare un'immagine.</p>
+<div class="row"><input type="color" id="pixelColor" value="#ed9be9" class="field" aria-label="Colore pixel"><button onclick="clearPixels()">Svuota</button><button onclick="saveCanvas('pixelCanvas','pixel-art-luceecrescita.png')">Salva PNG</button></div><div class="game-canvas"><canvas id="pixelCanvas" width="480" height="480"></canvas></div>
+</section>
+
+<section class="game" data-tags="storia magica scrittura fantasia">
+<h3>📚 19. Inventastorie</h3><p class="desc">Combina gli spunti e inventa una storia.</p>
+<button class="primary" onclick="makeStory()">Crea uno spunto</button><div class="output" id="storyOutput">C'era una volta…</div><textarea class="field" id="storyText" rows="4" placeholder="Scrivi qui la tua storia…"></textarea><button onclick="saveText('storyText','La mia storia')">Salva nel diario</button>
+</section>
+
+<section class="game" data-tags="invenzioni progetto creatività inventore">
+<h3>💡 20. Officina delle invenzioni</h3><p class="desc">Progetta un'invenzione che risolva un problema.</p>
+<button class="primary" onclick="newInvention()">Dammi una missione</button><div class="output" id="inventionOutput">La tua prossima invenzione ti aspetta.</div><textarea class="field" id="inventionText" rows="4" placeholder="Nome, funzione e materiali…"></textarea><button onclick="saveText('inventionText','Invenzione')">Salva nel diario</button>
+</section>
+
+<section class="game" id="crea" data-tags="giardino idee creatività pensieri">
+<h3>🌱 21. Giardino delle idee</h3><p class="desc">Coltiva un pensiero gentile o un'idea.</p>
+<textarea class="field" id="gardenText" rows="3" placeholder="Oggi voglio far crescere…"></textarea><div class="row"><button class="primary" onclick="plantIdea()">Pianta un'idea</button><button onclick="clearGarden()">Svuota giardino</button></div><ul id="gardenList"></ul>
+</section>
+
+<section class="game" id="sette-luci" data-tags="7 luci diario emozioni gentilezza">
+<h3>✨ 22. Le 7 Luci</h3><p class="desc">Scegli una luce e scrivi un piccolo passo positivo.</p>
+<select id="lightSelect" class="field"><option>Curiosità</option><option>Coraggio</option><option>Gentilezza</option><option>Creatività</option><option>Gratitudine</option><option>Pazienza</option><option>Speranza</option></select><textarea id="lightText" class="field" rows="3" style="margin-top:.5rem" placeholder="Il mio piccolo passo di oggi…"></textarea><button class="primary" onclick="saveLight()">Salva la mia luce</button><div class="output" id="lightStatus">Ogni piccolo passo conta.</div>
+</section>
+
+<section class="game" data-tags="calcolatrice calcolo">
+<h3>🧮 23. Calcolatrice</h3><p class="desc">Esegui operazioni semplici.</p>
+<div class="row"><input id="calcA" class="field" type="number" placeholder="Primo numero"><select id="calcOp" class="field"><option>+</option><option>−</option><option>×</option><option>÷</option></select><input id="calcB" class="field" type="number" placeholder="Secondo numero"></div><button class="primary" onclick="calculate()">Calcola</button><div class="output" id="calcStatus">Risultato: —</div>
+</section>
+
+<section class="game" data-tags="codice segreto cifrario lettere">
+<h3>🔐 24. Codice segreto</h3><p class="desc">Codifica o decodifica un messaggio con un semplice cifrario.</p>
+<input id="codeInput" class="field" style="width:100%" placeholder="Scrivi il messaggio"><div class="row"><button class="primary" onclick="encodeText()">Codifica</button><button onclick="decodeText()">Decodifica</button></div><div class="output" id="codeOutput">Il messaggio apparirà qui.</div>
+</section>
+
+<section class="game" data-tags="memoria sequenza colori simon">
+<h3>🎵 25. Eco dei colori</h3><p class="desc">Osserva la sequenza luminosa e ripetila nello stesso ordine.</p>
+<div class="row" id="simonPads"><button style="background:#a93c5c" onclick="simonInput(0)">🟥</button><button style="background:#287c65" onclick="simonInput(1)">🟩</button><button style="background:#345ab1" onclick="simonInput(2)">🟦</button><button style="background:#b58a28" onclick="simonInput(3)">🟨</button></div><div class="row"><button class="primary" onclick="simonStart()">▶ Nuova sequenza</button><span id="simonStatus" class="small">Livello: 0</span></div>
+</section>
+
+<section class="game" data-tags="indovinelli enigmi logica">
+<h3>❓ 26. Indovinello lampo</h3><p class="desc">Ragiona e trova la risposta.</p>
+<div id="riddleQuestion" class="output"></div><div class="row"><input id="riddleInput" class="field" placeholder="La tua risposta"><button class="primary" onclick="checkRiddle()">Rispondi</button><button onclick="newRiddle()">Altro</button></div><div id="riddleStatus" class="output"></div>
+</section>
+
+<section class="game" data-tags="snake serpente arcade">
+<h3>🐍 27. Snake</h3><p class="desc">Raccogli i punti senza urtare i bordi o la coda.</p>
+<div class="game-canvas"><canvas id="snakeCanvas" width="480" height="480"></canvas></div><div class="pad"><button onclick="snakeTurn(0,-1)">⬆️</button><button onclick="snakeTurn(-1,0)">⬅️</button><button onclick="snakeTurn(1,0)">➡️</button><button onclick="snakeTurn(0,1)">⬇️</button><button class="primary" onclick="snakeStart()">▶ Avvia</button><button onclick="snakeReset()">↻ Reset</button></div><div class="output" id="snakeStatus">Punti: 0 · Premi Avvia.</div>
+</section>
+
+<section class="game" data-tags="breakout mattoncini pallina arcade">
+<h3>🧱 28. Rompi-mattoni</h3><p class="desc">Muovi la racchetta e rompi tutti i mattoni.</p>
+<div class="game-canvas"><canvas id="breakCanvas" width="640" height="420"></canvas></div><div class="pad"><button onclick="breakMove(-1)">⬅️</button><button class="primary" onclick="breakStart()">▶ Avvia</button><button onclick="breakMove(1)">➡️</button><button onclick="breakReset()">↻ Reset</button></div><div class="output" id="breakStatus">Pronto! Premi Avvia.</div>
+</section>
+
+<section class="game" data-tags="parola lettere indovina vocabolario">
+<h3>📝 29. Indovina la parola</h3><p class="desc">Scopri la parola scegliendo le lettere. Hai 7 errori disponibili.</p>
+<div class="big" id="hangWord">_ _ _ _</div><div class="row" id="hangLetters"></div><div class="output" id="hangStatus">Scegli una lettera.</div><button onclick="newHang()">Nuova parola</button>
+</section>
+
+<section class="game" data-tags="puzzle numeri quindici logica">
+<h3>🔳 30. Puzzle numerico</h3><p class="desc">Ordina i numeri da 1 a 15 spostando la casella vuota.</p>
+<div id="puzzleBoard" class="board four"></div><div class="row"><button onclick="newPuzzle()">Mescola</button><span id="puzzleStatus" class="small">Mosse: 0</span></div>
+</section>
+
+<section class="game" data-tags="memoria flash sequenza numeri">
+<h3>🧩 31. Sequenza di memoria</h3><p class="desc">Memorizza la sequenza e poi riscrivila.</p>
+<div class="big" id="numberSequence">● ● ●</div><div class="row"><button class="primary" onclick="showNumberSequence()">Mostra sequenza</button><input id="numberSequenceInput" class="field" placeholder="es. 3 1 4 2"><button onclick="checkNumberSequence()">Verifica</button></div><div class="output" id="numberSequenceStatus">Pronto?</div>
+</section>
+
+<div id="nuove-avventure"></div>
+
+<section class="game" data-tags="galassia spazio razzo pianeti missione">
+<h3>🚀 32. Missione Galassia</h3><p class="desc">Pilota la navicella, raccogli cristalli e schiva gli asteroidi in un viaggio spaziale.</p>
+<div class="game-canvas"><canvas id="spaceCanvas" width="840" height="420"></canvas></div>
+<div class="pad"><button onclick="spaceMove(-1)">⬆️ Su</button><button onclick="spaceStart()" class="primary">▶ Decolla</button><button onclick="spaceMove(1)">⬇️ Giù</button><button onclick="spaceReset()">↻ Nuova missione</button></div><div class="output" id="spaceStatus">Pronto al decollo!</div>
+</section>
+
+<section class="game" data-tags="cristalli labirinto portali puzzle avventura">
+<h3>🔮 33. Labirinto dei cristalli</h3><p class="desc">Raggiungi il cristallo finale evitando i muri. Usa i pulsanti per esplorare la mappa.</p>
+<div id="crystalBoard" class="board five"></div><div class="pad"><button onclick="crystalMove(-1,0)">⬅️</button><button onclick="crystalMove(0,-1)">⬆️</button><button onclick="crystalMove(0,1)">⬇️</button><button onclick="crystalMove(1,0)">➡️</button><button onclick="crystalNew()">Nuovo livello</button></div><div class="output" id="crystalStatus">Trova il cristallo!</div>
+</section>
+
+<section class="game" data-tags="robot inventore costruzione creatività">
+<h3>🤖 34. Robot Inventore</h3><p class="desc">Combina parti e idee per progettare un robot con una missione speciale.</p>
+<div class="big" id="robotFace">🤖</div><div class="row"><select id="robotBody" class="field"><option value="🤖">Robot esploratore</option><option value="🦾">Robot aiutante</option><option value="🛸">Robot volante</option><option value="🦿">Robot camminatore</option></select><select id="robotPower" class="field"><option>Raccogliere energia solare</option><option>Aiutare a riciclare</option><option>Esplorare pianeti</option><option>Coltivare un giardino</option><option>Aiutare gli animali</option></select></div><textarea id="robotIdea" class="field" rows="3" placeholder="Dai un nome al tuo robot e descrivi cosa farà…"></textarea><button class="primary" onclick="buildRobot()">Costruisci il robot</button><button onclick="saveText('robotIdea','Progetto Robot')">Salva nel diario</button><div class="output" id="robotStatus">Il tuo laboratorio è pronto.</div>
+</section>
+
+<section class="game" data-tags="oceano mare pesci perle subacqueo">
+<h3>🌊 35. Oceano delle meraviglie</h3><p class="desc">Muovi il sub, raccogli perle luminose e scopri i tesori del mare.</p>
+<div class="game-canvas"><canvas id="oceanCanvas" width="840" height="420"></canvas></div>
+<div class="pad"><button onclick="oceanMove(-1)">⬆️ Su</button><button class="primary" onclick="oceanStart()">▶ Immergiti</button><button onclick="oceanMove(1)">⬇️ Giù</button><button onclick="oceanReset()">↻ Ricomincia</button></div><div class="output" id="oceanStatus">Il mare ti aspetta!</div>
+</section>
+
+<section class="game" data-tags="ritmo memoria neon sequenza musica">
+<h3>⚡ 36. Ritmo X∞</h3><p class="desc">Memorizza la sequenza luminosa e ripetila senza sbagliare. Ogni livello aggiunge una nuova sfida.</p>
+<div class="row" id="rhythmPads"><button style="background:#b23d68" onclick="rhythmInput(0)">🔴</button><button style="background:#238b71" onclick="rhythmInput(1)">🟢</button><button style="background:#365fce" onclick="rhythmInput(2)">🔵</button><button style="background:#bd922d" onclick="rhythmInput(3)">🟡</button></div><div class="row"><button class="primary" onclick="rhythmStart()">▶ Nuova sfida</button><span id="rhythmLevel" class="small">Livello: 0</span></div><div class="output" id="rhythmStatus">Pronto a seguire il ritmo?</div>
+</section>
+
+<section class="game" data-tags="sfida x infinito riflessi stelle velocità">
+<h3>🌌 37. Sfida X∞</h3><p class="desc">Tocca il nucleo luminoso prima che cambi posizione. Hai 30 secondi: quanti punti riesci a ottenere?</p>
+<div class="game-canvas"><canvas id="challengeCanvas" width="840" height="420"></canvas></div><div class="row"><button class="primary" onclick="challengeStart()">▶ Inizia la sfida</button><button onclick="challengeReset()">↻ Reset</button></div><div class="output" id="challengeStatus">Pronto? Avvia la sfida!</div>
+</section>
+
+</div>
+</main>
+
+<footer class="footer"><div class="wrap">
+<p><a href="https://luce-crescita.github.io/">← Torna a luceecrescita</a></p>
+<p>LUCEECRESCITA X∞ · Immagina, crea, scopri.</p>
+<p>© <span id="year"></span> Antonello Salvatore Mastropaolo · Diritti riservati.</p>
+<p>È vietata la ripubblicazione o l'utilizzazione commerciale non autorizzata dei contenuti originali.</p>
+</div></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const rand=n=>Math.floor(Math.random()*n);
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){let j=rand(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+let totalScore=0;
+try{totalScore=Number(localStorage.getItem("lx_score")||0)}catch(e){}
+$("totalScore").textContent=totalScore;
+$("year").textContent=new Date().getFullYear();
+let toastTimer;
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display="none",2300)}
+function points(n=1){totalScore+=n;$("totalScore").textContent=totalScore;try{localStorage.setItem("lx_score",String(totalScore))}catch(e){}}
+$("search").addEventListener("input",()=>{const q=$("search").value.toLowerCase().trim();let n=0;document.querySelectorAll(".game").forEach(g=>{const show=!q||(g.textContent+" "+g.dataset.tags).toLowerCase().includes(q);g.hidden=!show;if(show)n++});$("visibleCount").textContent=n+" giochi visibili"});
+
+/* 1 Memory */
+let memDeck=[],memOpen=[],memFound=new Set(),memLock=false,memMoves=0,memTimer;
+function newMemory(){clearTimeout(memTimer);memDeck=shuffle(["🌟","🌙","🚀","🌈","🪐","💎","🦋","🌻","🌟","🌙","🚀","🌈","🪐","💎","🦋","🌻"]);memOpen=[];memFound=new Set();memLock=false;memMoves=0;renderMemory();$("memoryStatus").textContent="Coppie: 0/8"}
+function renderMemory(){$("memoryBoard").innerHTML="";memDeck.forEach((v,i)=>{const b=document.createElement("button");b.className="cell memory-card";b.textContent=memFound.has(i)||memOpen.includes(i)?v:"✦";b.disabled=memFound.has(i)||memLock;b.onclick=()=>flipMemory(i);$("memoryBoard").appendChild(b)})}
+function flipMemory(i){if(memLock||memFound.has(i)||memOpen.includes(i))return;memOpen.push(i);renderMemory();if(memOpen.length===2){memMoves++;if(memDeck[memOpen[0]]===memDeck[memOpen[1]]){memOpen.forEach(x=>memFound.add(x));memOpen=[];points(2);$("memoryStatus").textContent="Coppie: "+memFound.size/2+"/8 · Mosse: "+memMoves;renderMemory();if(memFound.size===16){$("memoryStatus").textContent="Hai trovato tutte le coppie!";points(5)}}else{memLock=true;memTimer=setTimeout(()=>{memOpen=[];memLock=false;renderMemory();$("memoryStatus").textContent="Coppie: "+memFound.size/2+"/8 · Mosse: "+memMoves},650)}}}
+newMemory();
+
+/* 2 Numero misterioso */
+let secret=0;
+function newGuess(){secret=rand(100)+1;$("guessInput").value="";$("guessStatus").textContent="Numero scelto: prova da 1 a 100."}
+function guessNumber(){const n=Number($("guessInput").value);if(!Number.isInteger(n)||n<1||n>100){$("guessStatus").textContent="Inserisci un numero intero da 1 a 100.";return}if(n===secret){$("guessStatus").textContent="🎉 Esatto! Hai trovato il numero.";points(3);newGuess()}else $("guessStatus").textContent=n<secret?"Troppo basso: prova più in alto!":"Troppo alto: prova più in basso!"}
+newGuess();
+
+/* 3 Tris */
+let tic=["","","","","","","","",""],ticDone=false;
+const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function newTic(){tic=["","","","","","","","",""];ticDone=false;renderTic();$("ticStatus").textContent="Tocca una casella."}
+function renderTic(){$("ticBoard").innerHTML="";tic.forEach((v,i)=>{const b=document.createElement("button");b.className="cell";b.textContent=v;b.disabled=!!v||ticDone;b.onclick=()=>ticPlay(i);$("ticBoard").appendChild(b)})}
+function ticWinner(){return wins.find(line=>tic[line[0]]&&tic[line[0]]===tic[line[1]]&&tic[line[1]]===tic[line[2]])}
+function ticPlay(i){if(ticDone||tic[i])return;tic[i]="✕";if(ticWinner()){ticDone=true;$("ticStatus").textContent="Hai vinto!";points(3)}else if(tic.every(Boolean)){ticDone=true;$("ticStatus").textContent="Pareggio!"}else{let choices=tic.map((v,j)=>v?null:j).filter(v=>v!==null);let move=choices.find(j=>wins.some(line=>line.includes(j)&&line.filter(k=>tic[k]==="○").length===2&&line.filter(k=>!tic[k]).length===1));if(move===undefined)move=choices.find(j=>wins.some(line=>line.includes(j)&&line.filter(k=>tic[k]==="✕").length===2&&line.filter(k=>!tic[k]).length===1));if(move===undefined)move=choices.includes(4)?4:choices[rand(choices.length)];tic[move]="○";if(ticWinner()){ticDone=true;$("ticStatus").textContent="Il computer ha vinto."}else if(tic.every(Boolean)){ticDone=true;$("ticStatus").textContent="Pareggio!"}}renderTic()}
+newTic();
+
+/* 4 Sasso carta forbici */
+function rps(p){const c=["sasso","carta","forbici"][rand(3)];const msg=p===c?"Pareggio!":({sasso:"forbici",carta:"sasso",forbici:"carta"}[p]===c?"Hai vinto!":"Questa volta vince il computer.");$("rpsStatus").textContent="Tu: "+p+" · Computer: "+c+" — "+msg;if(msg.startsWith("Hai"))points(2)}
+
+/* 5 Matematica */
+let mathVal=12;
+function newMath(){const a=rand(12)+1,b=rand(12)+1,op=["+","−","×"][rand(3)];mathVal=op==="+"?a+b:op==="−"?a-b:a*b;$("mathQuestion").textContent=`${a} ${op} ${b} = ?`;$("mathAnswer").value="";$("mathStatus").textContent="Quanto fa?"}
+function checkMath(){if($("mathAnswer").value==="")return;if(Number($("mathAnswer").value)===mathVal){$("mathStatus").textContent="Corretto! 🧠";points(2);newMath()}else $("mathStatus").textContent="Riprova, ce la puoi fare!"}
+newMath();
+
+/* 6 Quiz */
+const quizzes=[["Quale pianeta è famoso per i suoi anelli?","Saturno",["Marte","Saturno","Venere"]],["Quanti lati ha un esagono?","6",["5","6","8"]],["Quale animale si trasforma da bruco?","Farfalla",["Farfalla","Delfino","Aquila"]],["Quale stella illumina la Terra di giorno?","Il Sole",["Sirio","La Luna","Il Sole"]],["Quanti minuti ci sono in un'ora?","60",["30","60","100"]],["Quale oceano è il più grande?","Pacifico",["Indiano","Atlantico","Pacifico"]]];
+function newQuiz(){const q=quizzes[rand(quizzes.length)];$("quizQuestion").textContent=q[0];$("quizOptions").innerHTML="";shuffle([...q[2]]).forEach(v=>{const b=document.createElement("button");b.textContent=v;b.onclick=()=>{if(v===q[1]){$("quizStatus").textContent="Esatto! 🎉";points(2)}else $("quizStatus").textContent="La risposta corretta è "+q[1]+".";[...$("quizOptions").children].forEach(x=>x.disabled=true)};$("quizOptions").appendChild(b)});$("quizStatus").textContent="Scegli una risposta."}
+newQuiz();
+
+/* 7 Riflessi */
+let reactState="idle",reactTimer=null,reactStart=0;
+function reactionClick(){if(reactState==="idle"||reactState==="done"){reactState="wait";$("reactionButton").textContent="Aspetta il verde…";$("reactionButton").style.background="#5b2349";$("reactionStatus").textContent="Preparati… non toccare ancora!";clearTimeout(reactTimer);reactTimer=setTimeout(()=>{if(reactState==="wait"){reactState="go";reactStart=performance.now();$("reactionButton").textContent="TOCCA ORA!";$("reactionButton").style.background="#237c59";$("reactionStatus").textContent="Adesso!"}},1000+rand(2500))}else if(reactState==="wait"){$("reactionStatus").textContent="Troppo presto! Premi per riprovare.";clearTimeout(reactTimer);reactState="done";$("reactionButton").textContent="Riprova"}else if(reactState==="go"){const ms=Math.round(performance.now()-reactStart);$("reactionStatus").textContent="Tempo di reazione: "+ms+" ms";if(ms<450)points(2);reactState="done";$("reactionButton").textContent="Nuova prova";$("reactionButton").style.background=""}}
+
+/* 8 Bersaglio */
+const tc=$("targetCanvas"),tx=tc.getContext("2d");let target={x:320,y:170,r:30,score:0,active:false};
+function drawTarget(){tx.clearRect(0,0,tc.width,tc.height);tx.fillStyle="#0e0920";tx.fillRect(0,0,tc.width,tc.height);for(let i=0;i<25;i++){tx.fillStyle="#c7c3ed";tx.fillRect((i*73+25)%tc.width,(i*47+18)%tc.height,3,3)}if(target.active){["#ed9be9","#fff","#70e6ed","#f4cf78"].forEach((c,i)=>{tx.beginPath();tx.arc(target.x,target.y,target.r*(1-i*.24),0,Math.PI*2);tx.fillStyle=c;tx.fill()})}}
+function moveTarget(){target.x=target.r+rand(tc.width-target.r*2);target.y=target.r+rand(tc.height-target.r*2);drawTarget()}
+function startTarget(){target.score=0;target.active=true;moveTarget();$("targetStatus").textContent="Punti: 0 · Tocca il bersaglio"}
+tc.addEventListener("pointerdown",e=>{if(!target.active)return;const r=tc.getBoundingClientRect(),x=(e.clientX-r.left)*tc.width/r.width,y=(e.clientY-r.top)*tc.height/r.height;if(Math.hypot(x-target.x,y-target.y)<target.r){target.score++;points(1);$("targetStatus").textContent="Punti: "+target.score;moveTarget()}});
+drawTarget();
+
+/* 9 Parola scompigliata */
+const words=["LUCE","STELLA","FUTURO","SORRISO","AMICIZIA","NUVOLA","SPERANZA","CRESCITA","FANTASIA","ARCOBALENO"];let scrambleAnswer="";
+function newScramble(){scrambleAnswer=words[rand(words.length)];let s=scrambleAnswer.split("");for(let i=0;i<12&&s.join("")===scrambleAnswer;i++)shuffle(s);$("scrambleWord").textContent=s.join(" · ");$("scrambleInput").value="";$("scrambleStatus").textContent="Qual è la parola originale?"}
+function checkScramble(){if($("scrambleInput").value.trim().toUpperCase()===scrambleAnswer){$("scrambleStatus").textContent="Bravissimo/a!";points(2);newScramble()}else $("scrambleStatus").textContent="Non ancora: riordina le lettere."}
+newScramble();
+
+/* 10 Colori */
+const colors=[["rosso","#e74c3c"],["blu","#3498db"],["verde","#2ecc71"],["giallo","#f1c40f"],["viola","#9b59b6"],["arancione","#e67e22"],["rosa","#ff78b9"],["turchese","#25c8c8"]];let colorAnswer="";
+function newColor(){colorAnswer=colors[rand(colors.length)][0];$("colorSwatch").style.background=colors.find(x=>x[0]===colorAnswer)[1];$("colorOptions").innerHTML="";shuffle([...colors]).slice(0,4).forEach(c=>{const b=document.createElement("button");b.textContent=c[0];b.onclick=()=>{if(c[0]===colorAnswer){$("colorStatus").textContent="Esatto!";points(1)}else $("colorStatus").textContent="Il colore è "+colorAnswer+".";[...$("colorOptions").children].forEach(x=>x.disabled=true)};$("colorOptions").appendChild(b)});$("colorStatus").textContent="Scegli il nome del colore."}
+newColor();
+
+/* 11 Sequenza */
+let seqAnswer=0;
+function newSequence(){const start=rand(8)+1,step=rand(5)+2;seqAnswer=start+step*3;$("sequenceQuestion").textContent=[start,start+step,start+2*step,"?"].join(" · ");$("sequenceInput").value="";$("sequenceStatus").textContent="Qual è il passo successivo?"}
+function checkSequence(){if($("sequenceInput").value!==""&&Number($("sequenceInput").value)===seqAnswer){$("sequenceStatus").textContent="Giusto!";points(2);newSequence()}else $("sequenceStatus").textContent="Prova a capire di quanto aumenta ogni numero."}
+newSequence();
+
+/* 12 Ruota idee */
+const ideas=["Disegna una città galleggiante.","Inventa un robot gentile.","Scrivi una storia ambientata su Marte.","Crea un regalo fatto a mano.","Immagina una scuola del futuro.","Disegna un animale mai visto.","Trova tre modi per riutilizzare un oggetto.","Scrivi una frase gentile.","Progetta un parco luminoso.","Inventa un gioco da fare in famiglia."];
+function spinIdea(){$("ideaWheel").textContent=["✨","🌟","💡","🎨","🚀"][rand(5)];$("ideaStatus").textContent=ideas[rand(ideas.length)];points(1)}
+
+/* 13 Volo tra le nuvole PRO: scrolling continuo, collisioni e riavvio pulito */
+const planeCanvas=$("planeCanvas"),pl=planeCanvas.getContext("2d");
+let plane;
+function planeReset(){
+ if(plane?.raf)cancelAnimationFrame(plane.raf);
+ plane={y:210,x:135,score:0,stars:0,obstacles:[],running:false,crashed:false,last:0,spawn:0,raf:0};
+ drawPlane();
+ $("planeStatus").textContent="Premi Avvia per decollare.";
+}
+function planeStart(){
+ if(plane.running)return;
+ if(plane.crashed)planeReset();
+ plane.running=true;plane.last=0;
+ plane.raf=requestAnimationFrame(planeTick);
+ $("planeStatus").textContent="In volo! Il paesaggio scorre continuamente.";
+}
+function planeMove(d){plane.y=Math.max(35,Math.min(385,plane.y+d*28));if(!plane.running)drawPlane()}
+function planePosition(e){const r=planeCanvas.getBoundingClientRect();plane.y=Math.max(30,Math.min(390,(e.clientY-r.top)*planeCanvas.height/r.height))}
+planeCanvas.addEventListener("pointerdown",e=>{if(plane.running){planeCanvas.setPointerCapture?.(e.pointerId);planePosition(e);drawPlane()}});
+planeCanvas.addEventListener("pointermove",e=>{if(plane.running&&e.buttons!==0){planePosition(e);drawPlane()}});
+function drawPlane(){
+ const w=planeCanvas.width,h=planeCanvas.height;
+ pl.clearRect(0,0,w,h);
+ const sky=pl.createLinearGradient(0,0,0,h);
+ sky.addColorStop(0,"#10112f");sky.addColorStop(1,"#24134a");
+ pl.fillStyle=sky;pl.fillRect(0,0,w,h);
+ /* Stelle e nuvole scorrono con la distanza: l'aereo resta in posizione fissa. */
+ for(let i=0;i<75;i++){
+  const x=((i*131-plane.score*5)%w+w)%w,y=(i*71)%h;
+  pl.fillStyle=i%3?"#c8c8ff":"#f4cf78";
+  pl.fillRect(x,y,i%4===0?4:2,i%4===0?4:2);
+ }
+ for(let i=0;i<7;i++){
+  const x=((i*170-plane.score*2.3)%w+w)%w;
+  pl.fillStyle="#35245c";pl.beginPath();
+  pl.ellipse(x,65+(i%4)*85,46,14,0,0,Math.PI*2);pl.fill();
+ }
+ plane.obstacles.forEach(o=>{
+  pl.fillStyle="#ed9be9";
+  pl.fillRect(o.x,0,38,o.gapY-o.gap/2);
+  pl.fillStyle="#70e6ed";
+  pl.fillRect(o.x,o.gapY+o.gap/2,38,h-(o.gapY+o.gap/2));
+  if(!o.collected){
+   pl.fillStyle="#f4cf78";pl.beginPath();pl.arc(o.x+19,o.starY,13,0,Math.PI*2);pl.fill();
+   pl.fillStyle="#fff";pl.font="16px system-ui";pl.fillText("✦",o.x+10,o.starY+5);
+  }
+ });
+ pl.save();pl.translate(plane.x,plane.y);
+ pl.fillStyle="#f4cf78";pl.beginPath();
+ pl.moveTo(-40,-12);pl.lineTo(25,-12);pl.lineTo(48,0);pl.lineTo(25,12);pl.lineTo(-40,12);pl.closePath();pl.fill();
+ pl.fillStyle="#70e6ed";pl.beginPath();pl.moveTo(-7,-12);pl.lineTo(-25,-32);pl.lineTo(18,-12);pl.fill();
+ pl.beginPath();pl.moveTo(-7,12);pl.lineTo(-25,32);pl.lineTo(18,12);pl.fill();
+ pl.fillStyle="#fff";pl.beginPath();pl.arc(15,-2,4,0,Math.PI*2);pl.fill();pl.restore();
+ pl.fillStyle="#fff";pl.font="bold 21px system-ui";
+ pl.fillText("Distanza: "+Math.floor(plane.score)+"   ⭐ "+plane.stars,18,30);
+}
+function planeTick(t){
+ if(!plane.running)return;
+ if(!plane.last)plane.last=t;
+ const dt=Math.min((t-plane.last)/16.67,2);plane.last=t;
+ plane.score+=.12*dt;plane.spawn+=dt;
+ if(plane.spawn>105){
+  plane.spawn=0;
+  const gap=175;
+  plane.obstacles.push({x:planeCanvas.width+10,gapY:90+rand(240),gap,starY:45+rand(330),collected:false,passed:false});
+ }
+ let collision=false;
+ plane.obstacles.forEach(o=>{
+  o.x-=4.2*dt;
+  if(!o.passed&&o.x+38<plane.x){o.passed=true;points(1)}
+  if(!o.collected&&Math.abs(o.x+19-plane.x)<30&&Math.abs(o.starY-plane.y)<28){
+   o.collected=true;plane.stars++;points(2);toast("Stella raccolta! ⭐");
+  }
+  if(o.x<plane.x+35&&o.x+38>plane.x-35&&(plane.y<o.gapY-o.gap/2+10||plane.y>o.gapY+o.gap/2-10))collision=true;
+ });
+ plane.obstacles=plane.obstacles.filter(o=>o.x>-60);
+ drawPlane();
+ if(collision){
+  plane.running=false;plane.crashed=true;
+  $("planeStatus").textContent="💥 Ostacolo incontrato! Distanza: "+Math.floor(plane.score)+" · Stelle: "+plane.stars+". Premi Avvia per una nuova corsa oppure Ricomincia per ripartire.";
+  return;
+ }
+ $("planeStatus").textContent="✈️ In volo · Distanza: "+Math.floor(plane.score)+" · Stelle: "+plane.stars;
+ if(plane.running)plane.raf=requestAnimationFrame(planeTick);
+}
+planeReset();
+
+/* 14 Pong */
+const pongCanvas=$("pongCanvas"),pg=pongCanvas.getContext("2d");
+let pong;
+function pongReset(){if(pong?.raf)cancelAnimationFrame(pong.raf);pong={y:150,ballX:320,ballY:190,vx:4,vy:2.7,score:0,running:false,raf:0,last:0};drawPong();$("pongStatus").textContent="Punti: 0 · Premi Avvia."}
+function pongStart(){if(pong.running)return;pong.running=true;pong.last=0;pong.raf=requestAnimationFrame(pongTick);$("pongStatus").textContent="Muovi la racchetta per difendere la porta."}
+function pongMove(d){pong.y=Math.max(0,Math.min(300,pong.y+d*28));drawPong()}
+function drawPong(){pg.clearRect(0,0,640,380);pg.fillStyle="#090718";pg.fillRect(0,0,640,380);pg.strokeStyle="#51406d";pg.setLineDash([8,10]);pg.beginPath();pg.moveTo(320,0);pg.lineTo(320,380);pg.stroke();pg.setLineDash([]);pg.fillStyle="#70e6ed";pg.fillRect(20,pong.y,16,80);pg.fillStyle="#f4cf78";pg.fillRect(604,pong.ballY-32,12,64);pg.beginPath();pg.arc(pong.ballX,pong.ballY,11,0,Math.PI*2);pg.fillStyle="#ed9be9";pg.fill();pg.fillStyle="#fff";pg.font="bold 24px system-ui";pg.fillText(String(pong.score),305,32)}
+function pongTick(t){if(!pong.running)return;if(!pong.last)pong.last=t;const dt=Math.min((t-pong.last)/16.67,2);pong.last=t;pong.ballX+=pong.vx*dt;pong.ballY+=pong.vy*dt;if(pong.ballY<11||pong.ballY>369)pong.vy*=-1;
+if(pong.vx<0&&pong.ballX<40&&pong.ballX>20&&pong.ballY>pong.y-8&&pong.ballY<pong.y+88){pong.vx=Math.abs(pong.vx)*1.035;pong.score++;points(1);$("pongStatus").textContent="Punti: "+pong.score+" · Ottima difesa!"}
+if(pong.ballX>580){pong.vx=-Math.abs(pong.vx);pong.ballX=580}
+if(pong.ballX<0){pong.running=false;$("pongStatus").textContent="Partita finita · Punti: "+pong.score+". Premi Avvia o Reset.";drawPong();return}
+drawPong();pong.raf=requestAnimationFrame(pongTick)}
+pongCanvas.addEventListener("pointermove",e=>{if(e.buttons===0)return;const r=pongCanvas.getBoundingClientRect();pong.y=Math.max(0,Math.min(300,(e.clientY-r.top)*380/r.height-40));drawPong()});
+pongReset();
+
+/* 15 Labirinto luminoso: percorso sempre accessibile */
+let maze=[],mazePos=[0,0];
+function newMaze(){
+ maze=Array.from({length:25},()=>Math.random()<.16?1:0);
+ /* La riga superiore e la colonna destra restano libere. */
+ for(let x=0;x<5;x++)maze[x]=0;
+ for(let y=0;y<5;y++)maze[y*5+4]=0;
+ maze[0]=0;maze[24]=0;mazePos=[0,0];
+ renderMaze();$("mazeStatus").textContent="Trova l'uscita verde.";
+}
+function renderMaze(){$("mazeBoard").innerHTML="";maze.forEach((v,i)=>{const b=document.createElement("button");b.className="cell";b.textContent=i===mazePos[1]*5+mazePos[0]?"🔵":i===24?"🟢":v?"⬛":"·";b.disabled=!!v;$("mazeBoard").appendChild(b)})}
+function mazeMove(dx,dy){const x=mazePos[0]+dx,y=mazePos[1]+dy;if(x<0||x>4||y<0||y>4||maze[y*5+x])return;mazePos=[x,y];renderMaze();if(x===4&&y===4){$("mazeStatus").textContent="Uscita trovata!";points(3)}else $("mazeStatus").textContent="Continua verso l'uscita."}
+newMaze();
+
+/* 16 Cattura stelle */
+const starsCanvas=$("starsCanvas"),st=starsCanvas.getContext("2d");let stars;
+function starsReset(){if(stars?.raf)cancelAnimationFrame(stars.raf);stars={x:320,items:[],score:0,running:false,raf:0,last:0};drawStars();$("starsStatus").textContent="Punti: 0 · Premi Avvia."}
+function starsMove(d){stars.x=Math.max(35,Math.min(605,stars.x+d*32));drawStars()}
+function starsStart(){if(stars.running)return;stars.running=true;stars.last=0;stars.raf=requestAnimationFrame(starsTick)}
+function drawStars(){st.clearRect(0,0,640,340);st.fillStyle="#0a071a";st.fillRect(0,0,640,340);stars.items.forEach(o=>{st.font="28px system-ui";st.fillText("⭐",o.x,o.y)});st.fillStyle="#70e6ed";st.fillRect(stars.x-35,300,70,17);st.fillStyle="#fff";st.font="bold 18px system-ui";st.fillText("Punti: "+stars.score,12,25)}
+function starsTick(t){if(!stars.running)return;if(!stars.last)stars.last=t;const dt=Math.min((t-stars.last)/16.67,2);stars.last=t;if(rand(12)===0)stars.items.push({x:15+rand(600),y:-10});stars.items.forEach(o=>o.y+=3*dt);stars.items=stars.items.filter(o=>{if(o.y>280&&o.y<330&&Math.abs(o.x-stars.x)<43){stars.score++;points(1);return false}return o.y<360});$("starsStatus").textContent="Punti: "+stars.score;drawStars();stars.raf=requestAnimationFrame(starsTick)}
+starsCanvas.addEventListener("pointermove",e=>{if(e.buttons===0)return;const r=starsCanvas.getBoundingClientRect();stars.x=Math.max(35,Math.min(605,(e.clientX-r.left)*640/r.width));drawStars()});
+starsReset();
+
+/* 17 Disegno */
+const dc=$("drawCanvas"),dctx=dc.getContext("2d");let drawing=false;
+function clearDraw(){dctx.fillStyle="#fff";dctx.fillRect(0,0,dc.width,dc.height)}
+function canvasPos(e,c){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}
+clearDraw();
+dc.addEventListener("pointerdown",e=>{drawing=true;dc.setPointerCapture(e.pointerId);const p=canvasPos(e,dc);dctx.beginPath();dctx.moveTo(p.x,p.y)});
+dc.addEventListener("pointermove",e=>{if(!drawing)return;const p=canvasPos(e,dc);dctx.strokeStyle=$("drawColor").value;dctx.lineWidth=7;dctx.lineCap="round";dctx.lineJoin="round";dctx.lineTo(p.x,p.y);dctx.stroke()});
+["pointerup","pointercancel","lostpointercapture"].forEach(ev=>dc.addEventListener(ev,()=>drawing=false));
+
+/* 18 Pixel art */
+const pc=$("pixelCanvas"),pctx=pc.getContext("2d"),pixelSize=24;
+function drawPixelGrid(){pctx.fillStyle="#fff";pctx.fillRect(0,0,pc.width,pc.height);pctx.strokeStyle="#d7cde9";for(let x=0;x<=pc.width;x+=pixelSize){pctx.beginPath();pctx.moveTo(x,0);pctx.lineTo(x,pc.height);pctx.stroke()}for(let y=0;y<=pc.height;y+=pixelSize){pctx.beginPath();pctx.moveTo(0,y);pctx.lineTo(pc.width,y);pctx.stroke()}}
+drawPixelGrid();
+function paintPixel(e){const p=canvasPos(e,pc),x=Math.floor(p.x/pixelSize)*pixelSize,y=Math.floor(p.y/pixelSize)*pixelSize;pctx.fillStyle=$("pixelColor").value;pctx.fillRect(x,y,pixelSize,pixelSize);pctx.strokeStyle="#d7cde9";pctx.strokeRect(x,y,pixelSize,pixelSize)}
+pc.addEventListener("pointerdown",e=>{pc.setPointerCapture(e.pointerId);paintPixel(e)});
+pc.addEventListener("pointermove",e=>{if(e.buttons)paintPixel(e)});
+function clearPixels(){drawPixelGrid()}
+function saveCanvas(id,name){const c=$(id),a=document.createElement("a");a.download=name;a.href=c.toDataURL("image/png");a.click()}
+
+/* 19 Storie e 20 invenzioni */
+const storiesA=["Una piccola stella","Un gatto curioso","Una scienziata coraggiosa","Un robot gentile","Un viaggiatore del tempo"],storiesB=["ha trovato una porta segreta","ha costruito una macchina volante","ha incontrato una nuvola parlante","ha scoperto un giardino nascosto","ha ricevuto una mappa misteriosa"],storiesC=["e ha imparato a chiedere aiuto.","e ha condiviso la scoperta con gli amici.","e ha trasformato la paura in curiosità.","e ha portato una sorpresa al villaggio.","e ha lasciato un messaggio di speranza."];
+function makeStory(){$("storyOutput").textContent=storiesA[rand(storiesA.length)]+" "+storiesB[rand(storiesB.length)]+" "+storiesC[rand(storiesC.length)]}
+const inventions=["Progetta un oggetto che riduca gli sprechi d'acqua.","Come renderesti più accessibile un parco?","Inventa un contenitore che riutilizzi materiali.","Crea un dispositivo che ricordi di fare una pausa.","Come raccoglieresti energia dal sole in modo sicuro?"];
+function newInvention(){$("inventionOutput").textContent=inventions[rand(inventions.length)]}
+function saveText(id,label){const v=$(id).value.trim();if(!v){toast("Scrivi qualcosa prima di salvare.");return}let arr=[];try{arr=JSON.parse(localStorage.getItem("lx_diary")||"[]")}catch(e){}arr.push({label,text:v,date:new Date().toLocaleDateString("it-IT")});try{localStorage.setItem("lx_diary",JSON.stringify(arr));toast("Salvato nel diario su questo dispositivo.")}catch(e){toast("Salvataggio locale non disponibile.")}}
+
+/* 21 Giardino e 22 Le 7 Luci */
+function plantIdea(){const v=$("gardenText").value.trim();if(!v){toast("Scrivi un'idea da piantare.");return}let a=[];try{a=JSON.parse(localStorage.getItem("lx_garden")||"[]")}catch(e){}a.unshift(v);a=a.slice(0,20);try{localStorage.setItem("lx_garden",JSON.stringify(a))}catch(e){}$("gardenText").value="";renderGarden();points(1)}
+function renderGarden(){let a=[];try{a=JSON.parse(localStorage.getItem("lx_garden")||"[]")}catch(e){}$("gardenList").innerHTML="";a.forEach(v=>{const li=document.createElement("li");li.textContent="🌱 "+v;$("gardenList").appendChild(li)})}
+function clearGarden(){try{localStorage.removeItem("lx_garden")}catch(e){}renderGarden()}
+renderGarden();
+function saveLight(){const v=$("lightText").value.trim();if(!v){toast("Scrivi il tuo piccolo passo.");return}let a=[];try{a=JSON.parse(localStorage.getItem("lx_lights")||"[]")}catch(e){}a.unshift({light:$("lightSelect").value,text:v,date:new Date().toLocaleDateString("it-IT")});try{localStorage.setItem("lx_lights",JSON.stringify(a))}catch(e){}$("lightText").value="";$("lightStatus").textContent="✨ Luce salvata su questo dispositivo: "+a[0].light;points(1)}
+
+/* 23 Calcolatrice */
+function calculate(){const a=Number($("calcA").value),b=Number($("calcB").value),op=$("calcOp").value;if($("calcA").value===""||$("calcB").value===""){$("calcStatus").textContent="Inserisci entrambi i numeri.";return}if(op==="÷"&&b===0){$("calcStatus").textContent="Non è possibile dividere per zero.";return}const r=op==="+"?a+b:op==="−"?a-b:op==="×"?a*b:a/b;$("calcStatus").textContent="Risultato: "+Number(r.toFixed(8))}
+
+/* 24 Codice segreto */
+function encodeText(){$("codeOutput").textContent=$("codeInput").value.toUpperCase().replace(/[A-Z]/g,c=>String.fromCharCode((c.charCodeAt(0)-65+3)%26+65))}
+function decodeText(){$("codeOutput").textContent=$("codeInput").value.toUpperCase().replace(/[A-Z]/g,c=>String.fromCharCode((c.charCodeAt(0)-65-3+26)%26+65))}
+
+/* 25 Eco dei colori: timer annullabile al riavvio */
+let simonSeq=[],simonPos=0,simonBusy=false,simonTimer;
+function flashSimon(i){const b=$("simonPads").children[i];if(!b)return;const old=b.style.filter;b.style.filter="brightness(1.8)";setTimeout(()=>b.style.filter=old,280)}
+function playSimonSequence(){let i=0;simonBusy=true;clearTimeout(simonTimer);const tick=()=>{if(i<simonSeq.length){flashSimon(simonSeq[i++]);simonTimer=setTimeout(tick,650)}else{simonBusy=false;$("simonStatus").textContent="Ripeti la sequenza · livello "+simonSeq.length}};simonTimer=setTimeout(tick,350)}
+function simonStart(){clearTimeout(simonTimer);simonBusy=true;simonSeq=[rand(4)];simonPos=0;$("simonStatus").textContent="Guarda…";playSimonSequence()}
+function simonInput(n){if(simonBusy||!simonSeq.length)return;flashSimon(n);if(simonSeq[simonPos]!==n){$("simonStatus").textContent="Sequenza interrotta. Premi Nuova sequenza.";simonSeq=[];return}simonPos++;if(simonPos===simonSeq.length){points(simonSeq.length);simonSeq.push(rand(4));simonPos=0;$("simonStatus").textContent="Bene! Guarda il livello "+simonSeq.length;playSimonSequence()}}
+
+/* 26 Indovinelli */
+const riddles=[["Ha i denti ma non mangia. Cos'è?","pettine"],["Più ne togli, più diventa grande. Cos'è?","buco"],["Ha le lancette ma non cuce. Cos'è?","orologio"],["Viaggia per il mondo restando in un angolo. Cos'è?","francobollo"],["Sale ma non scende mai. Cos'è?","età"]];
+let riddleNow;
+function newRiddle(){riddleNow=riddles[rand(riddles.length)];$("riddleQuestion").textContent=riddleNow[0];$("riddleInput").value="";$("riddleStatus").textContent="La tua risposta?"}
+function checkRiddle(){const v=$("riddleInput").value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");if(v===riddleNow[1].normalize("NFD").replace(/[\u0300-\u036f]/g,"")){$("riddleStatus").textContent="Esatto!";points(2);newRiddle()}else $("riddleStatus").textContent="Non ancora. Prova ancora o passa al prossimo."}
+newRiddle();
+
+/* 27 Snake */
+const snakeCanvas=$("snakeCanvas"),sn=snakeCanvas.getContext("2d");let snake;
+function snakeReset(){if(snake?.raf)cancelAnimationFrame(snake.raf);snake={body:[[7,9],[6,9],[5,9]],dir:[1,0],food:[12,9],running:false,raf:0,last:0,score:0};drawSnake();$("snakeStatus").textContent="Punti: 0 · Premi Avvia."}
+function snakeTurn(x,y){if(x===-snake.dir[0]&&y===-snake.dir[1])return;snake.dir=[x,y]}
+function snakeStart(){if(snake.running)return;snake.running=true;snake.last=0;snake.raf=requestAnimationFrame(snakeTick)}
+function drawSnake(){const size=30;sn.clearRect(0,0,480,480);sn.fillStyle="#090718";sn.fillRect(0,0,480,480);sn.strokeStyle="#201739";for(let i=0;i<=480;i+=size){sn.beginPath();sn.moveTo(i,0);sn.lineTo(i,480);sn.stroke();sn.beginPath();sn.moveTo(0,i);sn.lineTo(480,i);sn.stroke()}sn.fillStyle="#f4cf78";sn.fillRect(snake.food[0]*size+4,snake.food[1]*size+4,size-8,size-8);snake.body.forEach((p,i)=>{sn.fillStyle=i?"#70e6ed":"#9bf0bf";sn.fillRect(p[0]*size+3,p[1]*size+3,size-6,size-6)})}
+function snakeTick(t){if(!snake.running)return;if(!snake.last)snake.last=t;if(t-snake.last>115){snake.last=t;const h=[snake.body[0][0]+snake.dir[0],snake.body[0][1]+snake.dir[1]];if(h[0]<0||h[0]>15||h[1]<0||h[1]>15||snake.body.some(p=>p[0]===h[0]&&p[1]===h[1])){snake.running=false;$("snakeStatus").textContent="Fine partita · Punti: "+snake.score;drawSnake();return}snake.body.unshift(h);if(h[0]===snake.food[0]&&h[1]===snake.food[1]){snake.score++;points(1);do{snake.food=[rand(16),rand(16)]}while(snake.body.some(p=>p[0]===snake.food[0]&&p[1]===snake.food[1]))}else snake.body.pop();$("snakeStatus").textContent="Punti: "+snake.score;drawSnake()}snake.raf=requestAnimationFrame(snakeTick)}
+snakeReset();
+document.addEventListener("keydown",e=>{if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)&&!["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)){if(e.key==="ArrowUp")snakeTurn(0,-1);if(e.key==="ArrowDown")snakeTurn(0,1);if(e.key==="ArrowLeft")snakeTurn(-1,0);if(e.key==="ArrowRight")snakeTurn(1,0)}});
+
+/* 28 Rompi-mattoni */
+const breakCanvas=$("breakCanvas"),br=breakCanvas.getContext("2d");let gameBreak;
+function breakReset(){if(gameBreak?.raf)cancelAnimationFrame(gameBreak.raf);const blocks=[];for(let y=0;y<5;y++)for(let x=0;x<10;x++)blocks.push({x:8+x*62,y:30+y*27,alive:true});gameBreak={x:320,y:330,vx:3,vy:-3,paddle:270,blocks,score:0,running:false,raf:0,last:0};drawBreak();$("breakStatus").textContent="Pronto! Premi Avvia."}
+function breakMove(d){gameBreak.paddle=Math.max(0,Math.min(570,gameBreak.paddle+d*30));drawBreak()}
+function breakStart(){if(gameBreak.running)return;if(gameBreak.blocks.every(b=>!b.alive)||gameBreak.y>410)breakReset();gameBreak.running=true;gameBreak.last=0;gameBreak.raf=requestAnimationFrame(breakTick)}
+function drawBreak(){br.clearRect(0,0,640,420);br.fillStyle="#090718";br.fillRect(0,0,640,420);gameBreak.blocks.forEach((b,i)=>{if(b.alive){br.fillStyle=["#70e6ed","#ed9be9","#f4cf78","#9bf0bf","#a48cff"][Math.floor(i/10)%5];br.fillRect(b.x,b.y,56,19)}});br.fillStyle="#70e6ed";br.fillRect(gameBreak.paddle,390,90,13);br.beginPath();br.arc(gameBreak.x,gameBreak.y,10,0,Math.PI*2);br.fillStyle="#fff";br.fill();br.fillStyle="#fff";br.font="bold 18px system-ui";br.fillText("Punti: "+gameBreak.score,12,22)}
+function breakTick(t){if(!gameBreak.running)return;if(!gameBreak.last)gameBreak.last=t;const dt=Math.min((t-gameBreak.last)/16.67,2);gameBreak.last=t;gameBreak.x+=gameBreak.vx*dt;gameBreak.y+=gameBreak.vy*dt;if(gameBreak.x<10||gameBreak.x>630)gameBreak.vx*=-1;if(gameBreak.y<10)gameBreak.vy=Math.abs(gameBreak.vy);if(gameBreak.y>380&&gameBreak.x>gameBreak.paddle-8&&gameBreak.x<gameBreak.paddle+98){gameBreak.vy=-Math.abs(gameBreak.vy);gameBreak.vx+=(gameBreak.x-(gameBreak.paddle+45))*.02}gameBreak.blocks.forEach(b=>{if(b.alive&&gameBreak.x>b.x&&gameBreak.x<b.x+56&&gameBreak.y>b.y&&gameBreak.y<b.y+19){b.alive=false;gameBreak.vy*=-1;gameBreak.score++;points(1)}});if(gameBreak.y>420){gameBreak.running=false;$("breakStatus").textContent="Pallina persa · Punti: "+gameBreak.score+". Premi Avvia o Reset."}else if(gameBreak.blocks.every(b=>!b.alive)){gameBreak.running=false;$("breakStatus").textContent="Hai liberato il campo! Punti: "+gameBreak.score;points(5)}else $("breakStatus").textContent="Punti: "+gameBreak.score;drawBreak();if(gameBreak.running)gameBreak.raf=requestAnimationFrame(breakTick)}
+breakCanvas.addEventListener("pointermove",e=>{if(e.buttons===0)return;const r=breakCanvas.getBoundingClientRect();gameBreak.paddle=Math.max(0,Math.min(570,(e.clientX-r.left)*640/r.width-45));drawBreak()});
+breakReset();
+
+/* 29 Indovina la parola */
+let hangAnswer="",hangGuessed=new Set(),hangMiss=0;
+function newHang(){hangAnswer=words[rand(words.length)];hangGuessed=new Set();hangMiss=0;renderHang();$("hangStatus").textContent="Tentativi rimasti: 7"}
+function renderHang(){$("hangWord").textContent=hangAnswer.split("").map(c=>hangGuessed.has(c)?c:"_").join(" ");$("hangLetters").innerHTML="";"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(c=>{const b=document.createElement("button");b.textContent=c;b.disabled=hangGuessed.has(c)||hangMiss>=7||hangAnswer.split("").every(x=>hangGuessed.has(x));b.onclick=()=>{hangGuessed.add(c);if(!hangAnswer.includes(c))hangMiss++;renderHang();if(hangAnswer.split("").every(x=>hangGuessed.has(x))){$("hangStatus").textContent="Parola indovinata!";points(3)}else if(hangMiss>=7)$("hangStatus").textContent="Tentativi terminati. La parola era "+hangAnswer;else $("hangStatus").textContent="Tentativi rimasti: "+(7-hangMiss)};$("hangLetters").appendChild(b)})}
+newHang();
+
+/* 30 Puzzle numerico */
+let puzzle=[],puzzleMoves=0;
+function newPuzzle(){puzzle=Array.from({length:16},(_,i)=>(i+1)%16);for(let i=0;i<250;i++){const z=puzzle.indexOf(0),opts=[z%4?z-1:-1,z%4<3?z+1:-1,z>3?z-4:-1,z<12?z+4:-1].filter(v=>v>=0),j=opts[rand(opts.length)];[puzzle[z],puzzle[j]]=[puzzle[j],puzzle[z]]}puzzleMoves=0;renderPuzzle()}
+function renderPuzzle(){$("puzzleBoard").innerHTML="";puzzle.forEach((v,i)=>{const b=document.createElement("button");b.className="cell";b.textContent=v||"";b.disabled=!v;b.onclick=()=>{const z=puzzle.indexOf(0);if([z-1,z+1,z-4,z+4].includes(i)&&!(Math.abs(i-z)===1&&Math.floor(i/4)!==Math.floor(z/4))){[puzzle[i],puzzle[z]]=[puzzle[z],puzzle[i]];puzzleMoves++;renderPuzzle()}};$("puzzleBoard").appendChild(b)});$("puzzleStatus").textContent="Mosse: "+puzzleMoves;if(puzzle.every((v,i)=>v===(i+1)%16)){$("puzzleStatus").textContent="Puzzle completato!";points(5)}}
+newPuzzle();
+
+/* 31 Sequenza di memoria: annulla il timer precedente */
+let numberSeq=[],numberSeqTimer;
+function showNumberSequence(){clearTimeout(numberSeqTimer);numberSeq=Array.from({length:4+Math.min(4,Math.floor(totalScore/10))},()=>rand(9)+1);$("numberSequence").textContent=numberSeq.join(" · ");$("numberSequenceStatus").textContent="Memorizza e poi inserisci i numeri separati da spazi.";numberSeqTimer=setTimeout(()=>{$("numberSequence").textContent="● ".repeat(numberSeq.length).trim()},2400)}
+function checkNumberSequence(){const a=$("numberSequenceInput").value.trim().split(/[\s,.-]+/).filter(Boolean).map(Number);if(a.join(",")===numberSeq.join(",")){ $("numberSequenceStatus").textContent="Memoria eccellente!";points(3)}else $("numberSequenceStatus").textContent="Non corrisponde. Premi Mostra sequenza per riprovare."}
+
+/* 32 Missione Galassia: collisioni degli asteroidi gestite senza sovrascrivere il messaggio */
+const spaceCanvas=$("spaceCanvas"),sp=spaceCanvas.getContext("2d");let space;
+function spaceReset(){if(space?.raf)cancelAnimationFrame(space.raf);space={y:210,x:145,items:[],score:0,running:false,last:0,spawn:0,raf:0};drawSpace();$("spaceStatus").textContent="Pronto al decollo!"}
+function spaceMove(d){space.y=Math.max(35,Math.min(385,space.y+d*28));drawSpace()}
+function spaceStart(){if(space.running)return;space.running=true;space.last=0;space.raf=requestAnimationFrame(spaceTick);$("spaceStatus").textContent="🚀 Missione iniziata!"}
+function drawSpace(){sp.clearRect(0,0,840,420);sp.fillStyle="#08081c";sp.fillRect(0,0,840,420);for(let i=0;i<90;i++){sp.fillStyle=i%5===0?"#f4cf78":"#bcb7ef";sp.fillRect((i*127-space.score*4+8400)%840,(i*71)%420,3,3)}space.items.forEach(o=>{sp.font="30px system-ui";sp.fillText(o.type==="star"?"💎":"☄️",o.x,o.y)});sp.font="42px system-ui";sp.fillText("🚀",space.x-20,space.y+14);sp.fillStyle="#fff";sp.font="bold 20px system-ui";sp.fillText("Cristalli: "+space.score,15,28)}
+function spaceTick(t){
+ if(!space.running)return;
+ if(!space.last)space.last=t;
+ const dt=Math.min((t-space.last)/16.67,2);space.last=t;space.spawn+=dt;
+ if(space.spawn>30){space.spawn=0;space.items.push({x:850,y:35+rand(350),type:rand(4)?"star":"rock"})}
+ let hitRock=false;
+ space.items.forEach(o=>{
+  o.x-=4.3*dt;
+  if(Math.abs(o.x-space.x)<40&&Math.abs(o.y-space.y)<40){
+   if(o.type==="star"){space.score++;points(1);o.x=-100}
+   else{hitRock=true;o.x=-100}
+  }
+ });
+ space.items=space.items.filter(o=>o.x>-60);
+ drawSpace();
+ if(hitRock){
+  space.running=false;
+  $("spaceStatus").textContent="☄️ Missione terminata: hai incontrato un asteroide! Cristalli raccolti: "+space.score+". Premi Nuova missione per ripartire.";
+  return;
+ }
+ $("spaceStatus").textContent="🚀 Cristalli raccolti: "+space.score+" · Esplorazione in corso.";
+ space.raf=requestAnimationFrame(spaceTick);
+}
+spaceCanvas.addEventListener("pointerdown",e=>{if(space.running)spacePosition(e)});
+spaceCanvas.addEventListener("pointermove",e=>{if(space.running&&e.buttons)spacePosition(e)});
+function spacePosition(e){const r=spaceCanvas.getBoundingClientRect();space.y=Math.max(30,Math.min(390,(e.clientY-r.top)*420/r.height));drawSpace()}
+spaceReset();
+
+/* 33 Labirinto dei cristalli: percorso garantito e griglia 5×5 */
+let crystalWalls=[5,6,7,10,11,12,15,16,17,20,21,22];
+let crystalPos=[0,0];
+function crystalNew(){
+ /* Percorso libero: 0 → 1 → 2 → 3 → 4 → 9 → 14 → 19 → 24 */
+ crystalWalls=[5,6,7,10,11,12,15,16,17,20,21,22];
+ crystalPos=[0,0];
+ renderCrystal();
+ $("crystalStatus").textContent="Trova il cristallo verde nell'angolo in basso a destra.";
+}
+function renderCrystal(){
+ $("crystalBoard").innerHTML="";
+ for(let i=0;i<25;i++){
+  const x=i%5,y=Math.floor(i/5),b=document.createElement("button");
+  b.className="cell";
+  b.textContent=x===crystalPos[0]&&y===crystalPos[1]?"🔵":x===4&&y===4?"💎":crystalWalls.includes(i)?"🧱":"·";
+  b.disabled=crystalWalls.includes(i);
+  $("crystalBoard").appendChild(b);
+ }
+}
+function crystalMove(dx,dy){
+ const x=crystalPos[0]+dx,y=crystalPos[1]+dy;
+ if(x<0||x>4||y<0||y>4||crystalWalls.includes(y*5+x))return;
+ crystalPos=[x,y];renderCrystal();
+ if(x===4&&y===4){$("crystalStatus").textContent="💎 Cristallo trovato! Missione completata.";points(5)}
+ else $("crystalStatus").textContent="Continua l'esplorazione.";
+}
+crystalNew();
+
+/* 34 Robot Inventore */
+function buildRobot(){const body=$("robotBody").value,power=$("robotPower").value,name=$("robotIdea").value.trim()||"X∞-Bot";$("robotFace").textContent=body;$("robotStatus").textContent=name+" è stato progettato! Missione: "+power+". Hai creato un nuovo progetto nel laboratorio.";points(2)}
+
+/* 35 Oceano delle meraviglie */
+const oceanCanvas=$("oceanCanvas"),oc=oceanCanvas.getContext("2d");let ocean;
+function oceanReset(){if(ocean?.raf)cancelAnimationFrame(ocean.raf);ocean={y:210,x:145,items:[],score:0,running:false,last:0,spawn:0,raf:0};drawOcean();$("oceanStatus").textContent="Il mare ti aspetta!"}
+function oceanMove(d){ocean.y=Math.max(35,Math.min(385,ocean.y+d*28));drawOcean()}
+function oceanStart(){if(ocean.running)return;ocean.running=true;ocean.last=0;ocean.raf=requestAnimationFrame(oceanTick)}
+function drawOcean(){oc.clearRect(0,0,840,420);const g=oc.createLinearGradient(0,0,0,420);g.addColorStop(0,"#073b68");g.addColorStop(1,"#09162f");oc.fillStyle=g;oc.fillRect(0,0,840,420);for(let i=0;i<24;i++){oc.strokeStyle="#63dced55";oc.beginPath();oc.arc((i*97+ocean.score*2)%840,(i*67)%420,5+(i%4)*3,0,Math.PI*2);oc.stroke()}ocean.items.forEach(o=>{oc.font="30px system-ui";oc.fillText(o.type==="pearl"?"🦪":"🐠",o.x,o.y)});oc.font="42px system-ui";oc.fillText("🤿",ocean.x-20,ocean.y+14);oc.fillStyle="#fff";oc.font="bold 20px system-ui";oc.fillText("Perle: "+ocean.score,15,28)}
+function oceanTick(t){if(!ocean.running)return;if(!ocean.last)ocean.last=t;const dt=Math.min((t-ocean.last)/16.67,2);ocean.last=t;ocean.spawn+=dt;if(ocean.spawn>34){ocean.spawn=0;ocean.items.push({x:850,y:35+rand(350),type:rand(3)?"pearl":"fish"})}ocean.items.forEach(o=>{o.x-=3.5*dt;if(Math.abs(o.x-ocean.x)<40&&Math.abs(o.y-ocean.y)<40){o.x=-100;if(o.type==="pearl"){ocean.score++;points(1);toast("Perla raccolta! 🦪")}}});ocean.items=ocean.items.filter(o=>o.x>-60);drawOcean();$("oceanStatus").textContent="🌊 Perle raccolte: "+ocean.score+" · Continua a esplorare.";ocean.raf=requestAnimationFrame(oceanTick)}
+oceanCanvas.addEventListener("pointerdown",e=>{if(ocean.running)oceanPosition(e)});
+oceanCanvas.addEventListener("pointermove",e=>{if(ocean.running&&e.buttons)oceanPosition(e)});
+function oceanPosition(e){const r=oceanCanvas.getBoundingClientRect();ocean.y=Math.max(30,Math.min(390,(e.clientY-r.top)*420/r.height));drawOcean()}
+oceanReset();
+
+/* 36 Ritmo X∞: timer gestito al riavvio */
+let rhythmSeq=[],rhythmPos=0,rhythmBusy=false,rhythmTimer;
+function flashRhythm(i){const b=$("rhythmPads").children[i];if(!b)return;const old=b.style.filter;b.style.filter="brightness(2)";setTimeout(()=>b.style.filter=old,260)}
+function rhythmPlay(){let i=0;rhythmBusy=true;clearTimeout(rhythmTimer);const tick=()=>{if(i<rhythmSeq.length){flashRhythm(rhythmSeq[i++]);rhythmTimer=setTimeout(tick,520)}else{rhythmBusy=false;$("rhythmStatus").textContent="Tocca i colori nell'ordine mostrato!"}};rhythmTimer=setTimeout(tick,300)}
+function rhythmStart(){clearTimeout(rhythmTimer);rhythmBusy=true;rhythmSeq=[rand(4)];rhythmPos=0;$("rhythmLevel").textContent="Livello: 1";$("rhythmStatus").textContent="Osserva la sequenza…";rhythmPlay()}
+function rhythmInput(n){if(rhythmBusy||!rhythmSeq.length)return;flashRhythm(n);if(rhythmSeq[rhythmPos]!==n){$("rhythmStatus").textContent="Sequenza terminata! Sei arrivato al livello "+rhythmSeq.length+". Riprova!";rhythmSeq=[];return}rhythmPos++;if(rhythmPos===rhythmSeq.length){points(rhythmSeq.length);rhythmSeq.push(rand(4));rhythmPos=0;$("rhythmLevel").textContent="Livello: "+rhythmSeq.length;$("rhythmStatus").textContent="Ottimo! Preparati al prossimo livello.";rhythmPlay()}}
+
+/* 37 Sfida X∞ */
+const challengeCanvas=$("challengeCanvas"),ch=challengeCanvas.getContext("2d");let challenge;
+function challengeReset(){if(challenge?.raf)cancelAnimationFrame(challenge.raf);clearInterval(challenge?.timer);challenge={x:420,y:210,score:0,running:false,remaining:30,raf:0,timer:null};drawChallenge();$("challengeStatus").textContent="Pronto? Avvia la sfida!"}
+function drawChallenge(){ch.clearRect(0,0,840,420);ch.fillStyle="#090718";ch.fillRect(0,0,840,420);for(let i=0;i<65;i++){ch.fillStyle=i%4===0?"#f4cf78":"#9a8bd1";ch.fillRect((i*127)%840,(i*61)%420,3,3)}if(challenge.running){const g=ch.createRadialGradient(challenge.x,challenge.y,2,challenge.x,challenge.y,45);g.addColorStop(0,"#fff");g.addColorStop(.3,"#70e6ed");g.addColorStop(1,"#ed9be900");ch.fillStyle=g;ch.beginPath();ch.arc(challenge.x,challenge.y,45,0,Math.PI*2);ch.fill();ch.strokeStyle="#f4cf78";ch.lineWidth=4;ch.beginPath();ch.arc(challenge.x,challenge.y,25,0,Math.PI*2);ch.stroke()}ch.fillStyle="#fff";ch.font="bold 21px system-ui";ch.fillText("Punti: "+challenge.score+" · Tempo: "+challenge.remaining+"s",15,30)}
+function challengeStart(){if(challenge.running)return;clearInterval(challenge.timer);challenge.running=true;challenge.remaining=30;challenge.score=0;moveChallenge();challenge.timer=setInterval(()=>{challenge.remaining--;drawChallenge();if(challenge.remaining<=0){challenge.running=false;clearInterval(challenge.timer);$("challengeStatus").textContent="Tempo scaduto! Hai totalizzato "+challenge.score+" punti.";points(Math.floor(challenge.score/5));drawChallenge()}},1000);challenge.raf=requestAnimationFrame(challengeTick);$("challengeStatus").textContent="Tocca il nucleo luminoso più velocemente possibile!"}
+function moveChallenge(){challenge.x=45+rand(750);challenge.y=45+rand(330)}
+function challengeTick(){if(!challenge.running)return;drawChallenge();challenge.raf=requestAnimationFrame(challengeTick)}
+challengeCanvas.addEventListener("pointerdown",e=>{if(!challenge.running)return;const r=challengeCanvas.getBoundingClientRect(),x=(e.clientX-r.left)*840/r.width,y=(e.clientY-r.top)*420/r.height;if(Math.hypot(x-challenge.x,y-challenge.y)<50){challenge.score++;moveChallenge();$("challengeStatus").textContent="Colpito! Punti: "+challenge.score;drawChallenge()}});
+challengeReset();
+</script>
+</body>
+</html>
