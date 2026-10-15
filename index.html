@@ -1,1 +1,1062 @@
 
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#211b3b">
+  <meta name="description" content="LUCEECRESCITA: parole, emozioni, creatività, giochi, progetti futuristici, idee e nuove possibilità.">
+  <meta name="author" content="LUCEECRESCITA">
+  <meta property="og:title" content="luceecrescita | Idee, emozioni e futuro">
+  <meta property="og:description" content="Ritrova la tua luce. Immagina il futuro. Esplora giochi, progetti, pensieri e creatività.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://luce-crescita.github.io/">
+  <title>luceecrescita | Idee, emozioni e futuro</title>
+
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --paper: #ffffff;
+      --gold: #e9c77f;
+      --gold-dark: #9b7229;
+      --purple: #211b3b;
+      --purple-light: #362b59;
+      --cyan: #69dce4;
+      --text: #302b3b;
+      --muted: #716b7a;
+      --border: #e9e3d9;
+      --radius: 22px;
+      --shadow: 0 12px 35px rgba(33, 27, 59, .07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+      border-radius: 5px;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 248, 244, .96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      font-size: 1.15rem;
+      font-weight: 850;
+      letter-spacing: -.6px;
+      color: var(--purple);
+    }
+
+    .brand-mark {
+      color: var(--gold-dark);
+      font-size: 1.55rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 5px 16px;
+    }
+
+    nav a {
+      color: var(--muted);
+      font-size: .87rem;
+      font-weight: 650;
+      transition: color .2s;
+    }
+
+    nav a:hover {
+      color: var(--gold-dark);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 105px 0 95px;
+      background:
+        radial-gradient(ellipse at 85% 20%, rgba(105, 220, 228, .17), transparent 35%),
+        radial-gradient(ellipse at 10% 90%, rgba(233, 199, 127, .2), transparent 40%),
+        linear-gradient(135deg, #fffdf9, #f4effb);
+    }
+
+    .hero::after {
+      content: "∞";
+      position: absolute;
+      right: 4%;
+      top: 5%;
+      color: rgba(155, 114, 41, .10);
+      font-size: clamp(150px, 28vw, 340px);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--gold-dark);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      color: var(--purple);
+      line-height: 1.2;
+      letter-spacing: -.7px;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(2.8rem, 7vw, 5.4rem);
+      font-weight: 850;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      color: var(--gold-dark);
+    }
+
+    .hero p {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.12rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 12px 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: .91rem;
+      font-weight: 750;
+      text-align: center;
+      transition: transform .2s, background .2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: #fff;
+      background: var(--purple);
+    }
+
+    .button-primary:hover {
+      background: var(--purple-light);
+    }
+
+    .button-secondary {
+      color: var(--purple);
+      background: #fff;
+      border-color: var(--border);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--gold);
+    }
+
+    section {
+      padding: 78px 0;
+    }
+
+    .section-heading {
+      max-width: 740px;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 14px;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    .center {
+      text-align: center;
+      margin-inline: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 28px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform .2s, border-color .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold);
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 20px;
+      background: #f7f0df;
+      border-radius: 16px;
+      font-size: 1.65rem;
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 1.3rem;
+    }
+
+    .card p {
+      margin-bottom: 20px;
+      color: var(--muted);
+    }
+
+    .text-link {
+      display: inline-block;
+      color: var(--gold-dark);
+      font-weight: 800;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .dark-section {
+      color: #f9f6ff;
+      background:
+        radial-gradient(ellipse at 90% 10%, rgba(105, 220, 228, .13), transparent 35%),
+        var(--purple);
+    }
+
+    .dark-section h2,
+    .dark-section h3 {
+      color: #fff;
+    }
+
+    .dark-section .section-heading p,
+    .dark-section .card p {
+      color: #d2ccdf;
+    }
+
+    .dark-section .card {
+      color: var(--text);
+      background: rgba(255, 255, 255, .06);
+      border-color: rgba(255, 255, 255, .16);
+      box-shadow: none;
+    }
+
+    .dark-section .card h3 {
+      color: #fff;
+    }
+
+    .dark-section .text-link {
+      color: var(--cyan);
+    }
+
+    .dark-section .card-icon {
+      background: rgba(233, 199, 127, .13);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .step {
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, .17);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .045);
+    }
+
+    .step-number {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--cyan);
+      font-size: .8rem;
+      font-weight: 850;
+      letter-spacing: 1px;
+    }
+
+    .step h3 {
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .step p {
+      color: #d2ccdf;
+      font-size: .95rem;
+    }
+
+    .book-panel {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      align-items: center;
+      gap: 36px;
+      padding: clamp(25px, 5vw, 55px);
+      background: linear-gradient(135deg, #fff, #f5f0fc);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .book-art {
+      display: grid;
+      place-items: center;
+      min-height: 260px;
+      padding: 25px;
+      color: #fff;
+      text-align: center;
+      background: linear-gradient(145deg, #292043, #5b477d);
+      border: 5px solid #ead5a4;
+      border-radius: 8px 22px 22px 8px;
+      box-shadow: 12px 15px 0 rgba(33, 27, 59, .09);
+    }
+
+    .book-art .infinity {
+      display: block;
+      margin-bottom: 16px;
+      color: var(--gold);
+      font-size: 3rem;
+    }
+
+    .book-art strong {
+      font-size: 1.4rem;
+      line-height: 1.35;
+    }
+
+    .book-art small {
+      display: block;
+      margin-top: 16px;
+      color: #e6dff2;
+    }
+
+    .book-copy h3 {
+      margin-bottom: 14px;
+      font-size: 1.65rem;
+    }
+
+    .book-copy p {
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .quote-section {
+      padding: 65px 0;
+      background: linear-gradient(115deg, #f4eddf, #f3effa);
+    }
+
+    blockquote {
+      max-width: 850px;
+      margin: 0 auto;
+      color: var(--purple);
+      font-size: clamp(1.55rem, 4vw, 2.6rem);
+      font-weight: 750;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    blockquote footer {
+      margin-top: 18px;
+      color: var(--gold-dark);
+      font-size: .9rem;
+      font-weight: 750;
+    }
+
+    .service-note {
+      margin-top: 24px;
+      padding: 20px;
+      color: var(--muted);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-size: .93rem;
+    }
+
+    .amazon-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 32px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .amazon-panel h3 {
+      margin-bottom: 10px;
+      font-size: 1.35rem;
+    }
+
+    .amazon-panel p {
+      max-width: 650px;
+      color: var(--muted);
+    }
+
+    .disclosure {
+      width: 100%;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .social-card .card-icon {
+      background: #f2edf9;
+    }
+
+    .contact-panel {
+      padding: clamp(28px, 5vw, 52px);
+      color: #fff;
+      text-align: center;
+      background: linear-gradient(135deg, #211b3b, #40335f);
+      border-radius: 28px;
+    }
+
+    .contact-panel h2 {
+      margin-bottom: 16px;
+      color: #fff;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    .contact-panel p {
+      max-width: 660px;
+      margin: 0 auto 24px;
+      color: #e0d9ec;
+    }
+
+    .contact-panel .button-primary {
+      color: var(--purple);
+      background: var(--gold);
+    }
+
+    .footer {
+      padding: 36px 0;
+      background: #181427;
+      color: #d8d2e3;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding-bottom: 24px;
+    }
+
+    .footer .brand {
+      color: #fff;
+    }
+
+    .footer p {
+      margin-top: 8px;
+      color: #bcb5cc;
+      font-size: .9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+    }
+
+    .footer-links a {
+      font-size: .88rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+
+    .copyright {
+      padding-top: 22px;
+      border-top: 1px solid rgba(255, 255, 255, .13);
+      font-size: .82rem;
+    }
+
+    @media (max-width: 760px) {
+      .nav-wrap {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav {
+        justify-content: flex-start;
+        gap: 8px 14px;
+      }
+
+      nav a {
+        font-size: .82rem;
+      }
+
+      .hero {
+        padding: 72px 0 65px;
+      }
+
+      section {
+        padding: 58px 0;
+      }
+
+      .grid,
+      .book-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .book-art {
+        min-height: 230px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 23px;
+      }
+
+      .amazon-panel {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 25px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" id="home">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="LUCEECRESCITA, pagina iniziale">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        luceecrescita
+      </a>
+
+      <nav aria-label="Navigazione principale">
+        <a href="#home">Home</a>
+        <a href="#universo">Esplora</a>
+        <a href="#youtube">YouTube</a>
+        <a href="#libro">Il libro</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#consigli">Consigli</a>
+        <a href="#contatti">Contatti</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <span class="eyebrow">Parole, idee e nuove possibilità</span>
+        <h1>Ritrova la tua luce.<br><span>Immagina il futuro.</span></h1>
+        <p>
+          Benvenuto in LUCEECRESCITA. Uno spazio dove emozioni,
+          creatività, giochi e idee futuristiche si incontrano.
+          Ogni scoperta comincia da un primo passo.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#universo">Esplora il progetto ↓</a>
+          <a class="button button-secondary"
+             href="https://www.youtube.com/@antonellosalvatoremastropa267"
+             target="_blank" rel="noopener noreferrer">Scopri YouTube ▶</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="universo">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Il punto di partenza</span>
+          <h2>Un solo sito. Tante strade da esplorare.</h2>
+          <p>
+            Tutto parte da qui. Scegli un'esperienza, scopri un'idea
+            oppure guarda un video e continua il viaggio nelle pagine
+            ufficiali di LUCEECRESCITA.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🎨</div>
+            <h3>Sorprese X∞</h3>
+            <p>
+              Entra nel laboratorio creativo: giochi, pixel art,
+              disegni, raccolte personali e attività per allenare
+              fantasia, curiosità e logica.
+            </p>
+            <a class="text-link"
+               href="https://luce-crescita.github.io/sorprese.html">Entra in Sorprese →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🚀</div>
+            <h3>INNOVATIONPORTFOLIO X∞</h3>
+            <p>
+              Esplora concept tecnologici e idee immaginate per
+              scenari futuri: ambiente, energia, robotica e spazio.
+            </p>
+            <a class="text-link"
+               href="https://luce-crescita.github.io/progetti.html">Esplora i progetti →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">⚡</div>
+            <h3>X∞ Energy Weaver</h3>
+            <p>
+              Scopri il concept dedicato alle energie rinnovabili,
+              all'accumulo intelligente e all'ottimizzazione
+              dei consumi energetici.
+            </p>
+            <a class="text-link"
+               href="https://luce-crescita.github.io/energia-eterna.html">Apri dossier e simulatore →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">▶️</div>
+            <h3>YouTube Shorts</h3>
+            <p>
+              Scopri video, sfide, misteri, invenzioni e visioni
+              del futuro. Guarda un contenuto e torna sul sito
+              per continuare.
+            </p>
+            <a class="text-link"
+               href="https://www.youtube.com/@antonellosalvatoremastropa267"
+               target="_blank" rel="noopener noreferrer">Apri il canale →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-section" id="youtube">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">La prossima scoperta comincia qui</span>
+          <h2>Il futuro non si legge soltanto.<br>Si immagina insieme.</h2>
+          <p>
+            Ogni video può diventare il punto di partenza per una
+            domanda, una scelta o un'idea da esplorare. Partecipa
+            e visita le pagine del sito per approfondire i temi
+            che ti incuriosiscono.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary"
+               href="https://www.youtube.com/@antonellosalvatoremastropa267"
+               target="_blank" rel="noopener noreferrer">Guarda gli Shorts ▶</a>
+            <a class="button button-secondary"
+               href="https://luce-crescita.github.io/progetti.html">Entra nel futuro →</a>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step-number">01 · GUARDA</span>
+            <h3>Una domanda</h3>
+            <p>Un video presenta una domanda o un'idea sorprendente.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">02 · PARTECIPA</span>
+            <h3>La tua idea</h3>
+            <p>Proponi una risposta, un'invenzione o un'idea.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">03 · ESPLORA</span>
+            <h3>Continua il viaggio</h3>
+            <p>Raggiungi i giochi e i progetti collegati al video.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="libro">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Il prodotto digitale</span>
+          <h2>Le parole che ti cercano</h2>
+          <p>
+            Scopri il libro digitale interattivo di LUCEECRESCITA:
+            un progetto dedicato a pensieri, riflessioni ed emozioni.
+          </p>
+        </div>
+
+        <div class="book-panel">
+          <div class="book-art" aria-label="Copertina grafica dimostrativa del libro">
+            <div>
+              <span class="infinity" aria-hidden="true">∞</span>
+              <strong>LE PAROLE<br>CHE TI CERCANO</strong>
+              <small>Un viaggio tra pensieri ed emozioni</small>
+            </div>
+          </div>
+
+          <div class="book-copy">
+            <span class="eyebrow">Parole che arrivano al cuore</span>
+            <h3>Il libro digitale</h3>
+            <p>
+              Un piccolo spazio per fermarsi, esplorare le parole
+              e guardare le esperienze quotidiane da una
+              prospettiva diversa.
+            </p>
+            <a class="button button-primary"
+               href="https://payhip.com/b/iM8qS"
+               target="_blank" rel="noopener noreferrer">Scopri il libro →</a>
+            <p class="note">
+              Prima dell'acquisto, verifica sulla pagina del venditore
+              descrizione, formato, prezzo e contenuti effettivamente disponibili.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:24px">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">💛</div>
+            <h3>Una parola alla volta</h3>
+            <p>
+              Ricominciare, gratitudine, fiducia e speranza:
+              spunti per ricordare il valore dei gesti quotidiani
+              e delle nuove possibilità.
+            </p>
+            <a class="text-link" href="#pensieri">Leggi un pensiero →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🌱</div>
+            <h3>Un progetto accessibile</h3>
+            <p>
+              Le attività gratuite restano un punto importante
+              del progetto. Gli eventuali acquisti sono facoltativi
+              e devono essere valutati liberamente.
+            </p>
+            <a class="text-link"
+               href="https://luce-crescita.github.io/sorprese.html">Scopri le attività →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-section" id="pensieri">
+      <div class="container">
+        <span class="eyebrow" style="display:block;text-align:center">Pensieri che fanno luce</span>
+        <blockquote>
+          “Non smettere di cercare la luce: a volte è più vicina di quanto immagini.”
+          <footer>Un pensiero di LUCEECRESCITA</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section id="servizi">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Le idee diventano servizi</span>
+          <h2>Servizi digitali per piccole attività.</h2>
+          <p>
+            Una nuova area di LUCEECRESCITA dedicata a chi desidera
+            presentare la propria attività online con pagine web
+            semplici, chiare e consultabili da smartphone.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🌐</div>
+            <h3>Pagine web essenziali</h3>
+            <p>
+              Una pagina per raccontare un'attività, presentare
+              servizi e rendere facilmente reperibili i contatti.
+            </p>
+            <a class="text-link"
+               href="mailto:amastropaolo1@gmail.com?subject=Richiesta%20informazioni%20pagine%20web">Richiedi informazioni →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">📂</div>
+            <h3>Cataloghi e presentazioni</h3>
+            <p>
+              Strutture digitali per organizzare informazioni,
+              servizi e prodotti in modo ordinato e leggibile.
+            </p>
+            <a class="text-link"
+               href="mailto:amastropaolo1@gmail.com?subject=Richiesta%20catalogo%20digitale">Parliamo del progetto →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">💡</div>
+            <h3>Progetti personalizzati</h3>
+            <p>
+              Una prima valutazione per capire le esigenze,
+              definire le funzionalità e concordare un preventivo
+              prima di iniziare.
+            </p>
+            <a class="text-link"
+               href="mailto:amastropaolo1@gmail.com?subject=Nuovo%20progetto%20digitale">Presenta la tua idea →</a>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">🤝</div>
+            <h3>Un percorso trasparente</h3>
+            <p>
+              Ogni richiesta viene valutata individualmente,
+              senza impegni automatici e senza costi non concordati.
+            </p>
+            <a class="text-link" href="#contatti">Contattami →</a>
+          </article>
+        </div>
+
+        <div class="service-note">
+          <strong>Come funziona:</strong> ogni richiesta viene
+          valutata individualmente. Prezzo, tempi, contenuti,
+          modalità di pubblicazione ed eventuali costi aggiuntivi
+          saranno concordati prima di accettare il lavoro.
+          La disponibilità del servizio deve essere confermata
+          prima di assumere impegni con il cliente.
+        </div>
+      </div>
+    </section>
+
+    <section id="consigli">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">La vetrina dei consigli</span>
+          <h2>Idee da scoprire, senza obblighi.</h2>
+          <p>
+            Una selezione personale di prodotti e spunti per
+            tecnologia, creazione di contenuti, casa, benessere,
+            regali e libri.
+          </p>
+        </div>
+
+        <div class="amazon-panel">
+          <div>
+            <h3>La mia vetrina Amazon</h3>
+            <p>
+              Esplora la selezione completa nella vetrina.
+              Consulta le categorie e scegli liberamente se
+              un prodotto fa al caso tuo.
+            </p>
+          </div>
+
+          <a class="button button-primary"
+             href="https://www.amazon.it/shop/antonello.official1/list/1KNHVVIOC5G3P?ref_=aipsflist&amp;tag=antonellosalv-21"
+             target="_blank" rel="noopener noreferrer sponsored">Visita la vetrina →</a>
+
+          <p class="disclosure">
+            In qualità di Affiliato Amazon io ricevo un guadagno dagli acquisti idonei.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Continua il viaggio</span>
+          <h2>Una community, più modi per partecipare.</h2>
+          <p>
+            Segui i nuovi contenuti, guarda i video e torna
+            al sito per scoprire altre idee.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card social-card">
+            <div class="card-icon" aria-hidden="true">▶️</div>
+            <h3>YouTube</h3>
+            <p>Shorts, idee futuristiche e nuove sfide.</p>
+            <a class="text-link"
+               href="https://www.youtube.com/@antonellosalvatoremastropa267"
+               target="_blank" rel="noopener noreferrer">Vai su YouTube →</a>
+          </article>
+
+          <article class="card social-card">
+            <div class="card-icon" aria-hidden="true">🎬</div>
+            <h3>TikTok</h3>
+            <p>Pensieri, riflessioni e contenuti brevi.</p>
+            <a class="text-link"
+               href="https://www.tiktok.com/@antonello.official1"
+               target="_blank" rel="noopener noreferrer">Vai su TikTok →</a>
+          </article>
+
+          <article class="card social-card">
+            <div class="card-icon" aria-hidden="true">💼</div>
+            <h3>LinkedIn</h3>
+            <p>Il profilo professionale e i contatti di lavoro.</p>
+            <a class="text-link"
+               href="https://www.linkedin.com/in/antonello-salvatore-mastropaolo-11197aa7"
+               target="_blank" rel="noopener noreferrer">Apri LinkedIn →</a>
+          </article>
+
+          <article class="card social-card">
+            <div class="card-icon" aria-hidden="true">✉️</div>
+            <h3>Contatto diretto</h3>
+            <p>Per domande, collaborazioni e proposte di progetto.</p>
+            <a class="text-link"
+               href="mailto:amastropaolo1@gmail.com">Scrivimi una email →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contatti">
+      <div class="container">
+        <div class="contact-panel">
+          <span class="eyebrow" style="color:var(--gold)">Il progetto continua</span>
+          <h2>Una luce, una scoperta, una nuova idea.</h2>
+          <p>
+            Per informazioni sul libro, collaborazioni o richieste
+            relative ai servizi digitali, puoi scrivermi via email.
+          </p>
+
+          <div class="hero-actions" style="justify-content:center">
+            <a class="button button-primary"
+               href="mailto:amastropaolo1@gmail.com">Scrivimi una email →</a>
+            <a class="button button-secondary"
+               href="https://luce-crescita.github.io/progetti.html">InnovationPortfolio X∞</a>
+          </div>
+
+          <div class="hero-actions" style="justify-content:center">
+            <a class="button button-secondary"
+               href="https://luce-crescita.github.io/energia-eterna.html">X∞ Energy Weaver</a>
+            <a class="button button-secondary"
+               href="https://luce-crescita.github.io/sorprese.html">Sorprese X∞</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="#home">
+            <span class="brand-mark" aria-hidden="true">✦</span>
+            luceecrescita
+          </a>
+          <p>Parole, emozioni, creatività e futuro.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="https://luce-crescita.github.io/sorprese.html">Sorprese X∞</a>
+          <a href="https://luce-crescita.github.io/progetti.html">INNOVATIONPORTFOLIO</a>
+          <a href="https://luce-crescita.github.io/energia-eterna.html">Energy Weaver</a>
+          <a href="https://www.youtube.com/@antonellosalvatoremastropa267"
+             target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="mailto:amastropaolo1@gmail.com">Contatti</a>
+        </div>
+      </div>
+
+      <div class="copyright">
+        <p>© 2026 LUCEECRESCITA. Tutti i diritti riservati.</p>
+        <p>
+          Contenuti e progetti originali di LUCEECRESCITA sono
+          riservati nei limiti previsti dalla legge. La riproduzione
+          o l'utilizzo non autorizzato dei contenuti protetti
+          non è consentito.
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
