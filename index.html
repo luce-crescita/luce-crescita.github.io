@@ -1,1 +1,1035 @@
 
+# LUCEECRESCITA — index.html completo
+
+Sostituisci il contenuto del file `index.html` con tutto il codice seguente.
+
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#211b3b">
+  <meta name="description" content="LUCEECRESCITA: emozioni, creatività, Sorprese X∞, INNOVATIONPORTFOLIO X∞, X∞ Energy Weaver, libro digitale e servizi web.">
+  <meta name="author" content="Antonello Salvatore Mastropaolo">
+  <meta property="og:title" content="LUCEECRESCITA | Idee, emozioni e futuro">
+  <meta property="og:description" content="Esplora idee, giochi creativi, progetti tecnologici, libri digitali e servizi web.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://luce-crescita.github.io/">
+  <title>luceecrescita | Idee, emozioni e futuro</title>
+
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --paper: #ffffff;
+      --ink: #252237;
+      --muted: #706c7c;
+      --gold: #b58a42;
+      --gold-light: #f3e6c9;
+      --purple: #211b3b;
+      --cyan: #69dce4;
+      --line: #e9e2d8;
+      --radius: 22px;
+      --shadow: 0 12px 35px rgba(35, 26, 58, .08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(250, 248, 244, .97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      min-height: 74px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding-block: 12px;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 850;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px 15px;
+      flex-wrap: wrap;
+      font-size: .88rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .hero {
+      padding: 78px 0 70px;
+      background:
+        radial-gradient(ellipse at 80% 20%,
+          rgba(105,220,228,.19), transparent 38%),
+        radial-gradient(ellipse at 10% 90%,
+          rgba(181,138,66,.18), transparent 35%),
+        linear-gradient(135deg, #211b3b, #34254f 58%, #19182d);
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--gold-light);
+      font-size: .77rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 17px;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -.055em;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      color: #e9c77f;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      color: #eeeaf6;
+      font-size: 1.08rem;
+      margin-bottom: 28px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 12px 19px;
+      border-radius: 999px;
+      font-size: .92rem;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: transform .2s, background .2s;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background: #e9c77f;
+      color: #211b3b;
+    }
+
+    .btn-light {
+      color: white;
+      border-color: rgba(255,255,255,.4);
+      background: rgba(255,255,255,.06);
+    }
+
+    .btn-dark {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-outline {
+      border-color: var(--line);
+      background: white;
+      color: var(--ink);
+    }
+
+    .hero-art {
+      min-height: 310px;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .orbit {
+      width: min(290px, 72vw);
+      aspect-ratio: 1;
+      border: 1px solid rgba(105,220,228,.55);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 70px rgba(105,220,228,.12),
+        inset 0 0 60px rgba(181,138,66,.08);
+      position: relative;
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(233,199,127,.5);
+      border-radius: 50%;
+      transform: rotateX(62deg);
+    }
+
+    .orbit::after {
+      transform: rotateY(62deg);
+      border-color: rgba(105,220,228,.45);
+    }
+
+    .infinity {
+      color: #e9c77f;
+      font-size: clamp(6rem, 16vw, 9rem);
+      font-weight: 300;
+      line-height: 1;
+      text-shadow: 0 0 35px rgba(233,199,127,.3);
+    }
+
+    .section {
+      padding: 76px 0;
+    }
+
+    .section-head {
+      max-width: 740px;
+      margin-bottom: 30px;
+    }
+
+    .kicker {
+      color: var(--gold);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: -.035em;
+      margin-bottom: 13px;
+    }
+
+    .section-head p,
+    .card p {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
+    .card h3 {
+      font-size: 1.22rem;
+      line-height: 1.3;
+      margin: 12px 0 9px;
+    }
+
+    .card p {
+      margin-bottom: 17px;
+    }
+
+    .card .btn {
+      margin-top: auto;
+    }
+
+    .card .kicker {
+      margin-top: 14px;
+      margin-bottom: 0;
+    }
+
+    .symbol {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--gold-light);
+      font-size: 1.65rem;
+      flex-shrink: 0;
+    }
+
+    .feature {
+      background: #f1ede6;
+    }
+
+    .youtube-panel {
+      background:
+        radial-gradient(circle at 90% 10%,
+          rgba(105,220,228,.15), transparent 35%),
+        linear-gradient(130deg, #211b3b, #30264c);
+      color: white;
+      border-radius: 28px;
+      padding: clamp(26px, 5vw, 50px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .youtube-panel p {
+      color: #eeeaf6;
+      max-width: 680px;
+      margin-top: 10px;
+    }
+
+    .youtube-mark {
+      font-size: 4rem;
+      line-height: 1;
+    }
+
+    .youtube-panel .eyebrow {
+      margin-bottom: 10px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .step {
+      border-top: 3px solid var(--gold);
+      background: white;
+      padding: 20px;
+      border-radius: 0 0 16px 16px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .quote {
+      background: var(--gold-light);
+      border-radius: var(--radius);
+      padding: 30px;
+      font-size: clamp(1.2rem, 3vw, 1.65rem);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .quote small {
+      display: block;
+      font-size: .9rem;
+      font-weight: 500;
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    .disclosure {
+      color: var(--muted);
+      font-size: .8rem;
+      margin-top: 15px;
+    }
+
+    .contact-panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .service-note {
+      border-left: 4px solid var(--gold);
+      padding: 14px 18px;
+      background: white;
+      color: var(--muted);
+      border-radius: 0 12px 12px 0;
+      margin-top: 24px;
+      font-size: .92rem;
+    }
+
+    footer {
+      background: #17152a;
+      color: #f5f1fb;
+      padding: 36px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    footer p,
+    footer .footer-links {
+      color: #d2cddd;
+      font-size: .88rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    footer a:hover {
+      color: #e9c77f;
+    }
+
+    .copyright-note {
+      max-width: 680px;
+      margin-top: 12px;
+      font-size: .8rem;
+      color: #bcb6ca;
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .hero-art {
+        min-height: 240px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .youtube-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .youtube-mark {
+        display: none;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .nav {
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 8px 12px;
+        font-size: .82rem;
+      }
+
+      .grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 55px 0;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .actions .btn {
+        width: 100%;
+      }
+
+      .footer-links {
+        gap: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <nav class="container nav" aria-label="Navigazione principale">
+      <a class="brand" href="#home">luceecrescita<span> ✦</span></a>
+
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#universo">Esplora</a>
+        <a href="#youtube">YouTube</a>
+        <a href="#libro">Il libro</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#consigli">Consigli</a>
+        <a href="#contatti">Contatti</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Parole, idee e nuove possibilità</p>
+
+          <h1>
+            Ritrova la tua <span>luce.</span><br>
+            Immagina il futuro.
+          </h1>
+
+          <p class="hero-copy">
+            Benvenuto in LUCEECRESCITA. Uno spazio dove emozioni,
+            creatività, giochi e idee futuristiche si incontrano.
+            Ogni scoperta comincia da un primo passo.
+          </p>
+
+          <div class="actions">
+            <a class="btn btn-gold" href="#universo">
+              Esplora il progetto ↓
+            </a>
+            <a class="btn btn-light" href="#youtube">
+              Scopri YouTube ▶
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-art" role="img"
+             aria-label="Simbolo dell'infinito di LUCEECRESCITA">
+          <div class="orbit">
+            <div class="infinity" aria-hidden="true">∞</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UNIVERSO LUCEECRESCITA -->
+    <section class="section" id="universo">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Il punto di partenza</p>
+          <h2>Un solo sito. Tante strade da esplorare.</h2>
+          <p>
+            Tutto parte da qui. Scegli un'esperienza, scopri un'idea
+            oppure guarda un video e continua il viaggio nelle pagine
+            ufficiali di LUCEECRESCITA.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="symbol" aria-hidden="true">✨</div>
+            <h3>Sorprese X∞</h3>
+            <p>
+              Entra nel laboratorio creativo: giochi, pixel art,
+              disegni, raccolte personali e attività per allenare
+              fantasia, curiosità e logica.
+            </p>
+            <a class="btn btn-dark"
+               href="https://luce-crescita.github.io/sorprese.html">
+              Entra in Sorprese →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">🚀</div>
+            <h3>INNOVATIONPORTFOLIO X∞</h3>
+            <p>
+              Esplora concept tecnologici e idee immaginate per
+              scenari futuri: ambiente, energia, robotica e spazio.
+            </p>
+            <a class="btn btn-dark"
+               href="https://luce-crescita.github.io/progetti.html">
+              Esplora i progetti →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">⚡</div>
+            <h3>X∞ Energy Weaver</h3>
+            <p>
+              Scopri il concept dedicato alle energie rinnovabili,
+              all'accumulo intelligente e all'ottimizzazione
+              dei consumi energetici.
+            </p>
+            <a class="btn btn-dark"
+               href="https://luce-crescita.github.io/energia-eterna.html">
+              Apri dossier e simulatore →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">▶️</div>
+            <h3>YouTube Shorts</h3>
+            <p>
+              Scopri video, sfide, misteri, invenzioni e visioni
+              del futuro. Guarda un contenuto e torna sul sito
+              per continuare.
+            </p>
+            <a class="btn btn-dark"
+               href="https://www.youtube.com/@antonellosalvatoremastropa267"
+               target="_blank" rel="noopener noreferrer">
+              Apri il canale →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- YOUTUBE -->
+    <section class="section feature" id="youtube">
+      <div class="container">
+        <div class="youtube-panel">
+          <div>
+            <p class="eyebrow">La prossima scoperta comincia qui</p>
+            <h2>
+              Il futuro non si legge soltanto.<br>
+              Si immagina insieme.
+            </h2>
+            <p>
+              Ogni video può diventare il punto di partenza per
+              una domanda, una scelta o un'idea da esplorare.
+              Partecipa e visita le pagine del sito per approfondire
+              i temi che ti incuriosiscono.
+            </p>
+
+            <div class="actions">
+              <a class="btn btn-gold"
+                 href="https://www.youtube.com/@antonellosalvatoremastropa267"
+                 target="_blank" rel="noopener noreferrer">
+                Guarda gli Shorts ▶
+              </a>
+              <a class="btn btn-light"
+                 href="https://luce-crescita.github.io/progetti.html">
+                Entra nel futuro →
+              </a>
+            </div>
+          </div>
+
+          <div class="youtube-mark" aria-hidden="true">▶</div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <strong>01 · Guarda</strong>
+            <p>Un video presenta una domanda o un'idea sorprendente.</p>
+          </div>
+
+          <div class="step">
+            <strong>02 · Partecipa</strong>
+            <p>Proponi una risposta, un'invenzione o un'idea.</p>
+          </div>
+
+          <div class="step">
+            <strong>03 · Esplora</strong>
+            <p>Raggiungi i giochi e i progetti collegati al video.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRO DIGITALE -->
+    <section class="section" id="libro">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Il prodotto digitale</p>
+          <h2>Le parole che ti cercano</h2>
+          <p>
+            Scopri il libro digitale interattivo di LUCEECRESCITA:
+            un progetto dedicato a pensieri, riflessioni ed emozioni.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="symbol" aria-hidden="true">📖</div>
+            <p class="kicker">Parole che arrivano al cuore</p>
+            <h3>Il libro digitale</h3>
+            <p>
+              Un piccolo spazio per fermarsi, esplorare le parole
+              e guardare le esperienze quotidiane da una prospettiva
+              diversa.
+            </p>
+            <a class="btn btn-dark"
+               href="https://payhip.com/b/iM8qS"
+               target="_blank" rel="noopener noreferrer">
+              Scopri il libro →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">💡</div>
+            <p class="kicker">Pensieri che fanno luce</p>
+            <h3>Una parola alla volta</h3>
+            <p>
+              Ricominciare, gratitudine, fiducia e speranza:
+              spunti per ricordare il valore dei gesti quotidiani
+              e delle nuove possibilità.
+            </p>
+            <a class="btn btn-outline" href="#pensieri">
+              Leggi un pensiero →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">🌱</div>
+            <p class="kicker">Creatività e autenticità</p>
+            <h3>Un progetto accessibile</h3>
+            <p>
+              Le attività gratuite restano un punto importante
+              del progetto. Gli eventuali acquisti sono facoltativi
+              e devono essere valutati liberamente.
+            </p>
+            <a class="btn btn-outline"
+               href="https://luce-crescita.github.io/sorprese.html">
+              Scopri le attività →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENSIERI -->
+    <section class="section feature" id="pensieri">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Pensieri che fanno luce</p>
+          <h2>A volte basta una piccola frase.</h2>
+        </div>
+
+        <div class="quote">
+          “Non smettere di cercare la luce: a volte è più vicina
+          di quanto immagini.”
+          <small>Un pensiero di LUCEECRESCITA</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- NUOVI SERVIZI DIGITALI -->
+    <section class="section" id="servizi">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Le idee diventano servizi</p>
+          <h2>Servizi digitali per piccole attività.</h2>
+          <p>
+            Una nuova area di LUCEECRESCITA dedicata a chi desidera
+            presentare la propria attività online con pagine web
+            semplici, chiare e consultabili da smartphone.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="symbol" aria-hidden="true">🌐</div>
+            <h3>Pagine web essenziali</h3>
+            <p>
+              Una pagina per raccontare un'attività, presentare
+              servizi e rendere facilmente reperibili i contatti.
+            </p>
+            <a class="btn btn-dark"
+               href="mailto:amastropaolo1@gmail.com?subject=Richiesta%20informazioni%20pagine%20web">
+              Richiedi informazioni →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">📋</div>
+            <h3>Cataloghi e presentazioni</h3>
+            <p>
+              Strutture digitali per organizzare informazioni,
+              servizi e prodotti in modo ordinato e leggibile.
+            </p>
+            <a class="btn btn-dark"
+               href="mailto:amastropaolo1@gmail.com?subject=Richiesta%20catalogo%20digitale">
+              Parliamo del progetto →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">✨</div>
+            <h3>Progetti personalizzati</h3>
+            <p>
+              Una prima valutazione per capire le esigenze,
+              definire le funzionalità e concordare un preventivo
+              prima di iniziare.
+            </p>
+            <a class="btn btn-dark"
+               href="mailto:amastropaolo1@gmail.com?subject=Nuovo%20progetto%20digitale">
+              Presenta la tua idea →
+            </a>
+          </article>
+        </div>
+
+        <div class="service-note">
+          <strong>Come funziona:</strong> ogni richiesta viene
+          valutata individualmente. Prezzo, tempi, contenuti,
+          modalità di pubblicazione ed eventuali costi aggiuntivi
+          saranno concordati prima di accettare il lavoro.
+          La disponibilità del servizio deve essere confermata
+          prima di assumere impegni con il cliente.
+        </div>
+      </div>
+    </section>
+
+    <!-- VETRINA AMAZON -->
+    <section class="section feature" id="consigli">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">La vetrina dei consigli</p>
+          <h2>Idee da scoprire, senza obblighi.</h2>
+          <p>
+            Una selezione personale di prodotti e spunti per
+            tecnologia, creazione di contenuti, casa, benessere,
+            regali e libri.
+          </p>
+        </div>
+
+        <article class="card">
+          <div class="symbol" aria-hidden="true">🛍️</div>
+          <h3>La mia vetrina Amazon</h3>
+          <p>
+            Esplora la selezione completa nella vetrina.
+            Consulta le categorie e scegli liberamente se
+            un prodotto fa al caso tuo.
+          </p>
+          <a class="btn btn-dark"
+             href="https://www.amazon.it/shop/antonello.official1/list/1KNHVVIOC5G3P?ref_=aipsflist&amp;tag=antonellosalv-21"
+             target="_blank" rel="noopener noreferrer sponsored">
+            Visita la vetrina →
+          </a>
+          <p class="disclosure">
+            In qualità di Affiliato Amazon io ricevo un guadagno
+            dagli acquisti idonei.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SOCIAL -->
+    <section class="section" id="social">
+      <div class="container">
+        <div class="section-head">
+          <p class="kicker">Continua il viaggio</p>
+          <h2>Una community, più modi per partecipare.</h2>
+          <p>
+            Segui i nuovi contenuti, guarda i video e torna al sito
+            per scoprire altre idee.
+          </p>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="symbol" aria-hidden="true">▶️</div>
+            <h3>YouTube</h3>
+            <p>Shorts, idee futuristiche e nuove sfide.</p>
+            <a class="btn btn-dark"
+               href="https://www.youtube.com/@antonellosalvatoremastropa267"
+               target="_blank" rel="noopener noreferrer">
+              Vai su YouTube →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">🎵</div>
+            <h3>TikTok</h3>
+            <p>Pensieri, riflessioni e contenuti brevi.</p>
+            <a class="btn btn-dark"
+               href="https://www.tiktok.com/@antonello.official1"
+               target="_blank" rel="noopener noreferrer">
+              Vai su TikTok →
+            </a>
+          </article>
+
+          <article class="card">
+            <div class="symbol" aria-hidden="true">💼</div>
+            <h3>LinkedIn</h3>
+            <p>Il profilo professionale e i contatti di lavoro.</p>
+            <a class="btn btn-dark"
+               href="https://www.linkedin.com/in/antonello-salvatore-mastropaolo-11197aa7"
+               target="_blank" rel="noopener noreferrer">
+              Apri LinkedIn →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATTI -->
+    <section class="section feature" id="contatti">
+      <div class="container">
+        <div class="contact-panel">
+          <p class="kicker">Il progetto continua</p>
+          <h2>Una luce, una scoperta, una nuova idea.</h2>
+          <p>
+            Per informazioni sul libro, collaborazioni o richieste
+            relative ai servizi digitali, puoi scrivermi via email.
+          </p>
+
+          <div class="actions">
+            <a class="btn btn-dark"
+               href="mailto:amastropaolo1@gmail.com">
+              Scrivimi una email →
+            </a>
+
+            <a class="btn btn-outline"
+               href="https://luce-crescita.github.io/progetti.html">
+              InnovationPortfolio X∞
+            </a>
+
+            <a class="btn btn-outline"
+               href="https://luce-crescita.github.io/energia-eterna.html">
+              X∞ Energy Weaver
+            </a>
+
+            <a class="btn btn-outline"
+               href="https://luce-crescita.github.io/sorprese.html">
+              Sorprese X∞
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="#home">luceecrescita<span> ✦</span></a>
+        <p>Parole, emozioni, creatività e futuro.</p>
+        <p>© 2026 LUCEECRESCITA. Tutti i diritti riservati.</p>
+
+        <p class="copyright-note">
+          Contenuti e progetti originali di LUCEECRESCITA sono
+          riservati nei limiti previsti dalla legge. La riproduzione
+          o l'utilizzo non autorizzato dei contenuti protetti
+          non è consentito.
+        </p>
+      </div>
+
+      <nav class="footer-links" aria-label="Collegamenti a piè di pagina">
+        <a href="https://luce-crescita.github.io/sorprese.html">
+          Sorprese X∞
+        </a>
+        <a href="https://luce-crescita.github.io/progetti.html">
+          INNOVATIONPORTFOLIO
+        </a>
+        <a href="https://luce-crescita.github.io/energia-eterna.html">
+          Energy Weaver
+        </a>
+        <a href="https://www.youtube.com/@antonellosalvatoremastropa267"
+           target="_blank" rel="noopener noreferrer">
+          YouTube
+        </a>
+        <a href="mailto:amastropaolo1@gmail.com">
+          Contatti
+        </a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
+```
+
+## Come pubblicarlo
+
+1. Apri il repository [luce-crescita.github.io su GitHub](https://github.com/luce-crescita/luce-crescita.github.io).
+2. Apri il file `index.html`.
+3. Tocca la matita per modificarlo.
+4. Seleziona il codice precedente, sostituiscilo integralmente e salva con **Commit changes**.
+5. Apri [il sito pubblicato](https://luce-crescita.github.io/) e controlla i collegamenti da smartphone.
+
+**Importante:** questo è il codice aggiornato da pubblicare; non ho modificato direttamente il repository. La sezione dei servizi è una proposta commerciale, non la conferma che un servizio sia già operativo o che abbia già clienti.
+
+Dopo la pubblicazione, il prossimo passo sarà verificare il percorso del libro e preparare un esempio concreto del servizio web da mostrare ai potenziali clienti. Non modificheremo `projects.js`, `projects.json` o le altre pagine del progetto in questa fase.
