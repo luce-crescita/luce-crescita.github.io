@@ -1,1 +1,796 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUCEECRESCITA X∞ - Laboratorio Interdimensionale</title>
+  <style>
+    :root {
+      --bg: #03030c;
+      --card-bg: rgba(13, 17, 34, 0.75);
+      --border: rgba(110, 168, 255, 0.2);
+      --cyan: #00f0ff;
+      --magenta: #ff0077;
+      --gold: #ffd700;
+      --text: #e0e8ff;
+      --glow: rgba(0, 240, 255, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #0d0f2b 0%, var(--bg) 80%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px 60px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      max-width: 960px;
+      margin-bottom: 25px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: #8da2d8;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .home-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .home-link:hover { opacity: 0.8; }
+
+    .title-box {
+      text-align: center;
+      margin: 15px 0 25px;
+    }
+
+    .title-box h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      background: linear-gradient(135deg, #fff 20%, var(--cyan) 60%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .title-box h2 {
+      font-size: 1.15rem;
+      color: #a3c4ff;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .title-box p {
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      color: #8a9bbd;
+      line-height: 1.5;
+    }
+
+    .audio-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .audio-btn {
+      background: linear-gradient(90deg, #102454, #2a1145);
+      border: 1px solid var(--cyan);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--glow);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+    }
+
+    .audio-btn.active {
+      background: linear-gradient(90deg, #00b4d8, #7209b7);
+      border-color: #fff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .card-header h3 {
+      font-size: 1.45rem;
+      color: #fff;
+    }
+
+    .card-desc {
+      color: #9cb2db;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    .canvas-container {
+      width: 100%;
+      height: 380px;
+      border-radius: 12px;
+      background: #020207;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    canvas:active { cursor: grabbing; }
+
+    .hud-overlay {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(4, 8, 20, 0.8);
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      font-size: 0.9rem;
+      font-family: monospace;
+      color: var(--cyan);
+      pointer-events: none;
+    }
+
+    .controls-panel {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .resonance-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: #a8b8db;
+    }
+
+    .bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #11182c;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 10px var(--cyan);
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #7e91bd;
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+
+    .info-bullets {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.88rem;
+      color: #a0b0d3;
+    }
+
+    .info-bullets div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <div class="brand"><span>🎨</span> LUCEECRESCITA X∞</div>
+      <a href="#" class="home-link">← Home</a>
+    </div>
+
+    <div class="title-box">
+      <h2>Laboratorio Interdimensionale</h2>
+      <h1>Giochi 3D &amp; 4D X∞</h1>
+      <p>Esplora geometrie oltre la percezione ordinaria: tocca la quarta dimensione con il Tesseract sonoro e viaggia nel tunnel di curvatura a 60 FPS.</p>
+    </div>
+
+    <div class="audio-btn-wrap">
+      <button class="audio-btn" id="audioToggle">
+        <span id="audioIcon">🔊</span> <span id="audioText">Attiva Audio Spaziale 4D</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SEZIONE 1: TESSERACT 4D -->
+    <section class="game-card">
+      <div class="card-badge">Esperienza Quadridimensionale</div>
+      <div class="card-header">
+        <span style="font-size: 1.6rem;">💠</span>
+        <h3>Il Tesseract 4D Sonoro</h3>
+      </div>
+      <p class="card-desc">
+        Trascina il dito/mouse sul canvas per ruotare l'ipercubo nel piano 4D (XW e ZW). Trova la risonanza armonica al 100%!
+      </p>
+
+      <div class="canvas-container">
+        <div class="hud-overlay" id="tesseractHud">Risonanza 4D: 0%</div>
+        <canvas id="tesseractCanvas"></canvas>
+      </div>
+
+      <div class="controls-panel">
+        <div class="resonance-bar-wrap">
+          <div class="bar-labels">
+            <span>Risonanza 4D</span>
+            <span id="resValueText" style="color: var(--cyan); font-weight: bold;">0%</span>
+          </div>
+          <div class="bar-bg">
+            <div class="bar-fill" id="resBar"></div>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <label style="font-size: 0.88rem; color: #a8b8db;">Deformazione Asse W (4ª Dimensione):</label>
+          <input type="range" id="wSlider" min="1.1" max="4.5" step="0.01" value="2.2">
+          <div class="slider-labels">
+            <span>3D Puro</span>
+            <span>Iper-Spazio 4D</span>
+          </div>
+        </div>
+
+        <div class="info-bullets">
+          <div><span>🔹</span> 16 Vertici &amp; 32 Spigoli calcolati con matrici proiettive a 4 dimensioni.</div>
+          <div><span>🔹</span> Quando allinei gli assi, l'oscillatore suona l'accordo sacro a 432 Hz + 528 Hz.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 2: IPERSPAZIO 3D -->
+    <section class="game-card">
+      <div class="card-badge">Volo in Prima Persona</div>
+      <div class="card-header">
+        <span style="font-size: 1.6rem;">🚀</span>
+        <h3>Viaggio nell'Iperspazio 3D</h3>
+      </div>
+      <p class="card-desc">
+        Muovi il dito/mouse per pilotare il flusso e raccogliere i globi di energia pura evitando il vuoto.
+      </p>
+
+      <div class="canvas-container">
+        <div class="hud-overlay" id="flightHud">Energia: 0</div>
+        <canvas id="flightCanvas"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ========================================================
+       SISTEMA AUDIO SPAZIALE 4D & FREQUENZE SACRE (432Hz + 528Hz)
+       ======================================================== */
+    let audioCtx = null;
+    let isAudioActive = false;
+    let osc432, osc528, gainMaster, filterNode;
+
+    function initAudio() {
+      if (audioCtx) return;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      gainMaster = audioCtx.createGain();
+      gainMaster.gain.setValueAtTime(0.001, audioCtx.currentTime);
+
+      filterNode = audioCtx.createBiquadFilter();
+      filterNode.type = 'lowpass';
+      filterNode.frequency.setValueAtTime(600, audioCtx.currentTime);
+
+      // Oscillatore Armonico 432 Hz (Frequenza naturale A4)
+      osc432 = audioCtx.createOscillator();
+      osc432.type = 'sine';
+      osc432.frequency.setValueAtTime(432, audioCtx.currentTime);
+
+      // Oscillatore di Trasformazione 528 Hz (Solfeggio Sacro / Risonanza DNA)
+      osc528 = audioCtx.createOscillator();
+      osc528.type = 'triangle';
+      osc528.frequency.setValueAtTime(528, audioCtx.currentTime);
+
+      const gain432 = audioCtx.createGain();
+      const gain528 = audioCtx.createGain();
+      gain432.gain.value = 0.5;
+      gain528.gain.value = 0.5;
+
+      osc432.connect(gain432);
+      osc528.connect(gain528);
+
+      gain432.connect(filterNode);
+      gain528.connect(filterNode);
+
+      filterNode.connect(gainMaster);
+      gainMaster.connect(audioCtx.destination);
+
+      osc432.start();
+      osc528.start();
+    }
+
+    const audioToggleBtn = document.getElementById('audioToggle');
+    audioToggleBtn.addEventListener('click', () => {
+      initAudio();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      isAudioActive = !isAudioActive;
+      if (isAudioActive) {
+        audioToggleBtn.classList.add('active');
+        document.getElementById('audioText').textContent = "Audio Spaziale 4D Attivo";
+        gainMaster.gain.setTargetAtTime(0.2, audioCtx.currentTime, 0.1);
+      } else {
+        audioToggleBtn.classList.remove('active');
+        document.getElementById('audioText').textContent = "Attiva Audio Spaziale 4D";
+        gainMaster.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.1);
+      }
+    });
+
+    // Modulazione sonora basata sulla risonanza dell'ipercubo
+    function updateTesseractSound(resonanceRatio) {
+      if (!audioCtx || !isAudioActive) return;
+      // Allinea il filtro sonoro alla risonanza (da morbido a cristallino)
+      const targetFreq = 400 + (resonanceRatio * 3200);
+      filterNode.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.05);
+      
+      const targetGain = 0.08 + (resonanceRatio * 0.28);
+      gainMaster.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.05);
+    }
+
+    // Effetto sonoro al raccoglimento dell'energia
+    function playOrbCollectSound() {
+      if (!audioCtx || !isAudioActive) return;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(864, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1728, audioCtx.currentTime + 0.18);
+      g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+      osc.connect(g);
+      g.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    }
+
+
+    /* ========================================================
+       1. TESSERACT 4D (GEOMETRIA & MATRICI PROIETTIVE 4D -> 3D -> 2D)
+       ======================================================== */
+    const tCanvas = document.getElementById('tesseractCanvas');
+    const tCtx = tCanvas.getContext('2d');
+    const resHud = document.getElementById('tesseractHud');
+    const resValueText = document.getElementById('resValueText');
+    const resBar = document.getElementById('resBar');
+    const wSlider = document.getElementById('wSlider');
+
+    function resizeCanvas(c) {
+      const rect = c.getBoundingClientRect();
+      if (c.width !== rect.width || c.height !== rect.height) {
+        c.width = rect.width;
+        c.height = rect.height;
+      }
+    }
+
+    // Generazione dei 16 vertici di un ipercubo unitario in 4D: (±1, ±1, ±1, ±1)
+    const vertices4D = [];
+    for (let i = 0; i < 16; i++) {
+      vertices4D.push([
+        (i & 1) ? 1 : -1,
+        (i & 2) ? 1 : -1,
+        (i & 4) ? 1 : -1,
+        (i & 8) ? 1 : -1
+      ]);
+    }
+
+    // Generazione dei 32 spigoli (connessioni tra vertici con distanza di Hamming = 1)
+    const edges4D = [];
+    for (let i = 0; i < 16; i++) {
+      for (let j = i + 1; j < 16; j++) {
+        let diff = 0;
+        for (let k = 0; k < 4; k++) {
+          if (vertices4D[i][k] !== vertices4D[j][k]) diff++;
+        }
+        if (diff === 1) edges4D.push([i, j]);
+      }
+    }
+
+    // Angoli di rotazione quadridimensionali
+    let angleXY = 0;
+    let angleZW = 0;
+    let angleXW = 0;
+    let angleYZ = 0;
+
+    let isDraggingTesseract = false;
+    let lastMouseX = 0, lastMouseY = 0;
+
+    tCanvas.addEventListener('pointerdown', (e) => {
+      isDraggingTesseract = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      tCanvas.setPointerCapture(e.pointerId);
+    });
+
+    window.addEventListener('pointerup', () => { isDraggingTesseract = false; });
+
+    tCanvas.addEventListener('pointermove', (e) => {
+      if (!isDraggingTesseract) return;
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      // La rotazione 4D si attiva muovendo il mouse
+      angleXW += dx * 0.012;
+      angleZW += dy * 0.012;
+      angleXY += dx * 0.006;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+
+    // Funzione di rotazione matrice in 4D
+    function rotate4D(v) {
+      let [x, y, z, w] = v;
+
+      // Rotazione su piano XW
+      let cos = Math.cos(angleXW), sin = Math.sin(angleXW);
+      let x1 = x * cos - w * sin;
+      let w1 = x * sin + w * cos;
+      x = x1; w = w1;
+
+      // Rotazione su piano ZW
+      cos = Math.cos(angleZW); sin = Math.sin(angleZW);
+      let z1 = z * cos - w * sin;
+      let w2 = z * sin + w * cos;
+      z = z1; w = w2;
+
+      // Rotazione su piano XY (rotazione 3D classica)
+      cos = Math.cos(angleXY); sin = Math.sin(angleXY);
+      let x2 = x * cos - y * sin;
+      let y2 = x * sin + y * cos;
+      x = x2; y = y2;
+
+      return [x, y, z, w];
+    }
+
+    function renderTesseract() {
+      resizeCanvas(tCanvas);
+      tCtx.clearRect(0, 0, tCanvas.width, tCanvas.height);
+
+      const cx = tCanvas.width / 2;
+      const cy = tCanvas.height / 2;
+      const scale = Math.min(cx, cy) * 0.75;
+      const distance4D = parseFloat(wSlider.value); // Deformazione W
+
+      // Rotazione naturale minima continua
+      if (!isDraggingTesseract) {
+        angleXW += 0.007;
+        angleZW += 0.005;
+        angleXY += 0.003;
+      }
+
+      // Proiezione 4D -> 3D -> 2D
+      const projected2D = [];
+      const projectedW = [];
+
+      for (let i = 0; i < 16; i++) {
+        const rotated = rotate4D(vertices4D[i]);
+        // Proiezione prospettica quadridimensionale: 1 / (distance4D - w)
+        const wDist = distance4D - rotated[3];
+        const proj4to3 = 1 / Math.max(0.2, wDist);
+
+        const x3 = rotated[0] * proj4to3;
+        const y3 = rotated[1] * proj4to3;
+        const z3 = rotated[2] * proj4to3;
+
+        // Proiezione 3D -> 2D
+        const cameraDist = 2.5;
+        const proj3to2 = 1 / (cameraDist - z3 * 0.4);
+
+        const x2 = cx + x3 * proj3to2 * scale;
+        const y2 = cy + y3 * proj3to2 * scale;
+
+        projected2D.push({ x: x2, y: y2 });
+        projectedW.push(rotated[3]);
+      }
+
+      // Tracciamento dei 32 spigoli con bagliore neon
+      tCtx.lineWidth = 2;
+      edges4D.forEach(([i, j]) => {
+        const p1 = projected2D[i];
+        const p2 = projected2D[j];
+        const avgW = (projectedW[i] + projectedW[j]) / 2; // Valore 4D per la gradazione cromatica
+        
+        // Gradiente cromatico in base all'asse W (Ciano <-> Magenta)
+        const hue = 180 + ((avgW + 1.4) / 2.8) * 140;
+        tCtx.strokeStyle = `hsla(${hue}, 100%, 65%, 0.75)`;
+        tCtx.shadowColor = `hsl(${hue}, 100%, 50%)`;
+        tCtx.shadowBlur = 8;
+
+        tCtx.beginPath();
+        tCtx.moveTo(p1.x, p1.y);
+        tCtx.lineTo(p2.x, p2.y);
+        tCtx.stroke();
+      });
+
+      // Disegno dei 16 vertici
+      projected2D.forEach((p, idx) => {
+        const wVal = projectedW[idx];
+        const size = Math.max(2, 4 + wVal * 2);
+        tCtx.fillStyle = wVal > 0 ? '#00f0ff' : '#ff0077';
+        tCtx.shadowBlur = 12;
+        tCtx.shadowColor = tCtx.fillStyle;
+        tCtx.beginPath();
+        tCtx.arc(p.x, p.y, size, 0, Math.PI * 2);
+        tCtx.fill();
+      });
+      tCtx.shadowBlur = 0;
+
+      // Calcolo Risonanza Armonica (0% - 100%)
+      // Raggiunge il 100% quando l'asse W e gli angoli si sincronizzano su multipli armonici
+      const harmXW = Math.abs(Math.sin(angleXW * 2));
+      const harmZW = Math.abs(Math.cos(angleZW * 2));
+      const harmonicFactor = (harmXW * 0.5 + harmZW * 0.5);
+      const resPercent = Math.min(100, Math.floor(harmonicFactor * 100));
+
+      resHud.textContent = `Risonanza 4D: ${resPercent}%`;
+      resValueText.textContent = `${resPercent}%`;
+      resBar.style.width = `${resPercent}%`;
+
+      updateTesseractSound(harmonicFactor);
+
+      requestAnimationFrame(renderTesseract);
+    }
+    renderTesseract();
+
+
+    /* ========================================================
+       2. VIAGGIO NELL'IPERSPAZIO 3D (TUNNEL DI CURVATURA 60 FPS)
+       ======================================================== */
+    const fCanvas = document.getElementById('flightCanvas');
+    const fCtx = fCanvas.getContext('2d');
+    const flightHud = document.getElementById('flightHud');
+
+    let energyScore = 0;
+    let targetShipX = 0;
+    let targetShipY = 0;
+    let shipX = 0;
+    let shipY = 0;
+
+    // Generazione di anelli per il tunnel di curvatura
+    const tunnelRings = [];
+    const NUM_RINGS = 24;
+    for (let i = 0; i < NUM_RINGS; i++) {
+      tunnelRings.push({ z: (i / NUM_RINGS) * 1000 });
+    }
+
+    // Globi di pura energia e anomalie del vuoto
+    const cosmicEntities = [];
+    function spawnEntity() {
+      const isOrb = Math.random() > 0.35; // 65% Globi di energia, 35% Buchi neri
+      cosmicEntities.push({
+        x: (Math.random() - 0.5) * 600,
+        y: (Math.random() - 0.5) * 600,
+        z: 1100,
+        type: isOrb ? 'energy' : 'void',
+        size: isOrb ? 18 : 22,
+        collected: false
+      });
+    }
+
+    fCanvas.addEventListener('pointermove', (e) => {
+      const rect = fCanvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      targetShipX = (x - 0.5) * 450;
+      targetShipY = (y - 0.5) * 450;
+    });
+
+    let frameCount = 0;
+    function renderFlight() {
+      resizeCanvas(fCanvas);
+      fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
+
+      const cx = fCanvas.width / 2;
+      const cy = fCanvas.height / 2;
+      const speed = 14;
+
+      // Movimento fluido della navetta
+      shipX += (targetShipX - shipX) * 0.1;
+      shipY += (targetShipY - shipY) * 0.1;
+
+      // Disegno del Tunnel di Curvatura Iperspaziale
+      tunnelRings.forEach(ring => {
+        ring.z -= speed;
+        if (ring.z <= 10) ring.z = 1000;
+
+        const fov = 320 / ring.z;
+        const ringX = cx - shipX * fov * 0.6;
+        const ringY = cy - shipY * fov * 0.6;
+        const radius = 450 * fov;
+
+        const alpha = Math.min(1, (1000 - ring.z) / 400);
+        fCtx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.4})`;
+        fCtx.lineWidth = 2;
+        fCtx.beginPath();
+        fCtx.arc(ringX, ringY, Math.max(1, radius), 0, Math.PI * 2);
+        fCtx.stroke();
+      });
+
+      // Spawn controllato di globi
+      frameCount++;
+      if (frameCount % 30 === 0) {
+        spawnEntity();
+      }
+
+      // Aggiornamento e collisione degli elementi interdimensionali
+      for (let i = cosmicEntities.length - 1; i >= 0; i--) {
+        const ent = cosmicEntities[i];
+        ent.z -= speed;
+
+        if (ent.z <= 20) {
+          cosmicEntities.splice(i, 1);
+          continue;
+        }
+
+        const fov = 320 / ent.z;
+        const screenX = cx + (ent.x - shipX) * fov;
+        const screenY = cy + (ent.y - shipY) * fov;
+        const renderRadius = ent.size * fov;
+
+        // Rilevamento della collisione col puntatore centrale
+        const distFromCenter = Math.hypot(screenX - cx, screenY - cy);
+        if (ent.z < 120 && ent.z > 30 && distFromCenter < 40 && !ent.collected) {
+          ent.collected = true;
+          if (ent.type === 'energy') {
+            energyScore += 10;
+            playOrbCollectSound();
+          } else {
+            energyScore = Math.max(0, energyScore - 15);
+          }
+          flightHud.textContent = `Energia: ${energyScore}`;
+          cosmicEntities.splice(i, 1);
+          continue;
+        }
+
+        // Rendering dell'entità
+        if (ent.type === 'energy') {
+          // Globo di Pura Energia (Oro / Ciano Pulsante)
+          const glow = fCtx.createRadialGradient(screenX, screenY, 1, screenX, screenY, renderRadius * 2);
+          glow.addColorStop(0, '#ffffff');
+          glow.addColorStop(0.4, '#ffd700');
+          glow.addColorStop(1, 'rgba(0, 240, 255, 0)');
+          fCtx.fillStyle = glow;
+          fCtx.beginPath();
+          fCtx.arc(screenX, screenY, renderRadius * 2, 0, Math.PI * 2);
+          fCtx.fill();
+        } else {
+          // Anomalia del Vuoto (Buco Nero pulsante)
+          fCtx.fillStyle = '#ff0055';
+          fCtx.shadowColor = '#ff0033';
+          fCtx.shadowBlur = 15;
+          fCtx.beginPath();
+          fCtx.arc(screenX, screenY, renderRadius, 0, Math.PI * 2);
+          fCtx.fill();
+          fCtx.shadowBlur = 0;
+        }
+      }
+
+      // Reticolo di guida della navicella (Centro schermo)
+      fCtx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+      fCtx.lineWidth = 1.5;
+      fCtx.beginPath();
+      fCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+      fCtx.moveTo(cx - 20, cy); fCtx.lineTo(cx + 20, cy);
+      fCtx.moveTo(cx, cy - 20); fCtx.lineTo(cx, cy + 20);
+      fCtx.stroke();
+
+      requestAnimationFrame(renderFlight);
+    }
+    renderFlight();
+  </script>
+</body>
+</html>
