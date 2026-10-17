@@ -1,1 +1,371 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LUCEECRESCITA X∞ - Giochi 3D & 4D</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+    body {
+      background: #03030c;
+      color: #e0e8ff;
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 16px 12px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header { width: 100%; max-width: 800px; margin-bottom: 20px; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .brand { font-weight: 800; color: #fff; font-size: 1.1rem; }
+    .home-link {
+      background: #00f0ff;
+      color: #03030c;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    .status-box {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid #00f0ff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: #00f0ff;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
+    }
+    .card {
+      background: #0d1122;
+      border: 1px solid rgba(110, 168, 255, 0.3);
+      border-radius: 16px;
+      padding: 18px;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+    h2 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
+    p { font-size: 0.88rem; color: #9cb2db; margin-bottom: 14px; }
+    .canvas-box {
+      width: 100%;
+      height: 350px;
+      background: #000005;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      position: relative;
+      touch-action: none;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+    }
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.7);
+      color: #00f0ff;
+      font-family: monospace;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+    .btn-audio {
+      background: linear-gradient(90deg, #00b4d8, #7209b7);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px auto;
+      display: block;
+      font-size: 0.95rem;
+    }
+    input[type=range] { width: 100%; margin-top: 10px; accent-color: #00f0ff; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <div class="brand">🎨 LUCEECRESCITA X∞</div>
+      <a href="index.html" class="home-link">← Home</a>
+    </div>
+    <div class="status-box" id="diagnostic">Stato Motore: Avvio in corso...</div>
+    <button class="btn-audio" id="audioBtn">🔊 Attiva Audio 432 Hz + 528 Hz</button>
+  </header>
+
+  <!-- 1. TESSERACT 4D -->
+  <div class="card">
+    <h2>💠 Tesseract 4D Sonoro</h2>
+    <p>Trascina il dito/mouse nel riquadro per ruotare l'ipercubo nello spazio 4D.</p>
+    <div class="canvas-box">
+      <div class="hud" id="tesseractHud">Risonanza: 0%</div>
+      <canvas id="c4d"></canvas>
+    </div>
+    <div style="margin-top: 12px;">
+      <label style="font-size: 0.8rem; color: #a8b8db;">Curvatura Asse W (4ª Dimensione):</label>
+      <input type="range" id="wRange" min="1.3" max="3.8" step="0.05" value="2.2">
+    </div>
+  </div>
+
+  <!-- 2. IPERSPAZIO 3D -->
+  <div class="card">
+    <h2>🚀 Viaggio Iperspazio 3D</h2>
+    <p>Muovi il dito/mouse nel riquadro per pilotare e raccogliere i globi oro.</p>
+    <div class="canvas-box">
+      <div class="hud" id="hud3d">Energia: 0</div>
+      <canvas id="c3d"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const diag = document.getElementById('diagnostic');
+
+    try {
+      /* ==================== 1. TESSERACT 4D ==================== */
+      const c4d = document.getElementById('c4d');
+      const ctx4d = c4d.getContext('2d');
+      const hud4d = document.getElementById('tesseractHud');
+      const wRange = document.getElementById('wRange');
+
+      const v4 = [];
+      for (let i = 0; i < 16; i++) {
+        v4.push([(i&1)?1:-1, (i&2)?1:-1, (i&4)?1:-1, (i&8)?1:-1]);
+      }
+      const e4 = [];
+      for (let i = 0; i < 16; i++) {
+        for (let j = i + 1; j < 16; j++) {
+          let d = 0;
+          for (let k = 0; k < 4; k++) if (v4[i][k] !== v4[j][k]) d++;
+          if (d === 1) e4.push([i, j]);
+        }
+      }
+
+      let axw = 0, azw = 0, axy = 0;
+      let drag4d = false, lx = 0, ly = 0;
+
+      function start4D(x, y) { drag4d = true; lx = x; ly = y; }
+      function move4D(x, y) {
+        if (!drag4d) return;
+        axw += (x - lx) * 0.015;
+        azw += (y - ly) * 0.015;
+        axy += (x - lx) * 0.008;
+        lx = x; ly = y;
+      }
+
+      c4d.addEventListener('mousedown', e => start4D(e.clientX, e.clientY));
+      window.addEventListener('mouseup', () => drag4d = false);
+      c4d.addEventListener('mousemove', e => move4D(e.clientX, e.clientY));
+
+      c4d.addEventListener('touchstart', e => {
+        if (e.touches.length > 0) start4D(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+      c4d.addEventListener('touchmove', e => {
+        if (e.touches.length > 0) move4D(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+      }, { passive: false });
+
+      function loop4D() {
+        const w = c4d.clientWidth || 320;
+        const h = c4d.clientHeight || 350;
+        if (c4d.width !== w || c4d.height !== h) {
+          c4d.width = w;
+          c4d.height = h;
+        }
+
+        ctx4d.clearRect(0, 0, w, h);
+        const cx = w / 2, cy = h / 2;
+        const scale = Math.min(cx, cy) * 0.72;
+        const distW = parseFloat(wRange.value);
+
+        axw += 0.008;
+        azw += 0.006;
+        axy += 0.004;
+
+        const p2 = [], pW = [];
+        for (let i = 0; i < 16; i++) {
+          let [x, y, z, wVal] = v4[i];
+          // XW
+          let x1 = x * Math.cos(axw) - wVal * Math.sin(axw);
+          let w1 = x * Math.sin(axw) + wVal * Math.cos(axw);
+          // ZW
+          let z1 = z * Math.cos(azw) - w1 * Math.sin(azw);
+          let w2 = z * Math.sin(azw) + w1 * Math.cos(azw);
+          // XY
+          let x2 = x1 * Math.cos(axy) - y * Math.sin(axy);
+          let y2 = x1 * Math.sin(axy) + y * Math.cos(axy);
+
+          let f4 = 1 / Math.max(0.2, distW - w2);
+          let f3 = 1 / (2.6 - (z1 * f4) * 0.45);
+
+          p2.push({ x: cx + (x2 * f4) * f3 * scale, y: cy + (y2 * f4) * f3 * scale });
+          pW.push(w2);
+        }
+
+        ctx4d.lineWidth = 2;
+        for (let k = 0; k < e4.length; k++) {
+          const [i, j] = e4[k];
+          const avgW = (pW[i] + pW[j]) / 2;
+          ctx4d.strokeStyle = `hsl(${180 + avgW * 60}, 100%, 65%)`;
+          ctx4d.beginPath();
+          ctx4d.moveTo(p2[i].x, p2[i].y);
+          ctx4d.lineTo(p2[j].x, p2[j].y);
+          ctx4d.stroke();
+        }
+
+        for (let i = 0; i < 16; i++) {
+          ctx4d.fillStyle = pW[i] > 0 ? '#00f0ff' : '#ff0077';
+          ctx4d.beginPath();
+          ctx4d.arc(p2[i].x, p2[i].y, 4, 0, Math.PI * 2);
+          ctx4d.fill();
+        }
+
+        const res = Math.floor(((Math.abs(Math.sin(axw * 2)) + Math.abs(Math.cos(azw * 2))) / 2) * 100);
+        hud4d.textContent = `Risonanza 4D: ${res}%`;
+
+        requestAnimationFrame(loop4D);
+      }
+      requestAnimationFrame(loop4D);
+
+
+      /* ==================== 2. IPERSPAZIO 3D ==================== */
+      const c3d = document.getElementById('c3d');
+      const ctx3d = c3d.getContext('2d');
+      const hud3d = document.getElementById('hud3d');
+
+      let energy = 0;
+      let tx = 0, ty = 0, cx3 = 0, cy3 = 0;
+
+      const stars = [];
+      for (let i = 0; i < 70; i++) {
+        stars.push({ x: (Math.random() - 0.5) * 800, y: (Math.random() - 0.5) * 800, z: Math.random() * 800 });
+      }
+
+      const orbs = [];
+      function spawnOrb() {
+        orbs.push({ x: (Math.random() - 0.5) * 450, y: (Math.random() - 0.5) * 450, z: 850 });
+      }
+
+      function update3DPos(clientX, clientY) {
+        const rect = c3d.getBoundingClientRect();
+        tx = ((clientX - rect.left) / rect.width - 0.5) * 400;
+        ty = ((clientY - rect.top) / rect.height - 0.5) * 400;
+      }
+
+      c3d.addEventListener('mousemove', e => update3DPos(e.clientX, e.clientY));
+      c3d.addEventListener('touchmove', e => {
+        if (e.touches.length > 0) update3DPos(e.touches[0].clientX, e.touches[0].clientY);
+        e.preventDefault();
+      }, { passive: false });
+
+      let fCount = 0;
+      function loop3D() {
+        const w = c3d.clientWidth || 320;
+        const h = c3d.clientHeight || 350;
+        if (c3d.width !== w || c3d.height !== h) {
+          c3d.width = w;
+          c3d.height = h;
+        }
+
+        ctx3d.clearRect(0, 0, w, h);
+        const midX = w / 2, midY = h / 2;
+
+        cx3 += (tx - cx3) * 0.1;
+        cy3 += (ty - cy3) * 0.1;
+
+        // Stelle
+        ctx3d.fillStyle = '#ffffff';
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.z -= 14;
+          if (s.z <= 10) s.z = 800;
+          const f = 280 / s.z;
+          const sx = midX + (s.x - cx3) * f;
+          const sy = midY + (s.y - cy3) * f;
+          if (sx > 0 && sx < w && sy > 0 && sy < h) {
+            ctx3d.fillRect(sx, sy, Math.max(1, 2.5 * f), Math.max(1, 2.5 * f));
+          }
+        }
+
+        // Globi Oro
+        fCount++;
+        if (fCount % 35 === 0) spawnOrb();
+
+        for (let i = orbs.length - 1; i >= 0; i--) {
+          const o = orbs[i];
+          o.z -= 14;
+          if (o.z <= 15) { orbs.splice(i, 1); continue; }
+
+          const f = 280 / o.z;
+          const ox = midX + (o.x - cx3) * f;
+          const oy = midY + (o.y - cy3) * f;
+
+          if (o.z < 100 && Math.hypot(ox - midX, oy - midY) < 35) {
+            energy += 10;
+            hud3d.textContent = `Energia: ${energy}`;
+            orbs.splice(i, 1);
+            continue;
+          }
+
+          ctx3d.fillStyle = '#ffd700';
+          ctx3d.beginPath();
+          ctx3d.arc(ox, oy, Math.max(2, 18 * f), 0, Math.PI * 2);
+          ctx3d.fill();
+        }
+
+        // Mirino
+        ctx3d.strokeStyle = '#00f0ff';
+        ctx3d.beginPath();
+        ctx3d.arc(midX, midY, 14, 0, Math.PI * 2);
+        ctx3d.stroke();
+
+        requestAnimationFrame(loop3D);
+      }
+      requestAnimationFrame(loop3D);
+
+      /* ==================== 3. AUDIO ==================== */
+      let aCtx = null;
+      document.getElementById('audioBtn').addEventListener('click', () => {
+        if (!aCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          aCtx = new AC();
+          const o1 = aCtx.createOscillator();
+          const o2 = aCtx.createOscillator();
+          const g = aCtx.createGain();
+          o1.frequency.value = 432;
+          o2.frequency.value = 528;
+          g.gain.value = 0.15;
+          o1.connect(g);
+          o2.connect(g);
+          g.connect(aCtx.destination);
+          o1.start();
+          o2.start();
+          document.getElementById('audioBtn').textContent = "🔊 Audio 432+528 Hz ATTIVO";
+        } else if (aCtx.state === 'suspended') {
+          aCtx.resume();
+        }
+      });
+
+      diag.textContent = "✅ Motore 3D/4D e Canvas: ATTIVI E IN ESECUZIONE (60 FPS)";
+      diag.style.color = "#00ff88";
+      diag.style.borderColor = "#00ff88";
+
+    } catch (err) {
+      diag.textContent = "❌ ERRORE: " + err.message;
+      diag.style.color = "#ff0055";
+      diag.style.borderColor = "#ff0055";
+    }
+  </script>
+</body>
+</html>
