@@ -1,1 +1,548 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LUCEECRESCITA X∞ - Giochi 3D, 4D & 5D</title>
+  <style>
+    :root {
+      --bg: #03030c;
+      --card-bg: rgba(13, 17, 34, 0.88);
+      --border: rgba(110, 168, 255, 0.25);
+      --cyan: #00f0ff;
+      --magenta: #ff0077;
+      --gold: #ffd700;
+      --purple5d: #b537f2;
+      --text: #e0e8ff;
+      --glow: rgba(0, 240, 255, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 15%, #0e1233 0%, var(--bg) 85%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 12px 60px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      max-width: 880px;
+      margin-bottom: 20px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+    }
+
+    .home-link {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .home-link:hover, .home-link:active {
+      background: var(--cyan);
+      color: #03030c;
+      box-shadow: 0 0 14px var(--cyan);
+    }
+
+    .title-box {
+      text-align: center;
+      margin: 10px 0 18px;
+    }
+
+    .title-box h1 {
+      font-size: clamp(1.6rem, 5vw, 2.5rem);
+      background: linear-gradient(135deg, #ffffff 15%, var(--cyan) 50%, var(--purple5d) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+
+    .title-box p {
+      max-width: 660px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      color: #8da0c4;
+      line-height: 1.45;
+    }
+
+    /* PULSANTE AUDIO CON SPEGNIMENTO SICURO */
+    .audio-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 14px 0 22px;
+    }
+
+    .audio-btn {
+      background: #11182c;
+      border: 2px solid #556994;
+      color: #a6b8de;
+      padding: 12px 26px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+    }
+
+    .audio-btn.active {
+      background: linear-gradient(90deg, #ff0055, #b537f2);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255, 0, 85, 0.7);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 880px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(14px, 3.5vw, 22px);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+    .badge-5d { color: var(--purple5d); }
+    .badge-mute { color: #00ffaa; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .card-header h3 {
+      font-size: clamp(1.2rem, 3.5vw, 1.45rem);
+      color: #fff;
+    }
+
+    .card-desc {
+      color: #9cb2db;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .canvas-box {
+      width: 100%;
+      height: 350px;
+      border-radius: 12px;
+      background: #020208;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .box-5d { border-color: rgba(181, 55, 242, 0.35); }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      cursor: grab;
+    }
+    canvas:active { cursor: grabbing; }
+
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(4, 8, 20, 0.88);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      font-size: 0.82rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--cyan);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .hud-5d { border-color: var(--purple5d); color: #f09aff; }
+
+    .ctrl-wrap {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ctrl-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #8da2c8;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 24px;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+    .range-5d { accent-color: var(--purple5d); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <div class="brand">🎨 LUCEECRESCITA X∞</div>
+      <a href="index.html" class="home-link">← Home</a>
+    </div>
+
+    <div class="title-box">
+      <h1>Laboratorio Interdimensionale</h1>
+      <p>Esplora geometrie multidimensionali (3D, 4D e 5D). Gestisci il suono sacro dal controller qui sotto.</p>
+    </div>
+
+    <!-- CONTROLLER AUDIO CON DISATTIVAZIONE ISTANTANEA -->
+    <div class="audio-wrap">
+      <button class="audio-btn" id="audioToggle">
+        <span id="audioIcon">🔈</span> <span id="audioText">AUDIO SPENTO (Clicca per ACCENDERE)</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. GIOCO 4D: TESSERACT -->
+    <section class="game-card">
+      <div class="card-badge">Geometria Quadridimensionale (4D)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">💠</span>
+        <h3>Il Tesseract 4D Sonoro</h3>
+      </div>
+      <p class="card-desc">
+        Trascina con dito/mouse per ruotare l'ipercubo su 4 dimensioni (XW e ZW). 16 vertici e 32 spigoli in risonanza armonica.
+      </p>
+
+      <div class="canvas-box">
+        <div class="hud" id="hud4d">Risonanza 4D: 0%</div>
+        <canvas id="canvas4d"></canvas>
+      </div>
+
+      <div class="ctrl-wrap">
+        <div class="ctrl-labels">
+          <span>Deformazione Asse W (4ª Dimensione)</span>
+          <span id="labelW">2.2</span>
+        </div>
+        <input type="range" id="sliderW" min="1.3" max="3.8" step="0.05" value="2.2">
+      </div>
+    </section>
+
+    <!-- 2. GIOCO 5D: PENTERATTO -->
+    <section class="game-card">
+      <div class="card-badge badge-5d">Geometria Pentadimensionale (5D)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">🌌</span>
+        <h3>Il Penteratto 5D Quantico</h3>
+      </div>
+      <p class="card-desc">
+        La quinta dimensione (Asse U: Coscienza &amp; Iper-Tempo). 32 vertici binari e 80 spigoli proiettati da 5D a 2D.
+      </p>
+
+      <div class="canvas-box box-5d">
+        <div class="hud hud-5d" id="hud5d">Sincronia 5D: 0%</div>
+        <canvas id="canvas5d"></canvas>
+      </div>
+
+      <div class="ctrl-wrap">
+        <div class="ctrl-labels">
+          <span>Curvatura Asse U (5ª Dimensione)</span>
+          <span id="labelU">2.6</span>
+        </div>
+        <input type="range" id="sliderU" class="range-5d" min="1.5" max="4.2" step="0.05" value="2.6">
+      </div>
+    </section>
+
+    <!-- 3. GIOCO 3D: IPERSPAZIO (SILENZIOSO SENZA SUONI) -->
+    <section class="game-card">
+      <div class="card-badge badge-mute">Volo Spaziale 3D (Silenzioso)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">🚀</span>
+        <h3>Viaggio nell'Iperspazio 3D</h3>
+      </div>
+      <p class="card-desc">
+        Volo fluido a 60 FPS senza suoni né disturbi audio: pilota il flusso e raccogli i globi di energia pura (+10).
+      </p>
+
+      <div class="canvas-box">
+        <div class="hud" id="hud3d">Energia: 0</div>
+        <canvas id="canvas3d"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ========================================================
+       SISTEMA AUDIO SACRO: TOGGLE CON DISCONNESSIONE FISICA
+       Accordo: 432 Hz + 528 Hz + 963 Hz
+       ======================================================== */
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let osc432 = null, osc528 = null, osc963 = null, masterGain = null;
+
+    function buildAudio() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AC();
+
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+
+      // Oscillatori
+      osc432 = audioCtx.createOscillator();
+      osc432.type = 'sine';
+      osc432.frequency.setValueAtTime(432, audioCtx.currentTime);
+
+      osc528 = audioCtx.createOscillator();
+      osc528.type = 'triangle';
+      osc528.frequency.setValueAtTime(528, audioCtx.currentTime);
+
+      osc963 = audioCtx.createOscillator();
+      osc963.type = 'sine';
+      osc963.frequency.setValueAtTime(963, audioCtx.currentTime);
+
+      const g432 = audioCtx.createGain(); g432.gain.value = 0.35;
+      const g528 = audioCtx.createGain(); g528.gain.value = 0.30;
+      const g963 = audioCtx.createGain(); g963.gain.value = 0.12;
+
+      osc432.connect(g432); g432.connect(masterGain);
+      osc528.connect(g528); g528.connect(masterGain);
+      osc963.connect(g963); g963.connect(masterGain);
+
+      osc432.start();
+      osc528.start();
+      osc963.start();
+    }
+
+    const audioBtn = document.getElementById('audioToggle');
+    const audioIcon = document.getElementById('audioIcon');
+    const audioText = document.getElementById('audioText');
+
+    audioBtn.addEventListener('click', () => {
+      if (!audioCtx) {
+        buildAudio();
+      }
+
+      if (!isAudioPlaying) {
+        // ACCENSIONE AUDIO
+        try {
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          masterGain.connect(audioCtx.destination);
+          masterGain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        } catch (e) {}
+
+        isAudioPlaying = true;
+        audioBtn.classList.add('active');
+        audioIcon.textContent = "🔊";
+        audioText.textContent = "AUDIO ACCESO (Clicca per SPEGNERE)";
+      } else {
+        // SPEGNIMENTO TOTALE IMMEDIATO
+        try {
+          masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+          masterGain.disconnect(); // Taglia fisicamente il collegamento alle casse
+          audioCtx.suspend();      // Ferma il thread hardware audio
+        } catch (e) {}
+
+        isAudioPlaying = false;
+        audioBtn.classList.remove('active');
+        audioIcon.textContent = "🔈";
+        audioText.textContent = "AUDIO SPENTO (Clicca per ACCENDERE)";
+      }
+    });
+
+
+    /* ========================================================
+       1. MOTORE TESSERACT 4D (16 Vertici & 32 Spigoli)
+       ======================================================== */
+    const c4 = document.getElementById('canvas4d');
+    const ctx4 = c4.getContext('2d');
+    const hud4 = document.getElementById('hud4d');
+    const sliderW = document.getElementById('sliderW');
+    const labelW = document.getElementById('labelW');
+
+    sliderW.addEventListener('input', () => labelW.textContent = sliderW.value);
+
+    const v4 = [];
+    for (let i = 0; i < 16; i++) {
+      v4.push([(i&1)?1:-1, (i&2)?1:-1, (i&4)?1:-1, (i&8)?1:-1]);
+    }
+    const e4 = [];
+    for (let i = 0; i < 16; i++) {
+      for (let j = i + 1; j < 16; j++) {
+        let diff = 0;
+        for (let k = 0; k < 4; k++) if (v4[i][k] !== v4[j][k]) diff++;
+        if (diff === 1) e4.push([i, j]);
+      }
+    }
+
+    let aXW4 = 0, aZW4 = 0, aXY4 = 0;
+    let drag4 = false, lx4 = 0, ly4 = 0;
+
+    function start4(x, y) { drag4 = true; lx4 = x; ly4 = y; }
+    function move4(x, y) {
+      if (!drag4) return;
+      aXW4 += (x - lx4) * 0.015;
+      aZW4 += (y - ly4) * 0.015;
+      aXY4 += (x - lx4) * 0.008;
+      lx4 = x; ly4 = y;
+    }
+
+    c4.addEventListener('mousedown', e => start4(e.clientX, e.clientY));
+    window.addEventListener('mouseup', () => drag4 = false);
+    c4.addEventListener('mousemove', e => move4(e.clientX, e.clientY));
+
+    c4.addEventListener('touchstart', e => {
+      if (e.touches.length > 0) start4(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    c4.addEventListener('touchmove', e => {
+      if (e.touches.length > 0) move4(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+
+    function render4D() {
+      const w = c4.clientWidth || 320;
+      const h = c4.clientHeight || 350;
+      if (c4.width !== w || c4.height !== h) { c4.width = w; c4.height = h; }
+
+      ctx4.clearRect(0, 0, w, h);
+      const cx = w / 2, cy = h / 2;
+      const scale = Math.min(cx, cy) * 0.72;
+      const distW = parseFloat(sliderW.value);
+
+      aXW4 += 0.008;
+      aZW4 += 0.006;
+      aXY4 += 0.004;
+
+      const p2 = [], pW = [];
+      for (let i = 0; i < 16; i++) {
+        let [x, y, z, wVal] = v4[i];
+        let x1 = x * Math.cos(aXW4) - wVal * Math.sin(aXW4);
+        let w1 = x * Math.sin(aXW4) + wVal * Math.cos(aXW4);
+        let z1 = z * Math.cos(aZW4) - w1 * Math.sin(aZW4);
+        let w2 = z * Math.sin(aZW4) + w1 * Math.cos(aZW4);
+        let x2 = x1 * Math.cos(aXY4) - y * Math.sin(aXY4);
+        let y2 = x1 * Math.sin(aXY4) + y * Math.cos(aXY4);
+
+        let f4 = 1 / Math.max(0.2, distW - w2);
+        let f3 = 1 / (2.6 - (z1 * f4) * 0.45);
+
+        p2.push({ x: cx + (x2 * f4) * f3 * scale, y: cy + (y2 * f4) * f3 * scale });
+        pW.push(w2);
+      }
+
+      ctx4.lineWidth = 1.8;
+      for (let k = 0; k < e4.length; k++) {
+        const [i, j] = e4[k];
+        const avgW = (pW[i] + pW[j]) / 2;
+        ctx4.strokeStyle = `hsl(${180 + avgW * 60}, 100%, 65%)`;
+        ctx4.beginPath();
+        ctx4.moveTo(p2[i].x, p2[i].y);
+        ctx4.lineTo(p2[j].x, p2[j].y);
+        ctx4.stroke();
+      }
+
+      for (let i = 0; i < 16; i++) {
+        ctx4.fillStyle = pW[i] > 0 ? '#00f0ff' : '#ff0077';
+        ctx4.beginPath();
+        ctx4.arc(p2[i].x, p2[i].y, 3.8, 0, Math.PI * 2);
+        ctx4.fill();
+      }
+
+      const res4 = Math.floor(((Math.abs(Math.sin(aXW4 * 2)) + Math.abs(Math.cos(aZW4 * 2))) / 2) * 100);
+      hud4.textContent = `Risonanza 4D: ${res4}%`;
+
+      requestAnimationFrame(render4D);
+    }
+    requestAnimationFrame(render4D);
+
+
+    /* ========================================================
+       2. MOTORE PENTERATTO 5D (32 Vertici & 80 Spigoli)
+       Proiezione: R^5 -> R^4 -> R^3 -> R^2
+       ======================================================== */
+    const c5 = document.getElementById('canvas5d');
+    const ctx5 = c5.getContext('2d');
+    const hud5 = document.getElementById('hud5d');
+    const sliderU = document.getElementById('sliderU');
+    const labelU = document.getElementById('labelU');
+
+    sliderU.addEventListener('input', () => labelU.textContent = sliderU.value);
+
+    const v5 = [];
+    for (let i = 0; i < 32; i++) {
+      v5.push([
+        (i & 1) ? 1 : -1,
+        (i & 2) ? 1 : -1,
+        (i & 4) ? 1 : -1,
+        (i & 8) ? 1 : -1,
+        (i & 16) ? 1 : -1
+      ]);
+    }
+
+    const e5 = [];
+    for (let i = 0; i < 32; i++) {
+      for (let j = i + 1; j < 32; j++) {
+        let diff = 0;
+        for (let k = 0; k < 5; k++) if (v5[i][k] !== v5[j
