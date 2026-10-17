@@ -1,1 +1,354 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LUCEECRESCITA X∞ - Giochi 3D, 4D & 5D</title>
+  <style>
+    :root {
+      --bg: #03030c;
+      --card-bg: rgba(13, 17, 34, 0.9);
+      --border: rgba(110, 168, 255, 0.25);
+      --cyan: #00f0ff;
+      --magenta: #ff0077;
+      --purple5d: #b537f2;
+      --gold: #ffd700;
+      --text: #e0e8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 15%, #0e1233 0%, var(--bg) 85%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 12px 60px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      max-width: 880px;
+      margin-bottom: 18px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+    }
+
+    .home-link {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 8px 18px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .home-link:hover, .home-link:active {
+      background: var(--cyan);
+      color: #03030c;
+    }
+
+    .status-badge {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid #00ff88;
+      color: #00ff88;
+      font-family: monospace;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .title-box {
+      text-align: center;
+      margin: 10px 0 16px;
+    }
+
+    .title-box h1 {
+      font-size: clamp(1.6rem, 5vw, 2.5rem);
+      background: linear-gradient(135deg, #ffffff 15%, var(--cyan) 50%, var(--purple5d) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+
+    .title-box p {
+      max-width: 660px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      color: #8da0c4;
+      line-height: 1.45;
+    }
+
+    /* CONTROLLER AUDIO CON TOGGLE ACCESO / SPENTO */
+    .audio-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 20px;
+    }
+
+    .audio-btn {
+      background: #11182c;
+      border: 2px solid #556994;
+      color: #a6b8de;
+      padding: 12px 26px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+    }
+
+    .audio-btn.active {
+      background: linear-gradient(90deg, #ff0055, #b537f2) !important;
+      border-color: #fff !important;
+      color: #fff !important;
+      box-shadow: 0 0 25px rgba(255, 0, 85, 0.7);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 880px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: clamp(14px, 3.5vw, 22px);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+    }
+
+    .card-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+    .badge-5d { color: var(--purple5d); }
+    .badge-mute { color: #00ffaa; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .card-header h3 {
+      font-size: clamp(1.2rem, 3.5vw, 1.45rem);
+      color: #fff;
+    }
+
+    .card-desc {
+      color: #9cb2db;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .canvas-box {
+      width: 100%;
+      height: 350px;
+      border-radius: 12px;
+      background: #020208;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .box-5d { border-color: rgba(181, 55, 242, 0.35); }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      cursor: grab;
+    }
+    canvas:active { cursor: grabbing; }
+
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(4, 8, 20, 0.88);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      font-size: 0.82rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--cyan);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .hud-5d { border-color: var(--purple5d); color: #f09aff; }
+
+    .ctrl-wrap {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ctrl-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #8da2c8;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 24px;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+    .range-5d { accent-color: var(--purple5d); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <div class="brand">🎨 LUCEECRESCITA X∞</div>
+      <a href="index.html" class="home-link">← Home</a>
+    </div>
+
+    <div class="status-badge" id="statusBadge">
+      ⚡ Motori 3D, 4D &amp; 5D Operativi (60 FPS)
+    </div>
+
+    <div class="title-box">
+      <h1>Laboratorio Interdimensionale</h1>
+      <p>Esplora geometrie a 4 e 5 dimensioni. Controlla il suono sacro in qualunque momento dal tasto qui sotto.</p>
+    </div>
+
+    <!-- CONTROLLER AUDIO: SPEGNIMENTO TOTALE -->
+    <div class="audio-wrap">
+      <button class="audio-btn" id="audioBtn">
+        <span id="audioIcon">🔈</span> <span id="audioText">AUDIO SPENTO (Clicca per ACCENDERE)</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. GIOCO 4D: TESSERACT -->
+    <section class="game-card">
+      <div class="card-badge">Geometria Quadridimensionale (4D)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">💠</span>
+        <h3>Il Tesseract 4D Sonoro</h3>
+      </div>
+      <p class="card-desc">
+        Trascina con dito/mouse per ruotare l'ipercubo su 4 dimensioni (piani XW e ZW). 16 vertici e 32 spigoli.
+      </p>
+
+      <div class="canvas-box">
+        <div class="hud" id="hud4d">Risonanza 4D: 0%</div>
+        <canvas id="c4d"></canvas>
+      </div>
+
+      <div class="ctrl-wrap">
+        <div class="ctrl-labels">
+          <span>Curvatura Asse W</span>
+          <span id="labelW">2.5</span>
+        </div>
+        <input type="range" id="sliderW" min="1.8" max="4.5" step="0.05" value="2.5">
+      </div>
+    </section>
+
+    <!-- 2. GIOCO 5D: PENTERATTO -->
+    <section class="game-card">
+      <div class="card-badge badge-5d">Geometria Pentadimensionale (5D)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">🌌</span>
+        <h3>Il Penteratto 5D Quantico</h3>
+      </div>
+      <p class="card-desc">
+        La quinta dimensione (Asse U: Coscienza &amp; Iper-Tempo). 32 vertici e 80 spigoli proiettati con formula a stabilità garantita.
+      </p>
+
+      <div class="canvas-box box-5d">
+        <div class="hud hud-5d" id="hud5d">Sincronia 5D: 0%</div>
+        <canvas id="c5d"></canvas>
+      </div>
+
+      <div class="ctrl-wrap">
+        <div class="ctrl-labels">
+          <span>Curvatura Asse U (5ª Dimensione)</span>
+          <span id="labelU">3.0</span>
+        </div>
+        <input type="range" id="sliderU" class="range-5d" min="2.2" max="5.0" step="0.05" value="3.0">
+      </div>
+    </section>
+
+    <!-- 3. GIOCO 3D: IPERSPAZIO (100% MUTO) -->
+    <section class="game-card">
+      <div class="card-badge badge-mute">Volo Spaziale 3D (Silenzioso)</div>
+      <div class="card-header">
+        <span style="font-size: 1.5rem;">🚀</span>
+        <h3>Viaggio nell'Iperspazio 3D</h3>
+      </div>
+      <p class="card-desc">
+        Volo fluido a 60 FPS senza suoni: muovi il cursore per raccogliere i globi di energia pura (+10).
+      </p>
+
+      <div class="canvas-box">
+        <div class="hud" id="hud3d">Energia: 0</div>
+        <canvas id="c3d"></canvas>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ========================================================
+       SISTEMA AUDIO: CONTROLLER TOGGLE ACCESO / SPENTO
+       Frequenze: 432 Hz + 528 Hz + 963 Hz
+       ======================================================== */
+    let audioCtx = null;
+    let isAudioOn = false;
