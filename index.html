@@ -1,1 +1,421 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCEECRESCITA X∞ — Spazio Creativo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <!-- Collegamento al tuo foglio di stile globale -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #04060d;
+            color: #e2e8f0;
+        }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        
+        .card-glass {
+            background: rgba(13, 20, 38, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-glass:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 10px 35px -10px rgba(147, 51, 234, 0.3);
+            transform: translateY(-3px);
+        }
+        .pixel-cell {
+            aspect-ratio: 1 / 1;
+            transition: background-color 0.1s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-purple-600 selection:text-white">
+
+    <!-- Canvas cosmico interattivo di sfondo -->
+    <canvas id="stars-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- ================= 1. BARRA DI NAVIGAZIONE COMPLETA ================= -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#04060d]/85 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <span class="text-2xl transform group-hover:rotate-12 transition-transform">🎨</span>
+                <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+
+            <!-- Collegamenti a tutti i tuoi file reali -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="text-sky-400 font-semibold">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors flex items-center gap-1">
+                    <span>⚡</span> Energy Weaver
+                </a>
+                <a href="sorprese.html" class="hover:text-amber-400 transition-colors">Sorprese X∞</a>
+                <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+                <a href="progetti.html" class="px-4 py-1.5 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                    Archivio Progetti
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-24">
+
+        <!-- ================= 2. HERO: SPAZIO CREATIVO X∞ ================= -->
+        <section class="text-center py-10 relative">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono-code text-purple-300 mb-6 shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                Laboratorio Interattivo Attivo
+            </div>
+            <h1 class="text-4xl md:text-6xl font-cinzel font-extrabold tracking-tight text-white mb-6">
+                Spazio Creativo <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400">X∞</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                <strong class="text-slate-200">Sorprese X∞</strong> — Entra in un laboratorio interattivo di giochi, visioni e attività progettate per allenare la fantasia e stimolare la curiosità.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="sorprese.html" class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-sky-600 text-white font-medium text-sm hover:brightness-110 transition-all shadow-lg shadow-purple-900/30">
+                    Entra nel Laboratorio
+                </a>
+                <a href="guida.html" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 font-medium text-sm hover:bg-white/10 transition-all">
+                    Guida all'Uso
+                </a>
+            </div>
+        </section>
+
+        <!-- ================= 3. LA COSTELLAZIONE DELLE IDEE ================= -->
+        <section class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-cinzel font-bold text-white mb-3">La Costellazione delle Idee</h2>
+                <p class="text-slate-400 text-sm md:text-base">
+                    Immagina che ogni stella custodisca un piccolo universo autonomo. Tocca un astro per sbloccare e visualizzare la sua visione segreta.
+                </p>
+            </div>
+
+            <!-- I 4 Astri Cliccabili -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <button onclick="openAstro('cristallo')" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">💎</div>
+                    <h3 class="font-cinzel font-bold text-lg text-sky-300 mb-2">Il pianeta di cristallo</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Armonie minerali e vibrazioni sonore che accordano i pensieri dell'osservatore.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-sky-400 font-medium group-hover:translate-x-1 transition-transform">Sblocca visione →</span>
+                </button>
+
+                <button onclick="openAstro('tempo')" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">⌛</div>
+                    <h3 class="font-cinzel font-bold text-lg text-amber-300 mb-2">La biblioteca del tempo</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Clessidre di luce dorata che custodiscono i futuri non ancora percorsi.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-amber-400 font-medium group-hover:translate-x-1 transition-transform">Sblocca visione →</span>
+                </button>
+
+                <button onclick="openAstro('nuvole')" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">☁️</div>
+                    <h3 class="font-cinzel font-bold text-lg text-purple-300 mb-2">Il giardino delle nuvole</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Semi d'intuizione che germogliano nel vapore prima di toccare terra.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-purple-400 font-medium group-hover:translate-x-1 transition-transform">Sblocca visione →</span>
+                </button>
+
+                <button onclick="openAstro('sogni')" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">🌌</div>
+                    <h3 class="font-cinzel font-bold text-lg text-indigo-300 mb-2">L'oceano dei sogni</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Maree bioluminescenti che fanno affiorare le memorie del domani.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-indigo-400 font-medium group-hover:translate-x-1 transition-transform">Sblocca visione →</span>
+                </button>
+            </div>
+
+            <!-- Finestra Modale per le Visioni -->
+            <div id="astro-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+                <div class="card-glass max-w-lg w-full p-8 rounded-3xl relative border border-purple-500/40">
+                    <button onclick="closeAstro()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
+                    <div id="modal-icon" class="text-5xl mb-4">✨</div>
+                    <h3 id="modal-title" class="text-2xl font-cinzel font-bold text-white mb-3">Titolo</h3>
+                    <p id="modal-desc" class="text-slate-300 text-sm leading-relaxed italic mb-6"></p>
+                    <button onclick="closeAstro()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-sky-600 text-white font-medium text-sm">
+                        Rientra nella Costellazione
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. ENERGY WEAVER (TESSITORE DI FREQUENZE) ================= -->
+        <section class="card-glass p-8 md:p-10 rounded-3xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-cinzel font-bold text-emerald-300 flex items-center gap-2">
+                        <span>⚡</span> Energy Weaver
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">Muovi il puntatore sul tessuto energetico per armonizzare i fili di luce.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="energia-eterna.html" class="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-mono-code hover:bg-emerald-500/30 transition-all">
+                        Simulazione Completa ↗
+                    </a>
+                </div>
+            </div>
+            <div class="w-full h-64 md:h-80 rounded-2xl bg-[#020408] border border-white/10 overflow-hidden relative">
+                <canvas id="weaver-canvas" class="w-full h-full cursor-crosshair"></canvas>
+            </div>
+        </section>
+
+        <!-- ================= 5. PIXEL ART & DISEGNI ================= -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-5 space-y-4">
+                <h2 class="text-2xl font-cinzel font-bold text-amber-300">Pixel Art & Disegni</h2>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Esplora schemi grafici e laboratori digitali minimalisti pensati per rilassare la mente attraverso geometrie colorate.
+                </p>
+                <div class="card-glass p-5 rounded-2xl space-y-4">
+                    <label class="block text-xs font-mono-code text-slate-400">Tavolozza Cosmica</label>
+                    <div class="flex flex-wrap gap-2" id="palette-container"></div>
+                    <div class="pt-3 border-t border-white/10 flex gap-3">
+                        <button onclick="clearCanvasPixel()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-mono-code text-slate-300 border border-white/10">
+                            Pulisci
+                        </button>
+                        <button onclick="downloadPixelArt()" class="px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-xs font-mono-code text-purple-300 border border-purple-500/30">
+                            Esporta PNG
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 card-glass p-6 rounded-3xl flex justify-center">
+                <div id="pixel-grid" class="grid grid-cols-16 gap-[2px] w-full max-w-md bg-white/5 p-2 rounded-xl border border-white/10"></div>
+            </div>
+        </section>
+
+        <!-- ================= 6. STORIE GENERATIVE ================= -->
+        <section class="card-glass p-8 md:p-10 rounded-3xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-cinzel font-bold text-rose-300">Storie Generative</h2>
+                    <p class="text-sm text-slate-400 mt-1">
+                        Piccoli frammenti narrativi e incipit letterari fantascientifici che invitano a guardare la realtà quotidiana da nuove prospettive.
+                    </p>
+                </div>
+                <button onclick="generateStory()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-purple-600 text-white font-medium text-sm hover:brightness-110 transition-all flex items-center gap-2">
+                    <span>✨</span> Genera Frammento
+                </button>
+            </div>
+            <div class="p-6 rounded-2xl bg-black/40 border border-white/5 relative min-h-[120px] flex items-center">
+                <p id="story-display" class="font-cinzel text-lg md:text-xl text-slate-200 italic leading-relaxed"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= 7. FOOTER UFFICIALE ================= -->
+    <footer class="border-t border-white/10 relative z-10 bg-[#020408] mt-20 py-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+            <div>
+                © 2026 <strong class="text-slate-200">Mastropaolo Antonello Salvatore</strong> · Edizione X∞
+            </div>
+            <div class="flex flex-wrap items-center gap-6">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">Home</a>
+                <a href="progetti.html" class="hover:text-purple-400 transition-colors">Tutti i Progetti</a>
+                <a href="energia-eterna.html" class="hover:text-purple-400 transition-colors">Energy Weaver</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="copyright.html" class="hover:text-purple-400 transition-colors text-purple-300">Note Legali</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= SCRIPT LOGICA INTERATTIVA ================= -->
+    <script>
+        const astriData = {
+            cristallo: {
+                icon: "💎",
+                title: "Il pianeta di cristallo",
+                desc: "«Sotto una volta a specchio, le vette non si sgretolano: risuonano. Ogni passo sul suolo di quarzo genera una nota pura che vibra nell’atmosfera rarefatta, accordando i pensieri di chi cammina con l'armonia minerale del pianeta.»"
+            },
+            tempo: {
+                icon: "⌛",
+                title: "La biblioteca del tempo",
+                desc: "«Sugli scaffali d’ebano galleggiante non riposano tomi di carta, ma clessidre riempite di luce sabbiosa. Aprire un volume significa non leggere un passato, ma abitare per qualche secondo una diramazione alternativa di ciò che avrebbe potuto essere.»"
+            },
+            nuvole: {
+                icon: "☁️",
+                title: "Il giardino delle nuvole",
+                desc: "«Qui la vegetazione germoglia dal vapore compresso: radici di nebbia e petali che mutano forma a ogni refolo di brezza solare. È un luogo dove le idee più fragili trovano riparo prima di condensarsi in realtà.»"
+            },
+            sogni: {
+                icon: "🌌",
+                title: "L'oceano dei sogni",
+                desc: "«Una distesa liquida e bioluminescente in cui fluttuano memorie mai vissute. Immergendo le dita nelle sue acque calde, il confine tra veglia e intuizione svanisce, lasciando affiorare geometrie luminose di mondi a venire.»"
+            }
+        };
+
+        function openAstro(key) {
+            const data = astriData[key];
+            document.getElementById('modal-icon').textContent = data.icon;
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-desc').textContent = data.desc;
+            document.getElementById('astro-modal').classList.remove('hidden');
+        }
+
+        function closeAstro() {
+            document.getElementById('astro-modal').classList.add('hidden');
+        }
+
+        // Sfondo stellato
+        const canvasStars = document.getElementById('stars-canvas');
+        const ctxStars = canvasStars.getContext('2d');
+        let stars = [];
+
+        function resizeStars() {
+            canvasStars.width = window.innerWidth;
+            canvasStars.height = window.innerHeight;
+            stars = Array.from({ length: 80 }, () => ({
+                x: Math.random() * canvasStars.width,
+                y: Math.random() * canvasStars.height,
+                radius: Math.random() * 1.5,
+                alpha: Math.random(),
+                speed: 0.005 + Math.random() * 0.015
+            }));
+        }
+        window.addEventListener('resize', resizeStars);
+        resizeStars();
+
+        function animateStars() {
+            ctxStars.clearRect(0, 0, canvasStars.width, canvasStars.height);
+            stars.forEach(s => {
+                s.alpha += s.speed;
+                if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+                ctxStars.fillStyle = `rgba(226, 232, 240, ${Math.abs(s.alpha)})`;
+                ctxStars.beginPath();
+                ctxStars.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctxStars.fill();
+            });
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+
+        // Energy Weaver Canvas
+        const weaverCanvas = document.getElementById('weaver-canvas');
+        const weaverCtx = weaverCanvas.getContext('2d');
+        let mouseX = 150, mouseY = 100, angle = 0;
+
+        function resizeWeaver() {
+            weaverCanvas.width = weaverCanvas.offsetWidth;
+            weaverCanvas.height = weaverCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeWeaver);
+        setTimeout(resizeWeaver, 100);
+
+        weaverCanvas.addEventListener('mousemove', (e) => {
+            const rect = weaverCanvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        function drawWeaver() {
+            weaverCtx.fillStyle = 'rgba(2, 4, 8, 0.2)';
+            weaverCtx.fillRect(0, 0, weaverCanvas.width, weaverCanvas.height);
+            angle += 0.02;
+
+            for (let i = 0; i < 9; i++) {
+                weaverCtx.beginPath();
+                weaverCtx.strokeStyle = `rgba(52, 211, 153, ${0.15 + i * 0.08})`;
+                weaverCtx.lineWidth = 1.5;
+
+                for (let x = 0; x < weaverCanvas.width; x += 12) {
+                    const wave = Math.sin(x * 0.01 + angle + i * 0.4) * 30;
+                    const dist = Math.abs(x - mouseX);
+                    const influence = Math.max(0, 1 - dist / 180) * (mouseY - weaverCanvas.height / 2);
+                    const y = weaverCanvas.height / 2 + wave + influence;
+                    if (x === 0) weaverCtx.moveTo(x, y);
+                    else weaverCtx.lineTo(x, y);
+                }
+                weaverCtx.stroke();
+            }
+            requestAnimationFrame(drawWeaver);
+        }
+        drawWeaver();
+
+        // Pixel Art
+        const colors = ['#04060d', '#38bdf8', '#818cf8', '#c084fc', '#f43f5e', '#fbbf24', '#34d399', '#ffffff'];
+        let currentColor = colors[1];
+        const paletteContainer = document.getElementById('palette-container');
+        const pixelGrid = document.getElementById('pixel-grid');
+        let isMouseDown = false;
+
+        document.body.onmousedown = () => (isMouseDown = true);
+        document.body.onmouseup = () => (isMouseDown = false);
+
+        colors.forEach(col => {
+            const btn = document.createElement('button');
+            btn.className = 'w-7 h-7 rounded-lg border border-white/20 transition-transform hover:scale-110';
+            btn.style.backgroundColor = col;
+            btn.onclick = () => currentColor = col;
+            paletteContainer.appendChild(btn);
+        });
+
+        for (let i = 0; i < 256; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'pixel-cell bg-slate-900 rounded-[2px] cursor-pointer hover:opacity-80';
+            cell.addEventListener('mousedown', () => cell.style.backgroundColor = currentColor);
+            cell.addEventListener('mouseenter', () => { if (isMouseDown) cell.style.backgroundColor = currentColor; });
+            pixelGrid.appendChild(cell);
+        }
+
+        function clearCanvasPixel() {
+            document.querySelectorAll('.pixel-cell').forEach(c => c.style.backgroundColor = 'transparent');
+        }
+
+        function downloadPixelArt() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 160;
+            tempCanvas.height = 160;
+            const tCtx = tempCanvas.getContext('2d');
+            const cells = document.querySelectorAll('.pixel-cell');
+
+            cells.forEach((cell, idx) => {
+                const x = (idx % 16) * 10;
+                const y = Math.floor(idx / 16) * 10;
+                tCtx.fillStyle = cell.style.backgroundColor || '#04060d';
+                tCtx.fillRect(x, y, 10, 10);
+            });
+
+            const link = document.createElement('a');
+            link.download = 'pixel-art-lucecrescita.png';
+            link.href = tempCanvas.toDataURL();
+            link.click();
+        }
+
+        // Storie Generative
+        const soggetti = ["Un crononauta dimenticato", "Un giardiniere di pulsar", "L'ultimo algoritmo senziente", "Una cartografa di sogni sintetici", "Un tessitore di frequenze solari"];
+        const azioni = ["scoprì che i silenzi tra le parole", "raccolse le memorie abbandonate che", "innestò un seme di quarzo puro dove", "accordò il respiro del cosmo affinché", "decifrò un messaggio antico che"];
+        const conseguenze = [
+            "avrebbe permesso alle stelle estinte di brillare ancora una volta nel presente.",
+            "rivelava la trama segreta celata dietro ogni scelta quotidiana.",
+            "trasformava ogni istante d'ansia in una geometria di pura quiete.",
+            "apriva un varco luminoso verso dimensioni di creatività inesplorate.",
+            "univa in un unico filo d'oro il tempo vissuto e quello ancora da immaginare."
+        ];
+
+        function generateStory() {
+            const s = soggetti[Math.floor(Math.random() * soggetti.length)];
+            const a = azioni[Math.floor(Math.random() * azioni.length)];
+            const c = conseguenze[Math.floor(Math.random() * conseguenze.length)];
+            const el = document.getElementById('story-display');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.textContent = `«${s} ${a} ${c}»`;
+                el.style.opacity = 1;
+            }, 250);
+        }
+        generateStory();
+    </script>
+</body>
+</html>
