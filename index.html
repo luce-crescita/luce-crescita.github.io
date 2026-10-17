@@ -1,1 +1,343 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LUCEECRESCITA X∞ - Portale Ufficiale</title>
+  <style>
+    :root {
+      --bg: #03030c;
+      --card-bg: rgba(13, 17, 34, 0.85);
+      --border: rgba(110, 168, 255, 0.25);
+      --cyan: #00f0ff;
+      --magenta: #ff0077;
+      --gold: #ffd700;
+      --text: #e0e8ff;
+      --glow: rgba(0, 240, 255, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 15%, #0e1233 0%, var(--bg) 85%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 14px 60px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      max-width: 940px;
+      margin-bottom: 25px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.15rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .nav-menu::-webkit-scrollbar { display: none; }
+
+    .nav-item {
+      color: #9cb2db;
+      font-size: 0.85rem;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 7px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      color: #fff;
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.15);
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 800px;
+      margin: 20px auto 35px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 60%, var(--magenta) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      font-size: clamp(0.95rem, 3.5vw, 1.15rem);
+      color: #a0b2d6;
+      line-height: 1.6;
+      max-width: 680px;
+      margin: 0 auto 25px;
+    }
+
+    /* CARD SPECIALE: LABORATORIO 3D & 4D (SORPRESE) */
+    .featured-card {
+      background: linear-gradient(135deg, rgba(16, 26, 61, 0.9), rgba(41, 14, 53, 0.9));
+      border: 2px solid var(--cyan);
+      border-radius: 24px;
+      padding: clamp(20px, 4vw, 32px);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 35px;
+      width: 100%;
+      max-width: 940px;
+    }
+
+    .featured-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .featured-header h2 {
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
+      color: #fff;
+    }
+
+    .featured-desc {
+      color: #b0c4eb;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 22px;
+      max-width: 720px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      color: #03030c;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-height: 48px;
+    }
+    .cta-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+    }
+
+    /* GRIGLIA SEZIONI DEL SITO */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      width: 100%;
+      max-width: 940px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: #8da2c8;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .card-link {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 940px;
+      text-align: center;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #6c7ea6;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #8da2c8;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    footer a:hover { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-bar">
+      <div class="brand"><span>🎨</span> LUCEECRESCITA X∞</div>
+    </div>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-item active">Home</a>
+      <a href="sorprese.html" class="nav-item">Sorprese 3D/4D</a>
+      <a href="progetti.html" class="nav-item">Progetti</a>
+      <a href="guida.html" class="nav-item">Guida</a>
+      <a href="manifesto.html" class="nav-item">Manifesto</a>
+      <a href="energia-eterna.html" class="nav-item">Energia Eterna</a>
+      <a href="about.html" class="nav-item">About</a>
+    </nav>
+  </header>
+
+  <main style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-badge">Ecosistema Interdimensionale</div>
+      <h1>Luce e Crescita Senza Limiti</h1>
+      <p>Unione di geometria sacra, consapevolezza ed esplorazione dimensionale in tempo reale su web.</p>
+    </section>
+
+    <!-- CARD DI LANCIO PER SORPRESE (GIOCHI 3D E 4D) -->
+    <section class="featured-card">
+      <div class="featured-header">
+        <span style="font-size: 2rem;">💠</span>
+        <h2>Laboratorio Interdimensionale: Giochi 3D &amp; 4D</h2>
+      </div>
+      <p class="featured-desc">
+        Tocca l'ipercubo a 4 dimensioni (Tesseract) con rotazione nei piani XW e ZW, ascolta l'accordo sonoro sacro a 432 Hz + 528 Hz e pilota la navetta nel tunnel a 60 FPS raccogliendo i globi di energia.
+      </p>
+      <a href="sorprese.html" class="cta-btn">
+        🚀 Entra nei Giochi 3D &amp; 4D (Sorprese) →
+      </a>
+    </section>
+
+    <!-- GRIGLIA ALTRE PAGINE DEL SITO -->
+    <div class="grid">
+      <a href="progetti.html" class="card">
+        <div>
+          <div class="card-icon">⚡</div>
+          <h3>Progetti</h3>
+          <p>Esplora l'archivio delle iniziative e dei moduli interattivi in continuo sviluppo.</p>
+        </div>
+        <div class="card-link">Esplora Progetti →</div>
+      </a>
+
+      <a href="energia-eterna.html" class="card">
+        <div>
+          <div class="card-icon">🌌</div>
+          <h3>Energia Eterna</h3>
+          <p>Principi energetici fondamentali per la canalizzazione e la trasformazione continua.</p>
+        </div>
+        <div class="card-link">Accedi a Energia Eterna →</div>
+      </a>
+
+      <a href="guida.html" class="card">
+        <div>
+          <div class="card-icon">📖</div>
+          <h3>Guida</h3>
+          <p>Istruzioni e coordinate per orientarsi tra le dimensioni e la navigazione del portale.</p>
+        </div>
+        <div class="card-link">Leggi la Guida →</div>
+      </a>
+
+      <a href="manifesto.html" class="card">
+        <div>
+          <div class="card-icon">📜</div>
+          <h3>Manifesto</h3>
+          <p>I valori e la visione che guidano l'espansione e la crescita dell'ecosistema X∞.</p>
+        </div>
+        <div class="card-link">Scopri il Manifesto →</div>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2026 LUCEECRESCITA X∞ — Tutti i diritti riservati.</p>
+    <div style="margin-top: 8px;">
+      <a href="about.html">About</a> •
+      <a href="copyright.html">Note Legali</a> •
+      <a href="sorprese.html">Laboratorio 4D</a>
+    </div>
+  </footer>
+
+</body>
+</html>
