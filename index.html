@@ -1,1 +1,581 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUCEECRESCITA X∞ — Ecosistema Interdimensionale</title>
+  <meta name="description" content="Unione di geometria sacra, consapevolezza ed esplorazione dimensionale in tempo reale su web.">
+  <style>
+    :root {
+      --bg-deep: #05050d;
+      --bg-card: rgba(18, 16, 38, 0.65);
+      --border-glow: rgba(147, 83, 255, 0.35);
+      --accent-cyan: #00f0ff;
+      --accent-gold: #ffd166;
+      --accent-purple: #9d4edd;
+      --text-main: #f0f3fc;
+      --text-muted: #9aa2bc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 50, 220, 0.25), transparent),
+        radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1), transparent);
+      color: var(--text-main);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    header {
+      backdrop-filter: blur(12px);
+      background: rgba(5, 5, 13, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 4.5rem 1.5rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      background: rgba(157, 78, 221, 0.15);
+      border: 1px solid rgba(157, 78, 221, 0.4);
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(180deg, #ffffff 40%, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Interactive 4D Lab Section */
+    .lab-section {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    .lab-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(157, 78, 221, 0.1);
+      backdrop-filter: blur(16px);
+    }
+
+    @media (max-width: 820px) {
+      .lab-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lab-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .lab-content p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+      color: #fff;
+      box-shadow: 0 0 20px rgba(157, 78, 221, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* 4D Canvas Container */
+    .tesseract-container {
+      position: relative;
+      background: radial-gradient(circle, rgba(20, 15, 45, 0.9) 0%, rgba(5, 5, 13, 0.95) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      opacity: 0.8;
+      letter-spacing: 0.05em;
+    }
+
+    /* Grid cards */
+    .grid-section {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      border-color: var(--accent-purple);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(157, 78, 221, 0.2);
+    }
+
+    .module-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .module-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
+      color: #fff;
+    }
+
+    .module-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .module-card a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .module-card a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(3, 3, 8, 0.9);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      margin-top: 0.8rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">🎨 LUCEECRESCITA X∞</a>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#lab">Sorprese 3D/4D</a>
+        <a href="#progetti">Progetti</a>
+        <a href="#guida">Guida</a>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#energia">Energia Eterna</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-badge">Ecosistema Interdimensionale</div>
+    <h1>Luce e Crescita Senza Limiti</h1>
+    <p>Unione di geometria sacra, consapevolezza ed esplorazione dimensionale in tempo reale su web.</p>
+  </section>
+
+  <!-- Interactive 4D/Audio Lab -->
+  <section class="lab-section" id="lab">
+    <div class="lab-card">
+      <div class="lab-content">
+        <h2>💠 Laboratorio Interdimensionale: Giochi 3D &amp; 4D</h2>
+        <p>
+          Tocca l'ipercubo a 4 dimensioni (Tesseract) con rotazione nei piani XW e ZW, 
+          ascolta l'accordo sonoro sacro a 432 Hz + 528 Hz e pilota la navetta nel tunnel a 60 FPS 
+          raccogliendo i globi di energia.
+        </p>
+        <div class="btn-group">
+          <a href="#sorprese" class="btn btn-primary">🚀 Entra nei Giochi 3D &amp; 4D (Sorprese) →</a>
+          <button id="audioBtn" class="btn btn-secondary">🎵 Accordo 432Hz + 528Hz</button>
+        </div>
+      </div>
+
+      <div class="tesseract-container">
+        <canvas id="tesseractCanvas"></canvas>
+        <div class="canvas-badge">Rotazione 4D: Piani XW &bull; ZW</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Grid -->
+  <section class="grid-section">
+    <!-- Progetti -->
+    <div class="module-card" id="progetti">
+      <div class="module-icon">⚡</div>
+      <h3>Progetti</h3>
+      <p>Esplora l'archivio delle iniziative e dei moduli interattivi in continuo sviluppo.</p>
+      <a href="#progetti">Esplora Progetti &rarr;</a>
+    </div>
+
+    <!-- Energia Eterna -->
+    <div class="module-card" id="energia">
+      <div class="module-icon">🌌</div>
+      <h3>Energia Eterna</h3>
+      <p>Principi energetici fondamentali per la canalizzazione e la trasformazione continua.</p>
+      <a href="#energia">Accedi a Energia Eterna &rarr;</a>
+    </div>
+
+    <!-- Guida -->
+    <div class="module-card" id="guida">
+      <div class="module-icon">📖</div>
+      <h3>Guida</h3>
+      <p>Istruzioni e coordinate per orientarsi tra le dimensioni e la navigazione del portale.</p>
+      <a href="#guida">Leggi la Guida &rarr;</a>
+    </div>
+
+    <!-- Manifesto -->
+    <div class="module-card" id="manifesto">
+      <div class="module-icon">📜</div>
+      <h3>Manifesto</h3>
+      <p>I valori e la visione che guidano l'espansione e la crescita dell'ecosistema X∞.</p>
+      <a href="#manifesto">Scopri il Manifesto &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="about">
+    <p>&copy; 2026 LUCEECRESCITA X&infin; &mdash; Tutti i diritti riservati.</p>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <span>&bull;</span>
+      <a href="#note-legali">Note Legali</a>
+      <span>&bull;</span>
+      <a href="#lab">Laboratorio 4D</a>
+    </div>
+  </footer>
+
+  <!-- 4D Hypercube & Web Audio Script -->
+  <script>
+    // --- 1. PROIEZIONE IPERCUBO 4D (TESSERACT) ---
+    const canvas = document.getElementById('tesseractCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 16 vertici in 4D (±1, ±1, ±1, ±1)
+    const vertices4D = [];
+    for (let i = 0; i < 16; i++) {
+      vertices4D.push([
+        (i & 1) ? 1 : -1,
+        (i & 2) ? 1 : -1,
+        (i & 4) ? 1 : -1,
+        (i & 8) ? 1 : -1
+      ]);
+    }
+
+    // 32 spigoli del Tesseract
+    const edges = [];
+    for (let i = 0; i < 16; i++) {
+      for (let j = i + 1; j < 16; j++) {
+        let diff = 0;
+        for (let k = 0; k < 4; k++) {
+          if (vertices4D[i][k] !== vertices4D[j][k]) diff++;
+        }
+        if (diff === 1) edges.push([i, j]);
+      }
+    }
+
+    let angleXW = 0;
+    let angleZW = 0;
+
+    function render4D() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const baseScale = Math.min(cx, cy) * 0.75;
+
+      angleXW += 0.015;
+      angleZW += 0.01;
+
+      // Matrici di rotazione nei piani 4D XW e ZW
+      const projected2D = vertices4D.map(v => {
+        let [x, y, z, w] = v;
+
+        // Rotazione XW
+        const cosXW = Math.cos(angleXW), sinXW = Math.sin(angleXW);
+        const x1 = x * cosXW - w * sinXW;
+        const w1 = x * sinXW + w * cosXW;
+
+        // Rotazione ZW
+        const cosZW = Math.cos(angleZW), sinZW = Math.sin(angleZW);
+        const z2 = z * cosZW - w1 * sinZW;
+        const w2 = z * sinZW + w1 * cosZW;
+
+        // Proiezione prospettica 4D -> 3D
+        const dist4D = 2.4;
+        const scale4 = 1 / (dist4D - w2);
+        const x3 = x1 * scale4;
+        const y3 = y * scale4;
+        const z3 = z2 * scale4;
+
+        // Proiezione prospettica 3D -> 2D
+        const dist3D = 2.8;
+        const scale3 = 1 / (dist3D - z3);
+        return {
+          x: cx + x3 * scale3 * baseScale,
+          y: cy + y3 * scale3 * baseScale,
+          depth: scale4
+        };
+      });
+
+      // Disegno spigoli con bagliore neon
+      edges.forEach(([i, j]) => {
+        const p1 = projected2D[i];
+        const p2 = projected2D[j];
+        const avgDepth = (p1.depth + p2.depth) * 0.5;
+
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(1, avgDepth * 1.5)})`;
+        ctx.lineWidth = avgDepth * 2.5;
+        ctx.shadowColor = '#9d4edd';
+        ctx.shadowBlur = 8;
+        ctx.stroke();
+      });
+
+      // Disegno vertici
+      projected2D.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.depth * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffd166';
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(render4D);
+    }
+    render4D();
+
+    // --- 2. SINTETIZZATORE FREQUENZE SACRE (432 Hz & 528 Hz) ---
+    let audioCtx = null;
+    let osc432 = null;
+    let osc528 = null;
+    let masterGain = null;
+    let isPlaying = false;
+
+    const audioBtn = document.getElementById('audioBtn');
+    audioBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        masterGain.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime + 1.5);
+        masterGain.connect(audioCtx.destination);
+
+        // Canale A: 432 Hz (Frequenza naturale / armonica)
+        osc432 = audioCtx.createOscillator();
+        osc432.type = 'sine';
+        osc432.frequency.setValueAtTime(432, audioCtx.currentTime);
+        osc432.connect(masterGain);
+
+        // Canale B: 528 Hz (Frequenza di trasformazione / Solfeggio)
+        osc528 = audioCtx.createOscillator();
+        osc528.type = 'sine';
+        osc528.frequency.setValueAtTime(528, audioCtx.currentTime);
+        osc528.connect(masterGain);
+
+        osc432.start();
+        osc528.start();
+        audioBtn.textContent = '🔊 Ferma Armonici (432+528Hz)';
+        audioBtn.style.borderColor = 'var(--accent-cyan)';
+        isPlaying = true;
+      } else {
+        masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+        setTimeout(() => {
+          osc432.stop();
+          osc528.stop();
+          osc432.disconnect();
+          osc528.disconnect();
+        }, 500);
+        audioBtn.textContent = '🎵 Accordo 432Hz + 528Hz';
+        audioBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+        isPlaying = false;
+      }
+    });
+  </script>
+</body>
+</html>
