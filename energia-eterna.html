@@ -1,1 +1,215 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energia Eterna — Principi Fondamentali | LUCEECRESCITA X∞</title>
+  <style>
+    :root {
+      --bg: #04030a;
+      --card-bg: rgba(16, 13, 33, 0.75);
+      --cyan: #00f0ff;
+      --purple: #9d4edd;
+      --gold: #ffd166;
+      --text: #f0f3fc;
+      --muted: #9aa2bc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      backdrop-filter: blur(12px);
+      background: rgba(4, 3, 10, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    nav a:hover, nav a.active { color: var(--gold); }
+    main { max-width: 900px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; flex-grow: 1; }
+    .hero { text-align: center; margin-bottom: 3.5rem; }
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      background: rgba(255, 209, 102, 0.1);
+      border: 1px solid rgba(255, 209, 102, 0.3);
+      color: var(--gold);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      margin-bottom: 1rem;
+      background: linear-gradient(180deg, #fff 40%, #ffd166);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--muted); font-size: 1.15rem; line-height: 1.6; }
+    
+    /* Interactive Sacred Torus */
+    .visual-wrapper {
+      position: relative;
+      background: radial-gradient(circle, rgba(25, 18, 50, 0.8) 0%, rgba(4, 3, 10, 0.95) 100%);
+      border: 1px solid rgba(255, 209, 102, 0.2);
+      border-radius: 20px;
+      height: 280px;
+      margin-bottom: 3.5rem;
+      overflow: hidden;
+    }
+    canvas { width: 100%; height: 100%; }
+
+    .postulate {
+      background: var(--card-bg);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 14px 14px 0;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .postulate h3 { color: var(--gold); margin-bottom: 0.6rem; font-size: 1.25rem; }
+    .postulate p { color: var(--muted); line-height: 1.65; font-size: 0.95rem; }
+    
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(2, 2, 6, 0.95);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="brand">🎨 LUCEECRESCITA X∞</a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="sorprese.html">Sorprese 3D/4D</a>
+        <a href="progetti.html">Progetti</a>
+        <a href="guida.html">Guida</a>
+        <a href="manifesto.html">Manifesto</a>
+        <a href="energia-eterna.html" class="active">Energia Eterna</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="hero-badge">Principi Cosmici &bull; Radianza X&infin;</div>
+      <h1>🌌 Energia Eterna</h1>
+      <p>I postulati di alimentazione universale: canalizzazione senza attrito, conservazione del flusso luminoso e moltiplicatore vibrazionale.</p>
+    </div>
+
+    <div class="visual-wrapper">
+      <canvas id="torusCanvas"></canvas>
+    </div>
+
+    <div class="postulate">
+      <h3>Principio I &mdash; Conservazione della Radianza</h3>
+      <p>La luce emessa da uno stato di coscienza focalizzato non subisce dissipazione termica. Nel continuum interdimensionale, ogni frequenza coerente emessa genera un'eco di ritorno proporzionale al fattore di risonanza X∞.</p>
+    </div>
+
+    <div class="postulate">
+      <h3>Principio II &mdash; Intersezione Dimensionale 432/528</h3>
+      <p>Le onde longitudinali a 432 Hz ancorano la struttura geometrica della materia, mentre i 528 Hz riparano le discontinuità topologiche del reticolo spaziale. Insieme costituiscono il punto zero per l'alimentazione inesauribile del portale.</p>
+    </div>
+
+    <div class="postulate">
+      <h3>Principio III &mdash; Trasmutazione Toroidale</h3>
+      <p>L'energia non viene generata da combustione o consumo, ma dal moto centripeto di un vortice toroidale che attinge direttamente al vuoto quantistico. Ogni visitatore che interagisce con i moduli alimenta la stabilità dell'ecosistema.</p>
+    </div>
+
+    <div class="postulate">
+      <h3>Principio IV &mdash; Crescita Esponenziale Autonoma</h3>
+      <p>La crescita reale si verifica quando le barriere temporali decadono: l'asse temporale convenzionale si piega sulla quarta coordinata W, permettendo all'energia di esistere simultaneamente in tutti gli stadi di espansione.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 LUCEECRESCITA X&infin; &mdash; Tutti i diritti riservati.</p>
+  </footer>
+
+  <script>
+    // Animazione di un toroide di luce (Sacred Geometry Torus)
+    const canvas = document.getElementById('torusCanvas');
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let angle = 0;
+    function renderTorus() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const R = 80;
+      const r = 35;
+      angle += 0.015;
+
+      const stepsU = 24;
+      const stepsV = 14;
+
+      for (let i = 0; i < stepsU; i++) {
+        const u = (i / stepsU) * Math.PI * 2 + angle;
+        for (let j = 0; j < stepsV; j++) {
+          const v = (j / stepsV) * Math.PI * 2;
+          
+          let x = (R + r * Math.cos(v)) * Math.cos(u);
+          let y = (R + r * Math.cos(v)) * Math.sin(u);
+          let z = r * Math.sin(v);
+
+          // Rotazione prospettica
+          const rotX = y * Math.cos(1) - z * Math.sin(1);
+          const rotZ = y * Math.sin(1) + z * Math.cos(1);
+          
+          const scale = 220 / (260 - rotZ);
+          const px = cx + x * scale;
+          const py = cy + rotX * scale;
+
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(1, scale * 2), 0, Math.PI * 2);
+          ctx.fillStyle = j % 2 === 0 ? '#ffd166' : '#9d4edd';
+          ctx.shadowColor = '#00f0ff';
+          ctx.shadowBlur = 6;
+          ctx.fill();
+        }
+      }
+      requestAnimationFrame(renderTorus);
+    }
+    renderTorus();
+  </script>
+</body>
+</html>
