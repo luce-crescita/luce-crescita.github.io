@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorprese X∞ — Laboratorio Interattivo | LUCEECRESCITA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #04060d; color: #e2e8f0; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        .card-glass {
+            background: rgba(13, 20, 38, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s ease;
+        }
+        .card-glass:hover {
+            border-color: rgba(251, 191, 36, 0.4);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-amber-500 selection:text-black">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#04060d]/85 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <span class="text-2xl">🎨</span>
+                <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-sky-400 transition-colors">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors">Energy Weaver</a>
+                <a href="sorprese.html" class="text-amber-400 font-semibold border-b border-amber-400 pb-0.5">Sorprese X∞</a>
+                <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+                <a href="progetti.html" class="px-4 py-1.5 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 transition-all">
+                    Archivio Progetti
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-16 relative z-10">
+        
+        <!-- Intestazione -->
+        <div class="text-center max-w-2xl mx-auto space-y-4">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono-code text-amber-300">
+                Palestra di Pensiero Laterale
+            </div>
+            <h1 class="text-4xl md:text-5xl font-cinzel font-bold text-white">
+                Laboratorio Sorprese <span class="text-amber-400">X∞</span>
+            </h1>
+            <p class="text-sm md:text-base text-slate-400 leading-relaxed">
+                Entra in un laboratorio interattivo di giochi, visioni e attività progettate per allenare la fantasia e stimolare la curiosità.
+            </p>
+        </div>
+
+        <!-- 1. L'ORACOLO DELLE INTUIZIONI (Generatore di sfide creative) -->
+        <section class="card-glass p-8 rounded-3xl space-y-6 border border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-cinzel font-bold text-amber-300 flex items-center gap-2">
+                        <span>🔮</span> L'Oracolo delle Intuizioni
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Estrai una scintilla per guardare la tua giornata da una prospettiva inattesa.</p>
+                </div>
+                <button onclick="estraiIntuizione()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-purple-600 text-black font-semibold text-xs hover:brightness-110 transition-all">
+                    Estrai Nuova Scintilla 🎲
+                </button>
+            </div>
+            
+            <div class="p-6 rounded-2xl bg-black/40 border border-white/5 min-h-[110px] flex items-center justify-center text-center">
+                <p id="oracolo-testo" class="font-cinzel text-base md:text-lg text-slate-200 italic leading-relaxed">
+                    «Premi il pulsante per attivare l'oracolo e ricevere il tuo enigma creativo del giorno.»
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. IL RISONATORE ARMONICO A COLORI (Mini Gioco Sonoro-Visivo) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-4">
+                <h2 class="text-2xl font-cinzel font-bold text-sky-300">Il Caleidoscopio delle Frequenze</h2>
+                <p class="text-sm text-slate-400 leading-relaxed">
+                    Tocca i quadranti per mutare la geometria della luce. Ogni combinazione attiva una sfumatura diversa di quiete visiva.
+                </p>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="mutaCaleido('cyan')" class="p-4 rounded-xl card-glass text-xs font-mono-code hover:border-cyan-400 text-cyan-300">Frequenza Aria</button>
+                    <button onclick="mutaCaleido('purple')" class="p-4 rounded-xl card-glass text-xs font-mono-code hover:border-purple-400 text-purple-300">Frequenza Spazio</button>
+                    <button onclick="mutaCaleido('amber')" class="p-4 rounded-xl card-glass text-xs font-mono-code hover:border-amber-400 text-amber-300">Frequenza Sole</button>
+                    <button onclick="mutaCaleido('emerald')" class="p-4 rounded-xl card-glass text-xs font-mono-code hover:border-emerald-400 text-emerald-300">Frequenza Terra</button>
+                </div>
+            </div>
+
+            <div class="card-glass p-6 rounded-3xl h-72 flex items-center justify-center relative overflow-hidden">
+                <canvas id="caleido-canvas" class="w-full h-full"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-[#020408] mt-24 py-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+            <div>© 2026 <strong class="text-slate-200">Mastropaolo Antonello Salvatore</strong> · Edizione X∞</div>
+            <div class="flex gap-6">
+                <a href="index.html" class="hover:text-purple-400">Home</a>
+                <a href="progetti.html" class="hover:text-purple-400">Tutti i Progetti</a>
+                <a href="energia-eterna.html" class="hover:text-purple-400">Energy Weaver</a>
+                <a href="copyright.html" class="hover:text-purple-400">Note Legali</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logica delle Sorprese -->
+    <script>
+        const intuizioni = [
+            "Oggi osserva un oggetto comune come se fosse un manufatto giunto da una galassia lontana.",
+            "Trova un silenzio di tre minuti e immagina di riempirlo con il colore di un tuo ricordo felice.",
+            "Risolvi un problema ordinario disegnando una geometria astratta invece di usare le parole.",
+            "Pensa a un bivio del tuo passato: immagina cosa sta facendo in questo istante il te stesso che ha scelto l'altra via.",
+            "Respira al ritmo di quattro battiti: sei tu che accordi lo spazio o è lo spazio che accorda te?",
+            "Scrivi su un foglio una sola parola che vorresti donare a chi incontrerai oggi, senza pronunciarla."
+        ];
+
+        function estraiIntuizione() {
+            const el = document.getElementById('oracolo-testo');
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.textContent = `«${intuizioni[Math.floor(Math.random() * intuizioni.length)]}»`;
+                el.style.opacity = 1;
+            }, 200);
+        }
+
+        // Caleidoscopio Canvas
+        const cCanvas = document.getElementById('caleido-canvas');
+        const cCtx = cCanvas.getContext('2d');
+        let cColor = '#38bdf8';
+        let cRot = 0;
+
+        function resizeC() {
+            cCanvas.width = cCanvas.offsetWidth;
+            cCanvas.height = cCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeC);
+        setTimeout(resizeC, 100);
+
+        function mutaCaleido(type) {
+            if (type === 'cyan') cColor = '#38bdf8';
+            if (type === 'purple') cColor = '#c084fc';
+            if (type === 'amber') cColor = '#fbbf24';
+            if (type === 'emerald') cColor = '#34d399';
+        }
+
+        function drawCaleido() {
+            cCtx.fillStyle = 'rgba(2, 4, 8, 0.2)';
+            cCtx.fillRect(0, 0, cCanvas.width, cCanvas.height);
+            cRot += 0.015;
+
+            const cx = cCanvas.width / 2;
+            const cy = cCanvas.height / 2;
+            const petali = 8;
+
+            for (let i = 0; i < petali; i++) {
+                const angle = cRot + (i * Math.PI * 2) / petali;
+                cCtx.save();
+                cCtx.translate(cx, cy);
+                cCtx.rotate(angle);
+                cCtx.strokeStyle = cColor;
+                cCtx.lineWidth = 1.5;
+                cCtx.strokeRect(20, 20, 45, 45);
+                cCtx.beginPath();
+                cCtx.arc(40, 40, 25, 0, Math.PI * 2);
+                cCtx.stroke();
+                cCtx.restore();
+            }
+
+            requestAnimationFrame(drawCaleido);
+        }
+        drawCaleido();
+    </script>
+</body>
+</html>
