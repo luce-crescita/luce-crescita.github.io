@@ -1,1 +1,266 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorprese 3D/4D — Tunnel Interdimensionale | LUCEECRESCITA X∞</title>
+  <style>
+    :root {
+      --bg: #030308;
+      --cyan: #00f0ff;
+      --magenta: #ff007f;
+      --purple: #9d4edd;
+      --gold: #ffd166;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top HUD */
+    .hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(3,3,8,0.85) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .back-btn {
+      pointer-events: auto;
+      text-decoration: none;
+      color: var(--cyan);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 15px var(--cyan);
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-val {
+      color: var(--gold);
+      text-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+    }
+
+    /* Game Canvas */
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+
+    /* Instructions overlay */
+    .instructions {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      pointer-events: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hud">
+    <a href="index.html" class="back-btn">&larr; Torna all'Ecosistema</a>
+    <div class="stats">
+      <div>ENERGIA X&infin;: <span id="scoreVal" class="stat-val">0</span></div>
+      <div>FPS: <span id="fpsVal" class="stat-val">60</span></div>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+  <div class="instructions">Muovi il mouse o usa WASD / Frecce per pilotare la navetta</div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreVal = document.getElementById('scoreVal');
+    const fpsVal = document.getElementById('fpsVal');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Navetta di luce (giocatore)
+    const ship = {
+      x: 0,
+      y: 0,
+      targetX: 0,
+      targetY: 0,
+      roll: 0,
+      size: 26
+    };
+
+    // Tunnel circolare & anelli di luce
+    const rings = [];
+    const ringCount = 28;
+    const tunnelDepth = 1800;
+
+    for (let i = 0; i < ringCount; i++) {
+      rings.push({
+        z: (i / ringCount) * tunnelDepth,
+        rot: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Globi di energia
+    const orbs = [];
+    const orbCount = 14;
+
+    function spawnOrb(z = tunnelDepth) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 90 + Math.random() * 160;
+      return {
+        x: Math.cos(angle) * radius,
+        y: Math.sin(angle) * radius,
+        z: z,
+        size: 14 + Math.random() * 8,
+        color: Math.random() > 0.3 ? '#00f0ff' : '#ffd166',
+        collected: false
+      };
+    }
+
+    for (let i = 0; i < orbCount; i++) {
+      orbs.push(spawnOrb(300 + (i / orbCount) * tunnelDepth));
+    }
+
+    let energyScore = 0;
+    const speed = 14;
+
+    // Controlli Mouse / Touch
+    window.addEventListener('mousemove', (e) => {
+      ship.targetX = (e.clientX - width / 2) * 0.7;
+      ship.targetY = (e.clientY - height / 2) * 0.7;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        ship.targetX = (e.touches[0].clientX - width / 2) * 0.7;
+        ship.targetY = (e.touches[0].clientY - height / 2) * 0.7;
+      }
+    });
+
+    // Controlli Tastiera
+    const keys = {};
+    window.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+    // Calcolo FPS
+    let lastTime = performance.now();
+    let frameCounter = 0;
+    let fpsTimer = 0;
+
+    function loop(time) {
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
+
+      frameCounter++;
+      fpsTimer += delta;
+      if (fpsTimer >= 0.5) {
+        fpsVal.textContent = Math.round(frameCounter / fpsTimer);
+        frameCounter = 0;
+        fpsTimer = 0;
+      }
+
+      // Input tastiera
+      const moveSpeed = 16;
+      if (keys['arrowleft'] || keys['a']) ship.targetX -= moveSpeed;
+      if (keys['arrowright'] || keys['d']) ship.targetX += moveSpeed;
+      if (keys['arrowup'] || keys['w']) ship.targetY -= moveSpeed;
+      if (keys['arrowdown'] || keys['s']) ship.targetY += moveSpeed;
+
+      // Limiti movimento
+      const boundary = 250;
+      ship.targetX = Math.max(-boundary, Math.min(boundary, ship.targetX));
+      ship.targetY = Math.max(-boundary, Math.min(boundary, ship.targetY));
+
+      // Interpolazione morbida
+      const prevX = ship.x;
+      ship.x += (ship.targetX - ship.x) * 0.12;
+      ship.y += (ship.targetY - ship.y) * 0.12;
+      ship.roll = (ship.x - prevX) * 0.05;
+
+      // Rendering sfondo
+      ctx.fillStyle = 'rgba(3, 3, 8, 0.35)';
+      ctx.fillRect(0, 0, width, height);
+
+      const fov = 350;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 1. Aggiornamento e disegno del Tunnel (Anelli ottagonali sacri)
+      rings.forEach(ring => {
+        ring.z -= speed;
+        if (ring.z <= 20) ring.z += tunnelDepth;
+
+        const scale = fov / ring.z;
+        const radius = 320 * scale;
+        const sides = 8;
+
+        ctx.beginPath();
+        for (let s = 0; s <= sides; s++) {
+          const a = ring.rot + (s * Math.PI * 2) / sides;
+          const px = cx + Math.cos(a) * radius;
+          const py = cy + Math.sin(a) * radius;
+          if (s === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = `rgba(157, 78, 221, ${Math.min(0.6, scale * 1.2)})`;
+        ctx.lineWidth = Math.max(1, scale * 2);
+        ctx.stroke();
+      });
+
+      // 2. Disegno e raccolta Globi di Energia
+      for (let i = 0; i < orbs.length; i++) {
+        const orb = orbs[i];
+        orb.z -= speed;
+
+        if (orb.z <= 20) {
+          orbs[i] = spawnOrb();
+          continue;
+        }
