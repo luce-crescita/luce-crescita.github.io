@@ -1,1 +1,152 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Laboratorio 3D & 4D — Sorprese X∞ | LUCEECRESCITA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #020307; 
+            color: #e2e8f0; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        .card-glass {
+            background: rgba(10, 16, 31, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .card-glass:hover {
+            border-color: rgba(251, 191, 36, 0.45);
+            box-shadow: 0 10px 35px -10px rgba(251, 191, 36, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-amber-500 selection:text-black">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#020307]/85 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <span class="text-2xl">🎨</span>
+                <span class="font-cinzel font-bold text-base sm:text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-sky-400 transition-colors">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors">Energy Weaver</a>
+                <a href="sorprese.html" class="text-amber-400 font-semibold border-b border-amber-400 pb-0.5">Sorprese X∞</a>
+                <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+                <a href="progetti.html" class="px-4 py-1.5 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 transition-all">
+                    Archivio Progetti
+                </a>
+            </nav>
+            <a href="index.html" class="md:hidden text-xs font-mono-code px-3 py-1.5 rounded-lg bg-amber-600/30 text-amber-300 border border-amber-500/40">
+                ← Home
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-mono-code text-amber-300">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Laboratorio Interdimensionale
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-cinzel font-bold text-white">
+                Giochi 3D & 4D <span class="text-amber-400">X∞</span>
+            </h1>
+            <p class="text-xs sm:text-sm md:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto">
+                Esplora geometrie oltre la percezione ordinaria: tocca la quarta dimensione con il Tesseract sonoro e viaggia nel tunnel di curvatura a 60 FPS.
+            </p>
+            <div class="pt-2">
+                <button onclick="toggleAudio()" id="btn-audio-lab" class="px-5 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono-code text-xs hover:bg-amber-500/30 active:scale-95 transition-all">
+                    🔊 <span id="label-audio-lab">Attiva Audio Spaziale 4D</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= GIOCO 1: L'IPERCUBO 4D SINTONIZZATORE ================= -->
+        <section class="card-glass p-5 sm:p-8 rounded-3xl space-y-6 border border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-mono-code text-purple-400 uppercase tracking-widest">Esperienza Quadridimensionale</span>
+                    <h2 class="text-xl sm:text-2xl font-cinzel font-bold text-white flex items-center gap-2">
+                        <span>💠</span> Il Tesseract 4D Sonoro
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                        Trascina il dito/mouse sul canvas per ruotare l'ipercubo nel piano 4D (XW e ZW). Trova la risonanza armonica al 100%!
+                    </p>
+                </div>
+                <!-- Indicatore di Allineamento -->
+                <div class="flex items-center gap-3 bg-black/50 px-4 py-2 rounded-2xl border border-white/10">
+                    <span class="text-xs font-mono-code text-slate-400">Risonanza 4D:</span>
+                    <span id="tesseract-sync" class="text-xs font-mono-code font-bold text-amber-400">0%</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <!-- Canvas 4D -->
+                <div class="lg:col-span-8 w-full h-80 sm:h-96 rounded-2xl bg-[#010205] border border-white/10 overflow-hidden relative touch-none">
+                    <canvas id="tesseract-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+                    <div id="tesseract-solved" class="hidden absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-fade-in">
+                        <span class="text-4xl mb-2">✨</span>
+                        <h3 class="text-xl font-cinzel font-bold text-amber-300 mb-1">Risonanza 4D Completata!</h3>
+                        <p class="text-xs text-slate-300 max-w-sm italic mb-4">«La quarta dimensione è lo spazio interiore in cui ogni scelta passata e futura convive in pura luce.»</p>
+                        <button onclick="resetTesseract()" class="px-4 py-2 rounded-xl bg-amber-500 text-black font-semibold text-xs active:scale-95">Riavvia Sintonizzatore</button>
+                    </div>
+                </div>
+
+                <!-- Controlli Dimensione 4D -->
+                <div class="lg:col-span-4 space-y-4 font-mono-code text-xs">
+                    <div class="p-4 rounded-2xl bg-white/5 space-y-3">
+                        <label class="text-slate-400 block">Deformazione Asse W (4ª Dimensione):</label>
+                        <input type="range" id="slider-w" min="1" max="5" step="0.05" value="2.5" class="w-full accent-amber-400">
+                        <div class="flex justify-between text-slate-400 text-[10px]">
+                            <span>3D Puro</span>
+                            <span>Iper-Spazio 4D</span>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 space-y-2 text-slate-300 text-[11px] leading-relaxed">
+                        <p>🔹 <strong>16 Vertici</strong> & <strong>32 Spigoli</strong> calcolati con matrici proiettive a 4 dimensioni.</p>
+                        <p>🔹 Quando allinei gli assi, l'oscillatore suona l'accordo sacro a <strong>432 Hz + 528 Hz</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= GIOCO 2: IL TUNNEL DI CURVATURA 3D (WARP RUNNER) ================= -->
+        <section class="card-glass p-5 sm:p-8 rounded-3xl space-y-6 border border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-mono-code text-sky-400 uppercase tracking-widest">Volo in Prima Persona</span>
+                    <h2 class="text-xl sm:text-2xl font-cinzel font-bold text-white flex items-center gap-2">
+                        <span>🚀</span> Viaggio nell'Iperspazio 3D
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                        Muovi il dito/mouse per pilotare il flusso e raccogliere i globi di energia pura evitando il vuoto.
+                    </p>
+                </div>
+                <!-- HUD Punteggio -->
+                <div class="flex items-center gap-4 bg-black/50 px-4 py-2.5 rounded-2xl border border-white/10 font-mono-code text-xs">
+                    <div>
+                        <span class="text-slate-400">Energia: </span>
+                        <span id="warp-score" class="text-emerald-400 font-bold">0</span>
+                    </div>
