@@ -1,1 +1,171 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCEECRESCITA X∞ — Spazio Multimediale Immersivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #03050a; color: #e2e8f0; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        .card-glass {
+            background: rgba(11, 17, 33, 0.72);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-glass:hover {
+            border-color: rgba(168, 85, 247, 0.45);
+            box-shadow: 0 10px 35px -10px rgba(168, 85, 247, 0.35);
+            transform: translateY(-3px);
+        }
+        .pixel-cell { aspect-ratio: 1 / 1; transition: background-color 0.1s ease; }
+        
+        /* Barrette equalizzatore audio */
+        .eq-bar {
+            width: 3px;
+            background: #38bdf8;
+            border-radius: 2px;
+            animation: eqPulse 1.2s infinite ease-in-out alternate;
+        }
+        @keyframes eqPulse {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-purple-600 selection:text-white">
+
+    <!-- Canvas cosmico interattivo con nebulosa video fluida -->
+    <canvas id="stars-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- ================= CONTROLLER AUDIO FLUTTUANTE (HUD) ================= -->
+    <div id="audio-dock" class="fixed bottom-6 right-6 z-50 card-glass p-4 rounded-2xl flex items-center gap-4 shadow-2xl border border-white/15">
+        <button onclick="toggleAudio()" id="btn-audio-toggle" class="w-12 h-12 rounded-xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-xl hover:scale-105 transition-all text-purple-300">
+            <span id="audio-icon">🔇</span>
+        </button>
+        <div class="hidden sm:flex flex-col">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-mono-code font-bold text-slate-200" id="audio-title">Suono Cosmico</span>
+                <div id="eq-container" class="hidden flex items-end gap-1 h-5">
+                    <div class="eq-bar" style="animation-delay: 0.1s;"></div>
+                    <div class="eq-bar" style="animation-delay: 0.3s; background:#c084fc;"></div>
+                    <div class="eq-bar" style="animation-delay: 0.2s; background:#34d399;"></div>
+                    <div class="eq-bar" style="animation-delay: 0.4s;"></div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+                <select id="audio-preset" onchange="changeAudioPreset(this.value)" class="bg-black/50 text-[11px] font-mono-code text-slate-400 border border-white/10 rounded px-2 py-0.5 focus:outline-none">
+                    <option value="432">432 Hz — Risonanza Cosmica</option>
+                    <option value="528">528 Hz — Trasformazione & Vita</option>
+                    <option value="drone">Deep Space — Vuoto Siderale</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="toggleZenMode()" title="Modalità Zen a Schermo Intero" class="text-slate-400 hover:text-white p-2">
+            ⛶
+        </button>
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#03050a]/85 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <span class="text-2xl transform group-hover:rotate-12 transition-transform">🎨</span>
+                <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="text-sky-400 font-semibold">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors flex items-center gap-1">
+                    <span>⚡</span> Energy Weaver
+                </a>
+                <a href="sorprese.html" class="hover:text-amber-400 transition-colors">Sorprese X∞</a>
+                <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+                <a href="progetti.html" class="px-4 py-1.5 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 transition-all">
+                    Archivio Progetti
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-6xl mx-auto px-6 py-12 space-y-24">
+
+        <!-- ================= HERO ================= -->
+        <section class="text-center py-10 relative">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono-code text-purple-300 mb-6 shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                Laboratorio Multimediale Attivo
+            </div>
+            <h1 class="text-4xl md:text-6xl font-cinzel font-extrabold tracking-tight text-white mb-6">
+                Spazio Creativo <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400">X∞</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                <strong class="text-slate-200">Sorprese X∞</strong> — Entra in un laboratorio interattivo di giochi, visioni e attività progettate per allenare la fantasia e stimolare la curiosità.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="sorprese.html" class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-sky-600 text-white font-medium text-sm hover:brightness-110 transition-all shadow-lg shadow-purple-900/30">
+                    Entra nel Laboratorio
+                </a>
+                <button onclick="toggleAudio()" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 font-medium text-sm hover:bg-white/10 transition-all flex items-center gap-2">
+                    <span>🔊</span> Attiva Atmosfera Sonora
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= COSTELLAZIONE DELLE IDEE ================= -->
+        <section class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-cinzel font-bold text-white mb-3">La Costellazione delle Idee</h2>
+                <p class="text-slate-400 text-sm md:text-base">
+                    Immagina che ogni stella custodisca un piccolo universo autonomo. Tocca un astro per sbloccare la sua visione e far risuonare la sua frequenza.
+                </p>
+            </div>
+
+            <!-- I 4 Astri Sonori -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <button onclick="openAstro('cristallo', 528)" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">💎</div>
+                    <h3 class="font-cinzel font-bold text-lg text-sky-300 mb-2">Il pianeta di cristallo</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Armonie minerali e vibrazioni sonore che accordano i pensieri dell'osservatore.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-sky-400 font-medium group-hover:translate-x-1 transition-transform">Ascolta & Sblocca →</span>
+                </button>
+
+                <button onclick="openAstro('tempo', 432)" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">⌛</div>
+                    <h3 class="font-cinzel font-bold text-lg text-amber-300 mb-2">La biblioteca del tempo</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Clessidre di luce dorata che custodiscono i futuri non ancora percorsi.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-amber-400 font-medium group-hover:translate-x-1 transition-transform">Ascolta & Sblocca →</span>
+                </button>
+
+                <button onclick="openAstro('nuvole', 639)" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">☁️</div>
+                    <h3 class="font-cinzel font-bold text-lg text-purple-300 mb-2">Il giardino delle nuvole</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Semi d'intuizione che germogliano nel vapore prima di toccare terra.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-purple-400 font-medium group-hover:translate-x-1 transition-transform">Ascolta & Sblocca →</span>
+                </button>
+
+                <button onclick="openAstro('sogni', 396)" class="card-glass p-6 rounded-2xl text-left group">
+                    <div class="text-4xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform">🌌</div>
+                    <h3 class="font-cinzel font-bold text-lg text-indigo-300 mb-2">L'oceano dei sogni</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Maree bioluminescenti che fanno affiorare le memorie del domani.</p>
+                    <span class="mt-4 inline-flex items-center text-xs text-indigo-400 font-medium group-hover:translate-x-1 transition-transform">Ascolta & Sblocca →</span>
+                </button>
+            </div>
+
+            <!-- Modale Astri -->
+            <div id="astro-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+                <div class="card-glass max-w-lg w-full p-8 rounded-3xl relative border border-purple-500/40">
+                    <button onclick="closeAstro()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-xl">✕</button>
+                    <div id="modal-icon" class="text-5xl mb-4">✨</div>
+                    <h3 id="modal-title" class="text-2xl font-cinzel font-bold text-white mb-3">Titolo</h3>
+                    <p id="modal-desc" class="text-slate-300 text-sm leading-relaxed italic mb-6"></p>
