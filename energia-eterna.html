@@ -1,1 +1,74 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X∞ Energy Weaver — LUCEECRESCITA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>X∞ Energy Weaver</h1>
+    <p>Concept dedicato alle rinnovabili e all'ottimizzazione intelligente dei consumi</p>
+</header>
+
+<main>
+    <section>
+        <h2>Simulatore di Rete Intelligente</h2>
+        <p>Gestisci l'equilibrio tra la produzione delle fonti pulite e i consumi della rete cittadina in tempo reale.</p>
+        
+        <div class="sim-panel">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="stat-box">
+                    <span>Produzione Green</span>
+                    <span id="prodVal" class="stat-val">45 kW</span>
+                </div>
+                <div class="stat-box">
+                    <span>Carico Rete</span>
+                    <span id="loadVal" class="stat-val">30 kW</span>
+                </div>
+                <div class="stat-box">
+                    <span>Stato Accumulatore</span>
+                    <span id="batteryVal" class="stat-val" style="color: #06b6d4;">50%</span>
+                </div>
+            </div>
+            
+            <button class="control-btn" onclick="triggerSimulationCycle()">Simula Prossimo Ciclo Orario</button>
+            <p id="simLog" style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                Sistema stabile. L'energia in eccesso viene stoccata nell'accumulatore intelligente.
+            </p>
+        </div>
+    </section>
+</main>
+
+<script>
+    let battery = 50;
+
+    function triggerSimulationCycle() {
+        // Genera valori casuali realistici
+        let production = Math.floor(Math.random() * 60) + 20; // 20-80 kW
+        let load = Math.floor(Math.random() * 50) + 15;       // 15-65 kW
+        
+        let net = production - load;
+        let logMessage = "";
+
+        if (net > 0) {
+            battery = Math.min(100, battery + Math.floor(net / 2));
+            logMessage = `Surplus energetico di +${net} kW rilevato. Accumulatori in fase di carica.`;
+        } else {
+            battery = Math.max(0, battery + Math.floor(net / 2));
+            logMessage = `Deficit energetico di ${net} kW. Il sistema attinge energia pulita dalle riserve.`;
+        }
+
+        // Aggiorna l'interfaccia utente
+        document.getElementById('prodVal').innerText = production + " kW";
+        document.getElementById('loadVal').innerText = load + " kW";
+        document.getElementById('batteryVal').innerText = battery + "%";
+        document.getElementById('simLog').innerText = logMessage;
+    }
+</script>
+
+</body>
+</html>
