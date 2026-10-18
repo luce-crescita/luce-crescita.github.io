@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorprese 3D/4D — Tunnel Interdimensionale 7.4 | LUCEECRESCITA X∞</title>
+  <meta name="description" content="Simulatore di pilotaggio a 60 FPS nel Tunnel a Vettore Luce di LUCEECRESCITA X∞.">
+  <meta name="author" content="Mastropaolo Antonello Salvatore">
+  <style>
+    :root {
+      --bg: #030308;
+      --cyan: #00f0ff;
+      --magenta: #ff007f;
+      --purple: #9d4edd;
+      --gold: #ffd166;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top HUD */
+    .hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      background: linear-gradient(180deg, rgba(3,3,8,0.9) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hud-links {
+      display: flex;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: var(--cyan);
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 0.55rem 1.1rem;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      background: rgba(3, 3, 8, 0.6);
+      transition: all 0.25s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 240, 255, 0.25);
+      box-shadow: 0 0 15px var(--cyan);
+      transform: translateY(-1px);
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-val {
+      color: var(--gold);
+      text-shadow: 0 0 10px rgba(255, 209, 102, 0.6);
+    }
+
+    /* Canvas Schermo Intero */
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      cursor: crosshair;
+    }
+
+    /* Istruzioni a comparsa */
+    .instructions {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      pointer-events: none;
+      text-align: center;
+      background: rgba(3, 3, 8, 0.7);
+      backdrop-filter: blur(8px);
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      .hud { padding: 0.8rem 1rem; }
+      .back-btn { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
+      .stats { gap: 1rem; font-size: 0.85rem; }
+      .instructions { font-size: 0.7rem; padding: 5px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hud">
+    <div class="hud-links">
+      <a href="index.html" class="back-btn">&larr; Home Portale</a>
+      <a href="sorprese.html" class="back-btn">🎮 I 37 Giochi</a>
+    </div>
+    <div class="stats">
+      <div>ENERGIA X&infin;: <span id="scoreVal" class="stat-val">0</span></div>
+      <div>FPS: <span id="fpsVal" class="stat-val">60</span></div>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+  <div class="instructions">Muovi il mouse / touch o usa WASD / Frecce per pilotare la navetta</
