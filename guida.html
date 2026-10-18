@@ -1,1 +1,135 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida all'Uso — LUCEECRESCITA X∞</title>
+    <meta name="description" content="Manuale di esplorazione per navigare lo spazio concettuale e interattivo di LUCEECRESCITA X∞.">
+    <meta name="author" content="Mastropaolo Antonello Salvatore">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #04060d; color: #e2e8f0; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        .card-glass {
+            background: rgba(13, 20, 38, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s ease;
+        }
+        .card-glass:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-purple-600 selection:text-white flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#04060d]/90 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <span class="text-2xl transition-transform group-hover:scale-110">🎨</span>
+                <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+
+            <!-- Nav Desktop -->
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-sky-400 transition-colors">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors">Energy Weaver</a>
+                <a href="sorprese.html" class="hover:text-amber-400 transition-colors">Sorprese X∞</a>
+                <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+                <a href="progetti.html" class="hover:text-purple-300 transition-colors">Archivio Progetti</a>
+                <a href="guida.html" class="text-slate-100 font-semibold border-b border-white/60 pb-0.5">Guida</a>
+            </nav>
+
+            <!-- Bottone Mobile Hamburger -->
+            <button id="mobileMenuBtn" aria-label="Apri menu" class="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu a tendina Mobile -->
+        <nav id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#04060d]/95 px-6 py-4 space-y-3 text-sm font-medium text-slate-300">
+            <a href="index.html" class="block hover:text-sky-400">Home</a>
+            <a href="manifesto.html" class="block hover:text-purple-400">Manifesto</a>
+            <a href="energia-eterna.html" class="block hover:text-emerald-400">Energy Weaver</a>
+            <a href="sorprese.html" class="block hover:text-amber-400">Sorprese X∞</a>
+            <a href="about.html" class="block hover:text-sky-300">Chi Siamo</a>
+            <a href="progetti.html" class="block hover:text-purple-300">Archivio Progetti</a>
+            <a href="guida.html" class="block text-slate-100 font-semibold">Guida</a>
+        </nav>
+    </header>
+
+    <!-- Contenuto Principale -->
+    <main class="max-w-4xl mx-auto px-6 py-16 space-y-12 relative z-10 w-full flex-grow">
+        
+        <!-- Intestazione -->
+        <div class="text-center space-y-4">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono-code text-purple-300">
+                Manuale di Esplorazione
+            </div>
+            <h1 class="text-3xl md:text-5xl font-cinzel font-bold text-white tracking-tight">
+                Come Navigare lo Spazio X∞
+            </h1>
+            <p class="text-sm md:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
+                Una mappa chiara e immediata per fruire al meglio di tutte le esperienze visive, teoriche e interattive del laboratorio.
+            </p>
+        </div>
+
+        <!-- I 4 Step di Navigazione -->
+        <div class="space-y-6">
+
+            <!-- Step 1 -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col sm:flex-row gap-6 items-start">
+                <div class="text-2xl font-mono-code font-bold w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                    01
+                </div>
+                <div class="space-y-2">
+                    <h2 class="font-cinzel font-bold text-lg md:text-xl text-white">Esplora la Costellazione delle Idee</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Nella Home Page trovi i 4 astri segreti (<em>Cristallo, Tempo, Nuvole, Sogni</em>). Clicca su ciascun astro per attivare la scheda con il relativo frammento filosofico e sintonizzarti sull'atmosfera dello spazio.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col sm:flex-row gap-6 items-start">
+                <div class="text-2xl font-mono-code font-bold w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                    02
+                </div>
+                <div class="space-y-2">
+                    <h2 class="font-cinzel font-bold text-lg md:text-xl text-white">Sintonizza l'Energy Weaver</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Entra nella sezione dedicata per interagire con il campo di frequenze toroidali. Trascina con il mouse o il touch screen per orientare il toroide nello spazio 3D e alterna tra le frequenze di <strong>432 Hz</strong> e <strong>528 Hz</strong> per osservare la reattività armonica.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col sm:flex-row gap-6 items-start">
+                <div class="text-2xl font-mono-code font-bold w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                    03
+                </div>
+                <div class="space-y-2">
+                    <h2 class="font-cinzel font-bold text-lg md:text-xl text-white">Crea nella Pixel Art & Scarica le Opere</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Nella sezione <em>Sorprese X∞</em> scegli una tonalità dalla tavolozza e dipingi la matrice di pixel. Quando la tua composizione è completa, puoi cliccare su <em>Esporta PNG</em> per scaricare l'illustrazione generata direttamente sul tuo dispositivo.
+                    </p>
+                </div>
+            </div>
