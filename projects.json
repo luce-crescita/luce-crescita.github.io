@@ -1,1 +1,63 @@
 
+[
+  {
+    "id": "energy-weaver",
+    "title": "Energy Weaver System",
+    "category": "Energia",
+    "icon": "⚡",
+    "description": "Simulatore visivo e concettuale di un campo toroidale. Un'opera digitale interattiva ispirata alle geometrie energetiche, non uno strumento di misura scientifica.",
+    "link": "energia-eterna.html",
+    "tag": "Attivo X∞",
+    "status": "stabile"
+  },
+  {
+    "id": "costellazione-idee",
+    "title": "La Costellazione delle Idee",
+    "category": "Visioni",
+    "icon": "✨",
+    "description": "Mappa cosmica immersiva: quattro astri simbolici (Cristallo, Tempo, Nuvole, Sogni) che custodiscono frammenti filosofici.",
+    "link": "index.html#costellazione",
+    "tag": "Esplorazione",
+    "status": "stabile"
+  },
+  {
+    "id": "laboratorio-sorprese",
+    "title": "Sorprese X∞",
+    "category": "Laboratori",
+    "icon": "🎲",
+    "description": "Laboratorio interattivo di attività, enigmi e stimoli creativi per allenare l'intuizione e la fantasia.",
+    "link": "sorprese.html",
+    "tag": "Interattivo",
+    "status": "stabile"
+  },
+  {
+    "id": "pixel-studio",
+    "title": "Pixel Art & Geometrie",
+    "category": "Arte",
+    "icon": "🎨",
+    "description": "Canvas interattivo per comporre pixel art con tavolozze di colori; esportabile in PNG.",
+    "link": "sorprese.html",
+    "tag": "Creatività",
+    "status": "stabile"
+  },
+  {
+    "id": "tunnel-vettore-luce",
+    "title": "Tunnel a Vettore Luce",
+    "category": "Laboratori",
+    "icon": "🚀",
+    "description": "Simulatore di volo 3D interattivo con raccolta particellare. Pilotabile con mouse, touch o tastiera.",
+    "link": "sorprese-74.html",
+    "tag": "Interattivo",
+    "status": "sviluppo"
+  },
+  {
+    "id": "manifesto-luce",
+    "title": "Manifesto Luce e Crescita",
+    "category": "Filosofia",
+    "icon": "🌌",
+    "description": "I quattro principi cardine dell'opera: Luce, Crescita Perpetua, Spirito & Codice, Moltiplicatore Infinito.",
+    "link": "manifesto.html",
+    "tag": "Fondamento",
+    "status": "stabile"
+  }
+]
