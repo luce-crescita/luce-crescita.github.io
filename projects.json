@@ -1,1 +1,57 @@
 
+[
+  {
+    "id": "energy-weaver",
+    "title": "Energy Weaver System",
+    "category": "Energia",
+    "icon": "⚡",
+    "description": "Architettura di simulazione energetica e risonanza quantistica progettata per armonizzare frequenze di luce e conservazione dell'energia.",
+    "link": "energia-eterna.html",
+    "tag": "Attivo X∞"
+  },
+  {
+    "id": "costellazione-idee",
+    "title": "La Costellazione delle Idee",
+    "category": "Visioni",
+    "icon": "✨",
+    "description": "Mappa cosmica immersiva dove ogni astro custodisce un frammento filosofico: dal cristallo alla biblioteca del tempo.",
+    "link": "index.html#costellazione",
+    "tag": "Esplorazione"
+  },
+  {
+    "id": "laboratorio-sorprese",
+    "title": "Sorprese X∞",
+    "category": "Laboratori",
+    "icon": "🎲",
+    "description": "Laboratorio interattivo di enigmi, attività e stimoli ideato per allenare l'intuizione e liberare la fantasia creativa.",
+    "link": "sorprese.html",
+    "tag": "Interattivo"
+  },
+  {
+    "id": "pixel-studio",
+    "title": "Pixel Art & Geometrie Armoniche",
+    "category": "Arte",
+    "icon": "🎨",
+    "description": "Spazio digitale per la meditazione visiva e il rilassamento della mente attraverso schemi grafici e colori stellari.",
+    "link": "sorprese.html",
+    "tag": "Creatività"
+  },
+  {
+    "id": "storie-generative",
+    "title": "Storie Generative e Incipit",
+    "category": "Visioni",
+    "icon": "📜",
+    "description": "Motore concettuale che tesse frammenti narrativi speculativi per scardinare la prospettiva ordinaria del quotidiano.",
+    "link": "index.html",
+    "tag": "Generativo"
+  },
+  {
+    "id": "manifesto-luce",
+    "title": "Manifesto Luce e Crescita",
+    "category": "Filosofia",
+    "icon": "🌌",
+    "description": "I principi cardine, l'etica e la direzione concettuale dell'intero cammino evolutivo di Mastropaolo Antonello Salvatore.",
+    "link": "manifesto.html",
+    "tag": "Fondamento"
+  }
+]
