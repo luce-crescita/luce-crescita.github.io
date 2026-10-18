@@ -1,1 +1,161 @@
 
+
+---
+
+### File 4 di 15 — `style.css`
+
+```css
+/* ==========================================================================
+   Luce e Crescita X∞ — Foglio di Stile Globale
+   Autore: Mastropaolo Antonello Salvatore
+   Edizione: 2026
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+    --bg-space: #04060d;
+    --bg-card: rgba(13, 20, 38, 0.65);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --border-glass-hover: rgba(168, 85, 247, 0.35);
+    
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    
+    --glow-cyan: #38bdf8;
+    --glow-amber: #fbbf24;
+    --glow-purple: #c084fc;
+    --glow-emerald: #34d399;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-space);
+    overflow-x: clip;
+}
+
+body {
+    background-color: var(--bg-space);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tipografie */
+.font-cinzel { font-family: 'Cinzel', Georgia, serif; }
+.font-mono-code { font-family: 'Space Mono', monospace; }
+.font-mono { font-family: 'Space Mono', monospace; }
+
+/* Utility accessibilità */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Scrollbar futuristica */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #020408; }
+::-webkit-scrollbar-thumb {
+    background: #1e1b4b;
+    border-radius: 999px;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+::-webkit-scrollbar-thumb:hover { background: #4c1d95; }
+
+/* Firefox */
+@supports (scrollbar-width: thin) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1b4b #020408;
+    }
+}
+
+::selection { background: rgba(168, 85, 247, 0.85); color: #ffffff; }
+
+/* Glassmorphism */
+.card-glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-glass:hover { border-color: var(--border-glass-hover); }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.custom-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.6rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.custom-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--glow-cyan);
+    box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.2);
+}
+
+/* Fallback backdrop-filter */
+@supports not (backdrop-filter: blur(16px)) {
+    .card-glass, .custom-card {
+        background: rgba(13, 20, 38, 0.95);
+    }
+}
+
+/* Blur ridotto su mobile */
+@media (max-width: 768px) {
+    .card-glass, .custom-card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
+/* Preferenze utente */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card-glass, .custom-card { transition: none; }
+    .card-glass:hover, .custom-card:hover { transform: none; }
+}
+
+/* Focus visibile */
+:focus-visible {
+    outline: 3px solid var(--glow-cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Stampa */
+@media print {
+    body { background: #fff; color: #000; }
+    .card-glass, .custom-card {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        backdrop-filter: none;
+    }
+    header, footer { display: none; }
+}
