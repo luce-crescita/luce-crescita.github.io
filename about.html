@@ -1,1 +1,219 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Siamo — LUCEECRESCITA X∞</title>
+    <meta name="description" content="Chi c'è dietro LUCEECRESCITA X∞: la visione, la filosofia e il percorso creativo e concettuale di Mastropaolo Antonello Salvatore.">
+    <meta name="author" content="Mastropaolo Antonello Salvatore">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #04060d; color: #e2e8f0; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-mono-code { font-family: 'Space Mono', monospace; }
+        .card-glass {
+            background: rgba(13, 20, 38, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-purple {
+            box-shadow: 0 0 45px -10px rgba(168, 85, 247, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#04060d]/90 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <span class="text-2xl transition-transform group-hover:scale-110">🎨</span>
+                <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+                    LUCEECRESCITA <span class="text-purple-400">X∞</span>
+                </span>
+            </a>
+
+            <!-- Nav Desktop -->
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="index.html" class="hover:text-sky-400 transition-colors">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="energia-eterna.html" class="hover:text-emerald-400 transition-colors">Energy Weaver</a>
+                <a href="sorprese.html" class="hover:text-amber-400 transition-colors">Sorprese X∞</a>
+                <a href="about.html" class="text-sky-400 font-semibold border-b border-sky-400/50 pb-0.5">Chi Siamo</a>
+                <a href="progetti.html" class="hover:text-purple-300 transition-colors">Archivio Progetti</a>
+                <a href="guida.html" class="hover:text-slate-100 transition-colors">Guida</a>
+            </nav>
+
+            <!-- Bottone Mobile Hamburger -->
+            <button id="mobileMenuBtn" aria-label="Apri menu" class="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu a tendina Mobile -->
+        <nav id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#04060d]/95 px-6 py-4 space-y-3 text-sm font-medium text-slate-300">
+            <a href="index.html" class="block hover:text-sky-400">Home</a>
+            <a href="manifesto.html" class="block hover:text-purple-400">Manifesto</a>
+            <a href="energia-eterna.html" class="block hover:text-emerald-400">Energy Weaver</a>
+            <a href="sorprese.html" class="block hover:text-amber-400">Sorprese X∞</a>
+            <a href="about.html" class="block text-sky-400 font-semibold">Chi Siamo</a>
+            <a href="progetti.html" class="block hover:text-purple-300">Archivio Progetti</a>
+            <a href="guida.html" class="block hover:text-slate-100">Guida</a>
+        </nav>
+    </header>
+
+    <!-- Contenuto Principale -->
+    <main class="max-w-4xl mx-auto px-6 py-16 space-y-12 relative z-10 w-full flex-grow">
+        
+        <!-- Intestazione -->
+        <header class="space-y-4 text-center md:text-left">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono-code text-purple-300">
+                🧬 Identità & Genesi del Progetto
+            </div>
+            <h1 class="text-3xl md:text-5xl font-cinzel font-bold text-white tracking-wide">
+                Alle Radici di <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">LUCEECRESCITA X∞</span>
+            </h1>
+            <p class="text-sm md:text-base text-slate-400 font-light max-w-2xl">
+                Uno spazio indipendente dove arte digitale, filosofia dell'armonia, logica computazionale e libera ricerca si fondono senza compromessi.
+            </p>
+        </header>
+
+        <!-- Scheda Autore & Visione Fondativa -->
+        <section class="card-glass p-8 md:p-10 rounded-3xl space-y-6 glow-purple border border-white/10">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs font-mono-code uppercase tracking-widest text-sky-400">Ideatore & Autore</span>
+                    <h2 class="text-2xl font-cinzel font-bold text-white mt-1">Mastropaolo Antonello Salvatore</h2>
+                </div>
+                <div class="px-4 py-1.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono-code">
+                    Architettura Concettuale X∞
+                </div>
+            </div>
+
+            <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                <strong>LUCEECRESCITA X∞</strong> nasce come risposta alla standardizzazione digitale contemporanea. Non è semplicemente un sito web, ma un <em>laboratorio vivente</em> in cui ogni pagina rappresenta un frammento di pensiero, un'interazione visiva o una riflessione sulla relazione fra coscienza umana, energia e futuro tecnologico.
+            </p>
+
+            <blockquote class="p-5 rounded-2xl bg-[#080d1e]/80 border-l-4 border-purple-500 text-slate-200 italic font-light text-sm">
+                «Cercare la luce non significa negare il buio, ma trasformarlo in terreno fertile dove far germogliare l'invisibile.»
+            </blockquote>
+        </section>
+
+        <!-- I 3 Pilastri di Pensiero -->
+        <section class="space-y-6">
+            <h3 class="text-xl font-cinzel font-bold text-white flex items-center gap-3">
+                <span>💠</span> I Tre Cardini del Percorso
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Pilastro 1 -->
+                <div class="card-glass p-6 rounded-2xl space-y-3 border border-white/10 hover:border-sky-500/40 transition-colors">
+                    <div class="text-2xl text-sky-400">☀️</div>
+                    <h4 class="font-cinzel font-bold text-white text-base">La Luce (Chiarezza)</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Luce come risveglio della consapevolezza, trasparenza etica e guida interiore che disperde il rumore di fondo.
+                    </p>
+                </div>
+
+                <!-- Pilastro 2 -->
+                <div class="card-glass p-6 rounded-2xl space-y-3 border border-white/10 hover:border-purple-500/40 transition-colors">
+                    <div class="text-2xl text-purple-400">🌱</div>
+                    <h4 class="font-cinzel font-bold text-white text-base">La Crescita (Evoluzione)</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Crescita come tensione mai sopita al superamento dei propri limiti: un processo continuo sintetizzato dal moltiplicatore (X∞).
+                    </p>
+                </div>
+
+                <!-- Pilastro 3 -->
+                <div class="card-glass p-6 rounded-2xl space-y-3 border border-white/10 hover:border-amber-400/40 transition-colors">
+                    <div class="text-2xl text-amber-300">⚡</div>
+                    <h4 class="font-cinzel font-bold text-white text-base">L'Armonia del Codice</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Uno spazio digitale pulito: zero cookie di profilazione, zero algoritmi predatori, massima libertà di esplorazione locale.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- L'Ecosistema del Sito -->
+        <section class="card-glass p-8 md:p-10 rounded-3xl space-y-6 border border-white/10">
+            <h3 class="text-xl font-cinzel font-bold text-white flex items-center gap-3">
+                <span>🗺️</span> Le Stanze dell'Universo X∞
+            </h3>
+            
+            <div class="space-y-4 text-sm text-slate-300">
+                <div class="flex items-start gap-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 mt-2 shrink-0"></div>
+                    <div>
+                        <strong class="text-emerald-300">Energy Weaver:</strong> Simulatore visivo e concettuale dei campi di oscillazione ed energia continua.
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400 mt-2 shrink-0"></div>
+                    <div>
+                        <strong class="text-amber-200">Sorprese X∞ & Laboratori:</strong> Spazio interattivo con 37 attività ludiche, canvas per la Pixel Art e Music Creator.
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="w-2.5 h-2.5 rounded-full bg-purple-400 mt-2 shrink-0"></div>
+                    <div>
+                        <strong class="text-purple-300">Archivio Progetti:</strong> Catalogo in continua espansione dei frammenti teorici, prototipi e opere della Costellazione.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 flex flex-wrap gap-4 border-t border-white/10">
+                <a href="manifesto.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-xs tracking-wider uppercase transition-all shadow-lg shadow-purple-600/30">
+                    Leggi il Manifesto →
+                </a>
+                <a href="progetti.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-300 hover:text-white font-medium text-xs tracking-wider uppercase transition-all">
+                    Esplora i Progetti
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-[#020408] mt-24 py-10 w-full">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+            <div>
+                © 2026 <strong class="text-slate-200">Mastropaolo Antonello Salvatore</strong> · Progetto <span class="text-purple-300">LUCEECRESCITA X∞</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">Home</a>
+                <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+                <a href="progetti.html" class="hover:text-purple-400 transition-colors">Progetti</a>
+                <a href="energia-eterna.html" class="hover:text-purple-400 transition-colors">Energy Weaver</a>
+                <a href="guida.html" class="hover:text-purple-400 transition-colors">Guida</a>
+                <a href="copyright.html" class="hover:text-purple-400 transition-colors">Note Legali</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script per Menu Mobile -->
+    <script>
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
