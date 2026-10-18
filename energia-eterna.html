@@ -509,7 +509,7 @@
         for (let j = 0; j < 16; j++) {
           const v = (j / 16) * Math.PI * 2;
           let x3 = (R + r * Math.cos(v)) * Math.cos(u);
-          let y3 = (          let y3 = (R + r * Math.cos(v)) * Math.sin(u);
+          let y3 = (R + r * Math.cos(v)) * Math.sin(u);
           let z3 = r * Math.sin(v);
           
           const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
