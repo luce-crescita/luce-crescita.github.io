@@ -1,1 +1,1152 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100b24">
+<meta name="description" content="Sorprese X∞: laboratorio creativo con Pixel Art, Music Creator, 6 mini-giochi giocabili e frammenti narrativi. Progetto Luce e Crescita X∞.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta property="og:title" content="Sorprese X∞ — Future Play Universe | Luce e Crescita X∞">
+<meta property="og:description" content="Pixel Art, Music Creator, 6 mini-giochi giocabili e frammenti narrativi.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luce-crescita.github.io/sorprese.html">
+<link rel="canonical" href="https://luce-crescita.github.io/sorprese.html">
+<title>Sorprese X∞ — Future Play Universe | Luce e Crescita X∞</title>
+
+<style>
+:root{
+  --bg:#100b24;--panel:#1c1538;--panel2:#241b46;
+  --gold:#f4d27c;--cyan:#69e4ed;--purple:#a88aff;
+  --text:#f8f5ff;--muted:#c9c1e0;--border:#514477;
+  --green:#91edbd;--pink:#ffb6e2;
+}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:125px;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 0%,#34215d 0%,transparent 36%),
+    radial-gradient(ellipse at 90% 22%,#12384a 0%,transparent 32%),
+    var(--bg);
+  line-height:1.6;
+  overflow-wrap:anywhere;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+}
+a{color:var(--cyan)}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+header{
+  position:sticky;top:0;z-index:100;
+  background:#100b24fa;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{max-width:1200px;margin:auto;padding:10px 18px}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{
+  font-weight:900;letter-spacing:.07em;color:var(--gold);
+  font-size:clamp(1rem,3vw,1.35rem);text-decoration:none;
+}
+.brand small{display:block;font-weight:500;letter-spacing:.03em;color:var(--muted);font-size:.73rem}
+
+.global-nav{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  padding-bottom:8px;border-bottom:1px solid #ffffff12;margin-bottom:8px;
+}
+.global-nav a{
+  text-decoration:none;font-size:.85rem;color:var(--muted);
+  font-weight:600;transition:color .2s;
+}
+.global-nav a:hover, .global-nav a.active{color:var(--cyan)}
+
+.nav{display:flex;gap:6px;flex-wrap:wrap}
+.nav a{
+  display:inline-block;padding:5px 10px;text-decoration:none;
+  border:1px solid var(--border);border-radius:999px;
+  color:var(--text);font-size:.78rem;background:#171131;
+}
+@media (hover: hover) {
+  .nav a:hover{background:var(--panel2);border-color:var(--gold);color:var(--gold)}
+}
+
+main{max-width:1200px;margin:auto;padding:20px 16px 60px}
+section{margin:28px 0;scroll-margin-top:135px}
+
+.hero{
+  padding:clamp(25px,6vw,65px) 22px;
+  text-align:center;
+  border:1px solid #7964a5;
+  border-radius:28px;
+  background:linear-gradient(140deg,#2b1d50ef,#142b43ee);
+  box-shadow:0 15px 55px #0004;
+  position:relative;
+  overflow:hidden;
+}
+.hero:before{
+  content:"✦  ·  ✧  ·  ✦";
+  display:block;
+  color:var(--gold);
+  letter-spacing:1em;
+  margin-bottom:15px;
+}
+.hero h1{
+  font-size:clamp(2rem,7vw,4.3rem);
+  line-height:1.08;margin:0;color:var(--gold);
+}
+.hero p{
+  max-width:700px;margin:18px auto;color:var(--muted);
+  font-size:1.08rem;
+}
+
+h2{font-size:clamp(1.45rem,4vw,2rem);color:var(--gold);margin:0 0 8px}
+h3{margin:0 0 8px;color:var(--cyan)}
+.section-intro{color:var(--muted);margin:0 0 18px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));
+  gap:14px;
+}
+.grid.two{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));
+}
+.card{
+  min-width:0;padding:17px;border-radius:18px;
+  border:1px solid var(--border);
+  background:linear-gradient(150deg,#21183e,#17122f);
+  box-shadow:0 8px 25px #0002;
+}
+.card p{color:var(--muted);margin:7px 0 12px}
+
+.pixel-wrap{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:start;
+}
+@media (max-width:760px){
+  .pixel-wrap{grid-template-columns:1fr}
+}
+#pixelCanvas{
+  width:100%;
+  max-width:400px;
+  aspect-ratio:1;
+  background:#0d0820;
+  border:1px solid var(--border);
+  border-radius:14px;
+  cursor:crosshair;
+  touch-action:none;
+  display:block;
+  margin:auto;
+}
+.palette{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  max-width:200px;
+  margin:14px auto;
+}
+.swatch{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:8px;
+  border:1px solid #ffffff22;
+  cursor:pointer;
+  transition:transform .15s;
+}
+.swatch:hover{transform:scale(1.1)}
+.swatch.active{border:3px solid var(--gold);box-shadow:0 0 10px var(--gold)}
+.actions{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:12px;justify-content:center;
+}
+
+.btn{
+  border:1px solid #8e7cb8;
+  border-radius:12px;
+  padding:10px 14px;
+  background:#302351;
+  color:var(--text);
+  font-weight:700;
+  transition:transform .15s,background .15s;
+  text-decoration:none;
+  display:inline-block;
+}
+@media (hover: hover) {
+  .btn:hover{background:#45316c;transform:translateY(-1px)}
+}
+.btn.gold{background:var(--gold);color:#20152d;border-color:var(--gold)}
+.btn.cyan{background:var(--cyan);color:#10212b;border-color:var(--cyan)}
+.btn.small{padding:6px 10px;font-size:.9rem}
+
+.music-controls{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;margin:14px 0;
+}
+.music-controls input[type=range]{
+  width:180px;
+  accent-color:var(--cyan);
+}
+.note-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  max-width:600px;
+  margin:14px auto;
+}
+.note-btn{
+  aspect-ratio:1;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#17112f;
+  color:var(--text);
+  font-weight:700;
+  transition:background .15s,transform .1s;
+}
+.note-btn:active,
+.note-btn.playing{
+  background:var(--cyan);
+  color:#10212b;
+  transform:scale(0.96);
+}
+
+.game-card{
+  display:flex;flex-direction:column;gap:8px;
+}
+.game-card .emoji{font-size:2rem}
+.game-card h3{font-size:1.03rem}
+.game-card p{font-size:.91rem;flex:1}
+
+.game-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(3,3,8,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:16px;
+}
+.game-modal[hidden]{display:none}
+.game-modal-inner{
+  background:linear-gradient(150deg,#21183e,#17122f);
+  border:1px solid var(--gold);
+  border-radius:20px;
+  padding:24px;
+  max-width:500px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 20px 60px #000a;
+}
+.game-modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+.game-modal-header h3{
+  margin:0;
+  color:var(--gold);
+  font-size:1.3rem;
+}
+.game-close{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:4px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.game-close:hover{background:var(--panel2)}
+
+.memory-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  max-width:320px;
+  margin:16px auto;
+}
+.memory-card{
+  aspect-ratio:1;
+  background:#302351;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+  user-select:none;
+}
+.memory-card.matched{background:var(--green);color:#10212b;cursor:default}
+.memory-card.flipped{background:var(--cyan);color:#10212b}
+.memory-card:not(.matched):not(.flipped):hover{background:var(--panel2)}
+
+.quiz-options{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:12px;
+}
+.quiz-option{
+  padding:12px;
+  border:1px solid var(--border);
+  background:#302351;
+  color:var(--text);
+  border-radius:10px;
+  text-align:left;
+  cursor:pointer;
+  transition:background .15s;
+}
+.quiz-option:hover{background:var(--panel2)}
+.quiz-option.correct{background:var(--green);color:#10212b}
+.quiz-option.wrong{background:#a04060;color:#fff}
+
+.anagram-input{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#0d0820;
+  color:var(--text);
+  font-size:1.2rem;
+  text-align:center;
+  margin:12px 0;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.anagram-letters{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+.anagram-letter{
+  padding:10px 14px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--gold);
+}
+
+.draw-canvas{
+  width:100%;
+  max-width:300px;
+  aspect-ratio:1;
+  background:#0d0820;
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:block;
+  margin:12px auto;
+  cursor:crosshair;
+  touch-action:none;
+}
+
+.dice-area{
+  text-align:center;
+  margin:20px 0;
+}
+.dice{
+  font-size:5rem;
+  display:inline-block;
+  transition:transform .3s;
+}
+.dice.rolling{animation:roll 0.6s ease-in-out}
+@keyframes roll{
+  0%{transform:rotate(0)}
+  25%{transform:rotate(90deg)}
+  50%{transform:rotate(180deg)}
+  75%{transform:rotate(270deg)}
+  100%{transform:rotate(360deg)}
+}
+.dice-result{
+  color:var(--gold);
+  font-size:1.2rem;
+  font-weight:700;
+  margin-top:12px;
+}
+
+.enigma-input{
+  width:100px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#0d0820;
+  color:var(--text);
+  font-size:1.2rem;
+  text-align:center;
+  margin:12px auto;
+  display:block;
+}
+.feedback{
+  text-align:center;
+  margin:12px 0;
+  font-weight:700;
+}
+.feedback.correct{color:var(--green)}
+.feedback.wrong{color:var(--pink)}
+
+footer{
+  border-top:1px solid var(--border);
+  background:#070514;
+  margin-top:40px;
+  padding:24px 16px;
+  text-align:center;
+  color:var(--muted);
+  font-size:.85rem;
+}
+footer a{color:var(--cyan);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media (prefers-reduced-motion: reduce) {
+  html{scroll-behavior:auto}
+  .btn, .card, .game-card, .note-btn, .swatch, .memory-card { transition:none !important; }
+  .btn:hover, .game-card:hover { transform:none !important; }
+  .dice.rolling{animation:none}
+}
+
+@media print {
+  body { background:#fff; color:#000; }
+  header, footer, .palette, .music-controls { display:none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-row">
+      <a href="index.html" class="brand">
+        Luce e Crescita X∞
+        <small>Future Play Universe</small>
+      </a>
+      <a href="index.html" class="btn small">← Home</a>
+    </div>
+
+    <nav class="global-nav" aria-label="Navigazione principale">
+      <a href="index.html">Home</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="energia-eterna.html">Energy Weaver</a>
+      <a href="sorprese.html" class="active" aria-current="page">Sorprese X∞</a>
+      <a href="progetti.html">Archivio Progetti</a>
+      <a href="guida.html">Guida</a>
+      <a href="about.html">Chi Siamo</a>
+      <a href="copyright.html">Note Legali</a>
+    </nav>
+
+    <nav class="nav" aria-label="Sezioni di Sorprese X∞">
+      <a href="#pixel-art">Pixel Art</a>
+      <a href="#music-creator">Music Creator</a>
+      <a href="#galleria">Giochi</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <noscript>
+    <div style="padding:16px;border-radius:12px;background:#3a1d3d;border:1px solid #ffb6e2;margin-bottom:18px;">
+      <strong>JavaScript disattivato:</strong> le attività interattive (Pixel Art, Music Creator, Giochi) richiedono JavaScript. I contenuti testuali restano leggibili.
+    </div>
+  </noscript>
+
+  <section class="hero">
+    <h1>Sorprese X∞</h1>
+    <p>Laboratori creativi e mini-giochi: dipingi pixel, componi melodie, risolvi enigmi della Costellazione.</p>
+    <div class="actions">
+      <a href="#galleria" class="btn gold">🎮 Vai ai Giochi</a>
+      <a href="#pixel-art" class="btn cyan">🎨 Pixel Art</a>
+    </div>
+  </section>
+
+  <section id="pixel-art">
+    <h2>🎨 Pixel Art Studio</h2>
+    <p class="section-intro">Scegli un colore, dipingi la griglia, esporta in PNG. Griglia 16×16. Click sinistro per colorare, click destro per cancellare.</p>
+
+    <div class="card pixel-wrap">
+      <div>
+        <canvas id="pixelCanvas" width="320" height="320" aria-label="Griglia di pixel art 16x16 da colorare"></canvas>
+        <div class="actions">
+          <button id="exportPng" class="btn gold">⬇ Esporta PNG</button>
+          <button id="clearPixels" class="btn small">🗑 Cancella tutto</button>
+        </div>
+      </div>
+
+      <div>
+        <h3>Tavolozza</h3>
+        <div class="palette" id="palette" role="group" aria-label="Tavolozza colori"></div>
+        <p style="font-size:.8rem;color:var(--muted);text-align:center;margin-top:10px;">
+          Clicca un colore per selezionarlo
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="music-creator">
+    <h2>🎵 Music Creator</h2>
+    <p class="section-intro">Clicca i tasti per suonare note. Regola frequenza base e volume.</p>
+
+    <div class="card">
+      <div class="music-controls">
+        <label>
+          Frequenza base (Hz):
+          <input type="range" id="baseFreq" min="220" max="880" value="440" step="1">
+          <span id="baseFreqVal">440</span>
+        </label>
+        <label>
+          Volume:
+          <input type="range" id="volume" min="0" max="100" value="30">
+          <span id="volumeVal">30%</span>
+        </label>
+        <button id="stopAudio" class="btn small" disabled>⏹ Stop</button>
+      </div>
+
+      <div class="note-grid" id="noteGrid" role="group" aria-label="Tastiera musicale">
+      </div>
+    </div>
+  </section>
+
+  <section id="galleria">
+    <h2>🎮 I Giochi della Costellazione</h2>
+    <p class="section-intro">
+      Sei mini-giochi giocabili ispirati ai frammenti filosofici. Clicca una card per iniziare. Altri sei frammenti narrativi sono in arrivo.
+    </p>
+    <div class="grid two" id="gamesGrid" role="list">
+    </div>
+  </section>
+
+</main>
+
+<div class="game-modal" id="gameModal" hidden>
+  <div class="game-modal-inner">
+    <div class="game-modal-header">
+      <h3 id="gameTitle">Gioco</h3>
+      <button class="game-close" id="gameClose" aria-label="Chiudi gioco">✕</button>
+    </div>
+    <div id="gameContent"></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025–2026 <strong>Mastropaolo Antonello Salvatore</strong> · Progetto Luce e Crescita X∞</p>
+  <p style="margin-top:8px;">
+    <a href="index.html">Home</a> ·
+    <a href="manifesto.html">Manifesto</a> ·
+    <a href="progetti.html">Archivio</a> ·
+    <a href="copyright.html">Note Legali</a>
+  </p>
+</footer>
+
+<script>
+/* PIXEL ART */
+(function () {
+  const canvas = document.getElementById('pixelCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const SIZE = 16;
+  const CELL = canvas.width / SIZE;
+  let color = '#f8f5ff';
+  let drawing = false;
+  let erase = false;
+
+  const colors = [
+    '#f8f5ff','#f4d27c','#69e4ed','#a88aff',
+    '#91edbd','#ffb6e2','#ff6b6b','#4c9aff',
+    '#ffd166','#9d4edd'
+  ];
+
+  const palette = document.getElementById('palette');
+  colors.forEach((c, i) => {
+    const sw = document.createElement('button');
+    sw.className = 'swatch' + (i === 0 ? ' active' : '');
+    sw.style.background = c;
+    sw.type = 'button';
+    sw.setAttribute('aria-label', 'Colore ' + c);
+    sw.dataset.color = c;
+    sw.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      color = c;
+    });
+    palette.appendChild(sw);
+  });
+
+  function clearCanvas() {
+    ctx.fillStyle = '#0d0820';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  clearCanvas();
+
+  function getCell(e) {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    return {
+      cx: Math.floor(x / (rect.width / SIZE)),
+      cy: Math.floor(y / (rect.height / SIZE))
+    };
+  }
+
+  function paint(e) {
+    const { cx, cy } = getCell(e);
+    if (cx < 0 || cx >= SIZE || cy < 0 || cy >= SIZE) return;
+    ctx.fillStyle = erase ? '#0d0820' : color;
+    ctx.fillRect(cx * CELL, cy * CELL, CELL, CELL);
+  }
+
+  canvas.addEventListener('mousedown', e => {
+    if (e.button === 2) erase = true;
+    drawing = true;
+    paint(e);
+    e.preventDefault();
+  });
+  canvas.addEventListener('mousemove', e => {
+    if (drawing) paint(e);
+  });
+  window.addEventListener('mouseup', () => {
+    drawing = false;
+    erase = false;
+  });
+  canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+  canvas.addEventListener('touchstart', e => {
+    drawing = true;
+    paint(e);
+    e.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener('touchmove', e => {
+    if (drawing) paint(e);
+    e.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener('touchend', () => drawing = false);
+
+  document.getElementById('clearPixels').addEventListener('click', clearCanvas);
+
+  document.getElementById('exportPng').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'luce-e-crescita-pixel-art.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+})();
+
+/* MUSIC CREATOR */
+(function () {
+  const grid = document.getElementById('noteGrid');
+  if (!grid) return;
+
+  const baseFreqInput = document.getElementById('baseFreq');
+  const baseFreqVal = document.getElementById('baseFreqVal');
+  const volumeInput = document.getElementById('volume');
+  const volumeVal = document.getElementById('volumeVal');
+  const stopBtn = document.getElementById('stopAudio');
+
+  const NOTES = ['Do','Re','Mi','Fa','Sol','La','Si'];
+  const RATIOS = [1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8];
+
+  let audioCtx = null;
+  let activeOsc = null;
+  let activeGain = null;
+
+  function ensureCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function playNote(index) {
+    ensureCtx();
+    const base = parseFloat(baseFreqInput.value);
+    const vol = parseFloat(volumeInput.value) / 100;
+    const freq = base * RATIOS[index];
+
+    if (activeOsc) {
+      try { activeOsc.stop(); } catch (e) {}
+      activeOsc = null;
+    }
+    if (activeGain) {
+      try { activeGain.disconnect(); } catch (e) {}
+      activeGain = null;
+    }
+
+    activeGain = audioCtx.createGain();
+    activeGain.gain.value = 0;
+    activeGain.gain.linearRampToValueAtTime(vol * 0.3, audioCtx.currentTime + 0.02);
+    activeGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.2);
+    activeGain.connect(audioCtx.destination);
+
+    activeOsc = audioCtx.createOscillator();
+    activeOsc.type = 'sine';
+    activeOsc.frequency.value = freq;
+    activeOsc.connect(activeGain);
+    activeOsc.start();
+    activeOsc.stop(audioCtx.currentTime + 1.3);
+
+    stopBtn.disabled = false;
+
+    grid.querySelectorAll('.note-btn').forEach((b, i) => {
+      b.classList.toggle('playing', i === index);
+      if (i === index) setTimeout(() => b.classList.remove('playing'), 600);
+    });
+  }
+
+  NOTES.forEach((name, i) => {
+    const b = document.createElement('button');
+    b.className = 'note-btn';
+    b.textContent = name;
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Suona ' + name);
+    b.addEventListener('click', () => playNote(i));
+    grid.appendChild(b);
+  });
+
+  baseFreqInput.addEventListener('input', () => {
+    baseFreqVal.textContent = baseFreqInput.value;
+  });
+  volumeInput.addEventListener('input', () => {
+    volumeVal.textContent = volumeInput.value + '%';
+    if (activeGain) {
+      const vol = parseFloat(volumeInput.value) / 100;
+      activeGain.gain.setTargetAtTime(vol * 0.3, audioCtx.currentTime, 0.05);
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    if (activeOsc) {
+      try { activeOsc.stop(); } catch (e) {}
+      activeOsc = null;
+    }
+    if (activeGain) {
+      try { activeGain.disconnect(); } catch (e) {}
+      activeGain = null;
+    }
+    stopBtn.disabled = true;
+  });
+})();
+
+/* GIOCHI DELLA COSTELLAZIONE */
+(function () {
+  const grid = document.getElementById('gamesGrid');
+  const modal = document.getElementById('gameModal');
+  const modalTitle = document.getElementById('gameTitle');
+  const modalContent = document.getElementById('gameContent');
+  const closeBtn = document.getElementById('gameClose');
+  if (!grid) return;
+
+  const GAMES = [
+    { id: 'memory', emoji: '💎', title: 'Il Cristallo', desc: 'Memory: trova le 6 coppie di simboli nascosti.' },
+    { id: 'quiz', emoji: '⏳', title: 'Il Tempo', desc: 'Quiz filosofico: 5 domande sui principi di Luce e Crescita.' },
+    { id: 'anagram', emoji: '☁️', title: 'Le Nuvole', desc: 'Anagrammi: ricostruisci 5 parole della Costellazione.' },
+    { id: 'draw', emoji: '🌌', title: 'I Sogni', desc: 'Disegna a memoria: colora la griglia segreta.' },
+    { id: 'enigma', emoji: '🔮', title: 'Enigma della Sfera', desc: 'Indovinello numerico: scopri il numero segreto.' },
+    { id: 'dice', emoji: '🎲', title: 'Dado Quantico', desc: 'Lancia il dado e accumula fortuna X∞.' },
+    { id: 'f1', emoji: '🧩', title: 'Puzzle Frattale', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true },
+    { id: 'f2', emoji: '🎼', title: 'Armonia Nascosta', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true },
+    { id: 'f3', emoji: '🌓', title: 'Fasi Lunari', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true },
+    { id: 'f4', emoji: '🗺️', title: 'Mappa Stellare', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true },
+    { id: 'f5', emoji: '🔤', title: 'Anagrammi Cosmici', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true },
+    { id: 'f6', emoji: '🎨', title: 'Tavolozza Emotiva', desc: 'Frammento narrativo (in arrivo come gioco).', disabled: true }
+  ];
+
+  GAMES.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'card game-card';
+    card.setAttribute('role', 'listitem');
+    card.innerHTML = `
+      <div class="emoji" aria-hidden="true">${g.emoji}</div>
+      <h3>${g.title}</h3>
+      <p>${g.desc}</p>
+      ${g.disabled
+        ? '<span style="font-size:.75rem;color:var(--muted);font-family:monospace">Frammento narrativo</span>'
+        : `<button class="btn small" type="button" data-game="${g.id}">▶ Gioca</button>`}
+    `;
+    grid.appendChild(card);
+  });
+
+  function openModal(title, html) {
+    modalTitle.textContent = title;
+    modalContent.innerHTML = html;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    modalContent.innerHTML = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+
+  grid.addEventListener('click', e => {
+    const btn = e.target.closest('[data-game]');
+    if (!btn) return;
+    const gameId = btn.dataset.game;
+    if (gameId === 'memory') openMemory();
+    else if (gameId === 'quiz') openQuiz();
+    else if (gameId === 'anagram') openAnagram();
+    else if (gameId === 'draw') openDraw();
+    else if (gameId === 'enigma') openEnigma();
+    else if (gameId === 'dice') openDice();
+  });
+
+  function openMemory() {
+    const symbols = ['💎','⏳','☁️','🌌','✨','🔮'];
+    const deck = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+    let flipped = [];
+    let matched = 0;
+    let moves = 0;
+
+    const html = `
+      <p style="text-align:center">Trova le 6 coppie. Mosse: <strong id="memMoves">0</strong></p>
+      <div class="memory-grid" id="memGrid"></div>
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn small" id="memRestart">🔄 Ricomincia</button>
+      </div>
+    `;
+    openModal('💎 Il Cristallo — Memory', html);
+
+    const memGrid = document.getElementById('memGrid');
+
+    function render() {
+      memGrid.innerHTML = '';
+      deck.forEach((sym, i) => {
+        const card = document.createElement('button');
+        card.className = 'memory-card';
+        card.type = 'button';
+        card.dataset.index = i;
+        if (flipped.includes(i)) {
+          card.classList.add('flipped');
+          card.textContent = sym;
+        }
+        card.addEventListener('click', () => onCardClick(i));
+        memGrid.appendChild(card);
+      });
+    }
+
+    function onCardClick(i) {
+      if (flipped.includes(i) || flipped.length === 2) return;
+      flipped.push(i);
+      render();
+      if (flipped.length === 2) {
+        moves++;
+        document.getElementById('memMoves').textContent = moves;
+        const [a, b] = flipped;
+        if (deck[a] === deck[b]) {
+          matched += 2;
+          setTimeout(() => {
+            memGrid.querySelectorAll('.memory-card').forEach(c => {
+              if (deck[parseInt(c.dataset.index)] === deck[a]) c.classList.add('matched');
+            });
+            flipped = [];
+            if (matched === symbols.length * 2) {
+              setTimeout(() => {
+                modalContent.innerHTML = `<p style="text-align:center;font-size:1.2rem;color:var(--green);font-weight:700">🎉 Hai vinto in ${moves} mosse!</p>
+                <div style="text-align:center;margin-top:16px"><button class="btn gold" onclick="document.getElementById('gameClose').click()">Chiudi</button></div>`;
+              }, 300);
+            } else {
+              render();
+            }
+          }, 400);
+        } else {
+          setTimeout(() => {
+            flipped = [];
+            render();
+          }, 800);
+        }
+      }
+    }
+
+    render();
+    document.getElementById('memRestart').addEventListener('click', () => {
+      flipped = [];
+      matched = 0;
+      moves = 0;
+      deck.sort(() => Math.random() - 0.5);
+      document.getElementById('memMoves').textContent = 0;
+      render();
+    });
+  }
+
+  function openQuiz() {
+    const questions = [
+      { q: 'Quanti principi ha il Manifesto X∞?', a: ['3', '4', '5', '7'], correct: 1 },
+      { q: 'Cosa rappresenta il Tesseract?', a: ['Un cerchio', 'Un triangolo', 'Un ipercubo 4D', 'Una sfera'], correct: 2 },
+      { q: 'Quale frequenza è "simbolica" per la crescita?', a: ['100 Hz', '432 Hz', '440 Hz', '1000 Hz'], correct: 1 },
+      { q: 'Cos\'è l\'Energy Weaver?', a: ['Un simulatore toroidale', 'Un database', 'Un gioco di carte', 'Un editor video'], correct: 0 },
+      { q: 'Quanti astri ha la Costellazione delle Idee?', a: ['3', '4', '5', '6'], correct: 1 }
+    ];
+    let current = 0;
+    let score = 0;
+
+    function render() {
+      if (current >= questions.length) {
+        modalContent.innerHTML = `<p style="text-align:center;font-size:1.2rem;color:var(--gold);font-weight:700">Punteggio: ${score}/${questions.length}</p>
+        <div style="text-align:center;margin-top:16px"><button class="btn gold" onclick="document.getElementById('gameClose').click()">Chiudi</button></div>`;
+        return;
+      }
+      const q = questions[current];
+      const html = `
+        <p style="text-align:center;color:var(--muted)">Domanda ${current + 1} di ${questions.length} · Punteggio: ${score}</p>
+        <p style="text-align:center;font-weight:700;font-size:1.1rem">${q.q}</p>
+        <div class="quiz-options" id="quizOptions"></div>
+      `;
+      modalContent.innerHTML = html;
+      const opts = document.getElementById('quizOptions');
+      q.a.forEach((ans, i) => {
+        const b = document.createElement('button');
+        b.className = 'quiz-option';
+        b.textContent = ans;
+        b.type = 'button';
+        b.addEventListener('click', () => {
+          if (i === q.correct) {
+            b.classList.add('correct');
+            score++;
+          } else {
+            b.classList.add('wrong');
+            opts.querySelectorAll('.quiz-option')[q.correct].classList.add('correct');
+          }
+          opts.querySelectorAll('.quiz-option').forEach(x => x.disabled = true);
+          setTimeout(() => {
+            current++;
+            render();
+          }, 1200);
+        });
+        opts.appendChild(b);
+      });
+    }
+    render();
+  }
+
+  function openAnagram() {
+    const words = ['CRISTALLO', 'TEMPO', 'NUVOLE', 'SOGNI', 'ENERGIA'];
+    let index = 0;
+    let score = 0;
+
+    function scramble(w) {
+      return w.split('').sort(() => Math.random() - 0.5).join('');
+    }
+
+    function render() {
+      if (index >= words.length) {
+        modalContent.innerHTML = `<p style="text-align:center;font-size:1.2rem;color:var(--green);font-weight:700">🎉 Hai risolto ${score}/${words.length} anagrammi!</p>
+        <div style="text-align:center;margin-top:16px"><button class="btn gold" onclick="document.getElementById('gameClose').click()">Chiudi</button></div>`;
+        return;
+      }
+      const original = words[index];
+      const scrambled = scramble(original);
+      const html = `
+        <p style="text-align:center;color:var(--muted)">Parola ${index + 1} di ${words.length} · Risolte: ${score}</p>
+        <div class="anagram-letters">${scrambled.split('').map(l => `<span class="anagram-letter">${l}</span>`).join('')}</div>
+        <input type="text" class="anagram-input" id="anaInput" placeholder="Scrivi la parola..." maxlength="${original.length}" autocomplete="off">
+        <div class="feedback" id="anaFeedback"></div>
+        <div style="text-align:center">
+          <button class="btn cyan" id="anaCheck">✓ Verifica</button>
+          <button class="btn small" id="anaSkip">⏭ Salta</button>
+        </div>
+      `;
+      modalContent.innerHTML = html;
+      const input = document.getElementById('anaInput');
+      const feedback = document.getElementById('anaFeedback');
+      const check = () => {
+        if (input.value.toUpperCase() === original) {
+          feedback.textContent = '✓ Corretto!';
+          feedback.className = 'feedback correct';
+          score++;
+          setTimeout(() => { index++; render(); }, 800);
+        } else {
+          feedback.textContent = '✗ Riprova';
+          feedback.className = 'feedback wrong';
+        }
+      };
+      document.getElementById('anaCheck').addEventListener('click', check);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+      document.getElementById('anaSkip').addEventListener('click', () => { index++; render(); });
+      input.focus();
+    }
+    render();
+  }
+
+  function openDraw() {
+    const SIZE = 8;
+    const secret = [];
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        secret.push((x === 3 || x === 4) || (y === 3 || y === 4) ? 1 : 0);
+      }
+    }
+    const html = `
+      <p style="text-align:center;color:var(--muted)">Riproduci il pattern segreto su una griglia ${SIZE}×${SIZE}. Clicca le celle che secondo te sono illuminate.</p>
+      <canvas class="draw-canvas" id="drawCanvas" width="320" height="320"></canvas>
+      <div style="text-align:center">
+        <button class="btn cyan" id="drawCheck">✓ Verifica</button>
+        <button class="btn small" id="drawHint">💡 Suggerimento</button>
+      </div>
+      <div class="feedback" id="drawFeedback"></div>
+    `;
+    openModal('🌌 I Sogni — Disegna a memoria', html);
+
+    const canvas = document.getElementById('drawCanvas');
+    const ctx = canvas.getContext('2d');
+    const CELL = canvas.width / SIZE;
+    const user = new Array(SIZE * SIZE).fill(0);
+
+    function draw() {
+      for (let y = 0; y < SIZE; y++) {
+        for (let x = 0; x < SIZE; x++) {
+          const idx = y * SIZE + x;
+          ctx.fillStyle = user[idx] ? '#69e4ed' : '#0d0820';
+          ctx.fillRect(x * CELL, y * CELL, CELL - 1, CELL - 1);
+        }
+      }
+    }
+    draw();
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / (rect.width / SIZE));
+      const y = Math.floor((e.clientY - rect.top) / (rect.height / SIZE));
+      if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return;
+      user[y * SIZE + x] = user[y * SIZE + x] ? 0 : 1;
+      draw();
+    });
+
+    document.getElementById('drawCheck').addEventListener('click', () => {
+      const fb = document.getElementById('drawFeedback');
+      const correct = secret.every((v, i) => v === user[i]);
+      if (correct) {
+        fb.textContent = '🎉 Perfetto! Hai riprodotto il pattern.';
+        fb.className = 'feedback correct';
+      } else {
+        const right = secret.filter((v, i) => v === user[i]).length;
+        fb.textContent = `Hai indovinato ${right}/${SIZE * SIZE} celle. Riprova!`;
+        fb.className = 'feedback wrong';
+      }
+    });
+
+    document.getElementById('drawHint').addEventListener('click', () => {
+      const fb = document.getElementById('drawFeedback');
+      fb.textContent = '💡 Il pattern è una croce: due righe e due colonne centrali.';
+      fb.className = 'feedback';
+      fb.style.color = 'var(--gold)';
+    });
+  }
+
+  function openEnigma() {
+    const secret = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const html = `
+      <p style="text-align:center;color:var(--muted)">Indovina il numero segreto tra 1 e 100.</p>
+      <input type="number" class="enigma-input" id="enigmaInput" min="1" max="100" placeholder="?" autocomplete="off">
+      <div class="feedback" id="enigmaFeedback">Inserisci un numero e premi Invio</div>
+      <div style="text-align:center">
+        <button class="btn cyan" id="enigmaCheck">✓ Prova</button>
+      </div>
+      <p style="text-align:center;font-size:.8rem;color:var(--muted);margin-top:12px">Tentativi: <span id="enigmaAttempts">0</span></p>
+    `;
+    openModal('🔮 Enigma della Sfera', html);
+
+    const input = document.getElementById('enigmaInput');
+    const feedback = document.getElementById('enigmaFeedback');
+    const attemptsEl = document.getElementById('enigmaAttempts');
+
+    function check() {
+      const val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1 || val > 100) {
+        feedback.textContent = 'Inserisci un numero tra 1 e 100';
+        feedback.className = 'feedback wrong';
+        return;
+      }
+      attempts++;
+      attemptsEl.textContent = attempts;
+      if (val === secret) {
+        feedback.textContent = `🎉 Corretto! Trovato in ${attempts} tentativi.`;
+        feedback.className = 'feedback correct';
+        input.disabled = true;
+      } else if (val < secret) {
+        feedback.textContent = '⬆ Troppo basso';
+        feedback.className = 'feedback wrong';
+      } else {
+        feedback.textContent = '⬇ Troppo alto';
+        feedback.className = 'feedback wrong';
+      }
+      input.value = '';
+      input.focus();
+    }
+
+    document.getElementById('enigmaCheck').addEventListener('click', check);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+    input.focus();
+  }
+
+  function openDice() {
+    let total = 0;
+    const html = `
+      <p style="text-align:center;color:var(--muted)">Lancia il dado. Accumula fortuna X∞.</p>
+      <div class="dice-area">
+        <div class="dice" id="diceFace">🎲</div>
+        <div class="dice-result" id="diceResult">Fortuna: 0</div>
+      </div>
+      <div style="text-align:center">
+        <button class="btn gold" id="rollBtn">🎲 Lancia il dado</button>
+      </div>
+    `;
+    openModal('🎲 Dado Quantico', html);
+
+    const face = document.getElementById('diceFace');
+    const result = document.getElementById('diceResult');
+    const rollBtn = document.getElementById('rollBtn');
+    const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+
+    rollBtn.addEventListener('click', () => {
+      rollBtn.disabled = true;
+      face.classList.add('rolling');
+      let count = 0;
+      const interval = setInterval(() => {
+        face.textContent = faces[Math.floor(Math.random() * 6)];
+        count++;
+        if (count > 10) {
+          clearInterval(interval);
+          const val = Math.floor(Math.random() * 6) + 1;
+          face.textContent = faces[val - 1];
+          total += val;
+          result.textContent = `Fortuna: ${total} (ultimo: ${val})`;
+          face.classList.remove('rolling');
+          rollBtn.disabled = false;
+        }
+      }, 50);
+    });
+  }
+})();
+</script>
+</body>
+</html>
