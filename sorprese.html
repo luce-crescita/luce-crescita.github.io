@@ -586,4 +586,42 @@ const SFX = (function(){
     function draw(){
       for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) {
         ctx.fillStyle = user[y * SIZE + x] ? '#69e4ed' : '#0d0820';
-        ctx.fillRect(x *
+                ctx.fillRect(x * CELL, y * CELL, CELL - 1, CELL - 1);
+      }
+    }
+    draw();
+
+    dc.addEventListener('click', e => {
+      const r = dc.getBoundingClientRect();
+      const x = Math.floor((e.clientX - r.left) / (r.width / SIZE));
+      const y = Math.floor((e.clientY - r.top) / (r.height / SIZE));
+      if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return;
+      user[y * SIZE + x] = user[y * SIZE + x] ? 0 : 1;
+      SFX.paint();
+      draw();
+    });
+
+    document.getElementById('dv').addEventListener('click', () => {
+      const fb = document.getElementById('dfb');
+      const ok = secret.every((v, i) => v === user[i]);
+      if (ok) { SFX.win(); fb.textContent = '🎉 Perfetto!'; fb.className = 'feedback correct'; }
+      else {
+        SFX.error();
+        const r = secret.filter((v, i) => v === user[i]).length;
+        fb.textContent = `Giuste: ${r}/${SIZE * SIZE}`;
+        fb.className = 'feedback wrong';
+      }
+    });
+
+    document.getElementById('dh').addEventListener('click', () => {
+      SFX.tick();
+      const fb = document.getElementById('dfb');
+      fb.textContent = '💡 Il pattern è una croce.';
+      fb.className = 'feedback';
+      fb.style.color = '#f4d27c';
+    });
+  }
+})();
+</script>
+</body>
+</html>
