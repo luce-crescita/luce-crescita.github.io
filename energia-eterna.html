@@ -1,1 +1,285 @@
 
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energia Eterna & Energy Weaver — LUCEECRESCITA X∞</title>
+  <meta name="description" content="I postulati di alimentazione universale e il simulatore Energy Weaver: canalizzazione senza attrito e risonanza toroidale.">
+  <meta name="author" content="Mastropaolo Antonello Salvatore">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #04060d; color: #e2e8f0; }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-mono-code { font-family: 'Space Mono', monospace; }
+    .card-glass {
+      background: rgba(13, 20, 38, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .torus-container {
+      background: radial-gradient(circle at center, rgba(30, 20, 60, 0.6) 0%, rgba(4, 6, 13, 0.95) 75%);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden flex flex-col justify-between">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#04060d]/90 border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="text-2xl transition-transform group-hover:scale-110">🎨</span>
+        <span class="font-cinzel font-bold text-lg tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-300 to-amber-200">
+          LUCEECRESCITA <span class="text-purple-400">X∞</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="index.html" class="hover:text-sky-400 transition-colors">Home</a>
+        <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+        <a href="energia-eterna.html" class="text-emerald-400 font-semibold border-b border-emerald-400/50 pb-0.5">Energy Weaver</a>
+        <a href="sorprese.html" class="hover:text-amber-400 transition-colors">Sorprese X∞</a>
+        <a href="about.html" class="hover:text-sky-300 transition-colors">Chi Siamo</a>
+        <a href="progetti.html" class="hover:text-purple-300 transition-colors">Archivio Progetti</a>
+        <a href="guida.html" class="hover:text-slate-100 transition-colors">Guida</a>
+      </nav>
+
+      <!-- Hamburger Mobile -->
+      <button id="mobileMenuBtn" aria-label="Apri menu" class="lg:hidden p-2 text-slate-300 hover:text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <nav id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#04060d]/95 px-6 py-4 space-y-3 text-sm font-medium text-slate-300">
+      <a href="index.html" class="block hover:text-sky-400">Home</a>
+      <a href="manifesto.html" class="block hover:text-purple-400">Manifesto</a>
+      <a href="energia-eterna.html" class="block text-emerald-400 font-semibold">Energy Weaver</a>
+      <a href="sorprese.html" class="block hover:text-amber-400">Sorprese X∞</a>
+      <a href="about.html" class="block hover:text-sky-300">Chi Siamo</a>
+      <a href="progetti.html" class="block hover:text-purple-300">Archivio Progetti</a>
+      <a href="guida.html" class="block hover:text-slate-100">Guida</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-16 space-y-12 relative z-10 w-full flex-grow">
+    
+    <!-- Hero Header -->
+    <div class="text-center space-y-4">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-xs font-mono-code text-amber-300 tracking-wider">
+        Principi Cosmici &bull; Radianza X∞
+      </div>
+      <h1 class="text-3xl md:text-5xl font-cinzel font-bold text-white tracking-wide">
+        🌌 Energia Eterna & Weaver
+      </h1>
+      <p class="text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        I postulati dell'alimentazione universale: canalizzazione senza attrito, conservazione del flusso luminoso e risonanza toroidale.
+      </p>
+    </div>
+
+    <!-- Visualizer Interattivo Canvas (Energy Weaver) -->
+    <div class="torus-container rounded-3xl border border-amber-400/25 p-4 relative overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 text-xs font-mono-code text-slate-400">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Simulatore Toroidale 3D (Trascina col mouse per ruotare)
+        </span>
+        <div class="flex gap-2">
+          <button id="freq432" class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 hover:border-amber-400/40 text-amber-300 transition-colors">432 Hz</button>
+          <button id="freq528" class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 hover:border-emerald-400/40 text-emerald-300 transition-colors">528 Hz</button>
+        </div>
+      </div>
+      
+      <div class="h-80 md:h-96 w-full cursor-grab active:cursor-grabbing relative">
+        <canvas id="torusCanvas" class="w-full h-full block"></canvas>
+      </div>
+
+      <div class="px-3 py-2 text-center text-xs font-mono-code text-slate-500 border-t border-white/5">
+        Fattore Coerenza Quantica: <span id="coherenceRate" class="text-purple-300">99.8%</span> &bull; Varianza: Stabile
+      </div>
+    </div>
+
+    <!-- I 4 Postulati -->
+    <div class="space-y-6">
+      
+      <div class="card-glass border-l-4 border-l-amber-400 p-6 md:p-8 rounded-r-2xl space-y-2">
+        <span class="text-xs font-mono-code text-amber-400 uppercase tracking-widest">Postulato 01</span>
+        <h3 class="text-lg md:text-xl font-cinzel font-bold text-white">Principio I — Conservazione della Radianza</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          La luce emessa da uno stato di coscienza focalizzato non subisce dissipazione termica. Nel continuum interdimensionale, ogni frequenza coerente genera un'eco di ritorno proporzionale al fattore di risonanza X∞.
+        </p>
+      </div>
+
+      <div class="card-glass border-l-4 border-l-sky-400 p-6 md:p-8 rounded-r-2xl space-y-2">
+        <span class="text-xs font-mono-code text-sky-400 uppercase tracking-widest">Postulato 02</span>
+        <h3 class="text-lg md:text-xl font-cinzel font-bold text-white">Principio II — Intersezione Dimensionale 432 / 528</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Le oscillazioni a 432 Hz ancorano la struttura geometrica della materia, mentre la scansione a 528 Hz ricuce le discontinuità topologiche del reticolo spaziale. Insieme costituiscono il punto zero di alimentazione inesauribile.
+        </p>
+      </div>
+
+      <div class="card-glass border-l-4 border-l-purple-400 p-6 md:p-8 rounded-r-2xl space-y-2">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-widest">Postulato 03</span>
+        <h3 class="text-lg md:text-xl font-cinzel font-bold text-white">Principio III — Trasmutazione Toroidale</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          L'energia non viene generata da combustione o consumo di risorse, ma dal moto centripeto di un vortice auto-alimentante che attinge al potenziale di vuoto. Ogni interazione all'interno della rete ne rinforza la traiettoria.
+        </p>
+      </div>
+
+      <div class="card-glass border-l-4 border-l-emerald-400 p-6 md:p-8 rounded-r-2xl space-y-2">
+        <span class="text-xs font-mono-code text-emerald-400 uppercase tracking-widest">Postulato 04</span>
+        <h3 class="text-lg md:text-xl font-cinzel font-bold text-white">Principio IV — Crescita Esponenziale Autonoma</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          La crescita si consolida quando le barriere temporali lineari collassano: l'asse temporale convenzionale si avvolge sulla coordinata W, consentendo all'energia di rendersi accessibile simultaneamente attraverso molteplici stadi evolutivi.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-[#020408] mt-24 py-10 w-full">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+      <div>
+        © 2026 <strong class="text-slate-200">Mastropaolo Antonello Salvatore</strong> · Progetto <span class="text-purple-300">LUCEECRESCITA X∞</span>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="index.html" class="hover:text-purple-400 transition-colors">Home</a>
+        <a href="manifesto.html" class="hover:text-purple-400 transition-colors">Manifesto</a>
+        <a href="progetti.html" class="hover:text-purple-400 transition-colors">Archivio Progetti</a>
+        <a href="sorprese.html" class="hover:text-purple-400 transition-colors">Sorprese X∞</a>
+        <a href="guida.html" class="hover:text-purple-400 transition-colors">Guida</a>
+        <a href="about.html" class="hover:text-purple-400 transition-colors">Chi Siamo</a>
+        <a href="copyright.html" class="hover:text-purple-400 transition-colors">Note Legali</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Menu & Canvas Interattivo -->
+  <script>
+    // Menu mobile toggle
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    }
+
+    // Sacred Geometry Torus Canvas
+    const canvas = document.getElementById('torusCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let angleX = 1.0;
+    let angleY = 0;
+    let speed = 0.015;
+    let baseColor1 = '#ffd166';
+    let baseColor2 = '#9d4edd';
+
+    // Interattività col mouse (Drag to rotate)
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', () => isDragging = false);
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - prevMouseX;
+      const dy = e.clientY - prevMouseY;
+      angleY += dx * 0.006;
+      angleX += dy * 0.006;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+    });
+
+    // Frequenze buttons
+    const f432 = document.getElementById('freq432');
+    const f528 = document.getElementById('freq528');
+    const coherenceRate = document.getElementById('coherenceRate');
+
+    f432.addEventListener('click', () => {
+      speed = 0.012;
+      baseColor1 = '#ffd166';
+      baseColor2 = '#9d4edd';
+      coherenceRate.textContent = '432 Hz — Struttura Armonica';
+    });
+
+    f528.addEventListener('click', () => {
+      speed = 0.024;
+      baseColor1 = '#34d399';
+      baseColor2 = '#38bdf8';
+      coherenceRate.textContent = '528 Hz — Riparazione Reticolo';
+    });
+
+    function renderTorus() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const R = Math.min(cx, cy) * 0.42;
+      const r = R * 0.44;
+
+      if (!isDragging) {
+        angleY += speed;
+      }
+
+      const stepsU = 28;
+      const stepsV = 16;
+
+      for (let i = 0; i < stepsU; i++) {
+        const u = (i / stepsU) * Math.PI * 2 + angleY;
+        for (let j = 0; j < stepsV; j++) {
+          const v = (j / stepsV) * Math.PI * 2;
+          
+          let x = (R + r * Math.cos(v)) * Math.cos(u);
+          let y = (R + r * Math.cos(v)) * Math.sin(u);
+          let z = r * Math.sin(v);
+
+          // Rotazione 3D
+          const rotY = y * Math.cos(angleX) - z * Math.sin(angleX);
+          const rotZ = y * Math.sin(angleX) + z * Math.cos(angleX);
+          
+          const perspective = 300 / (340 - rotZ);
+          const px = cx + x * perspective;
+          const py = cy + rotY * perspective;
+
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(1, perspective * 2.2), 0, Math.PI * 2);
+          ctx.fillStyle = j % 2 === 0 ? baseColor1 : baseColor2;
+          ctx.shadowColor = '#00f0ff';
+          ctx.shadowBlur = 5;
+          ctx.fill();
+        }
+      }
+      requestAnimationFrame(renderTorus);
+    }
+    renderTorus();
+  </script>
+</body>
+</html>
