@@ -1,1 +1,591 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energia Eterna Gratis X∞ — Simulatore Energetico</title>
+<meta name="description" content="Simulatore energetico 24h funzionante: bilancio ora per ora, confronto strategie, grafico interattivo, esportazione JSON.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta name="theme-color" content="#04060d">
+<link rel="canonical" href="https://luce-crescita.github.io/energy-weaver-2.html">
+<style>
+:root{--bg:#04060d;--card:rgba(13,20,38,0.75);--gold:#f1d18b;--cyan:#72f1ed;--purple:#bc91ff;--text:#e2e8f0;--muted:#94a3b8;--border:rgba(255,255,255,0.1);--green:#34d399;--red:#ff6b6b;--orange:#fb923c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.6;padding:20px}
+.wrap{max-width:1100px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.brand{font-weight:900;letter-spacing:0.05em;color:var(--gold);text-decoration:none;font-size:1.2rem}
+nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:0.9rem}
+nav a:hover{color:var(--cyan)}
+h1{font-size:clamp(1.8rem,5vw,3rem);color:var(--gold);margin-bottom:12px;line-height:1.2}
+h2{font-size:clamp(1.3rem,3vw,1.8rem);color:var(--cyan);margin:32px 0 16px}
+h3{font-size:1.1rem;color:var(--gold);margin:16px 0 8px}
+.subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
+.hero{background:linear-gradient(135deg,rgba(40,28,76,0.9),rgba(16,11,36,0.95));border:1px solid rgba(241,209,139,0.3);border-radius:20px;padding:32px;margin-bottom:32px}
+.hero p{color:var(--muted);margin:8px 0}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.tag{padding:4px 12px;border-radius:999px;background:rgba(114,241,237,0.1);border:1px solid rgba(114,241,237,0.3);color:var(--cyan);font-size:0.75rem;font-family:'Space Mono',monospace}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.85rem;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit}
+.btn-primary{background:linear-gradient(110deg,#fff0c4,#f1d18b);color:#211630}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(241,209,139,0.3)}
+.btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-green{background:#059669;color:#fff}
+.btn-green:hover{background:#10b981}
+.notice{padding:16px;border-radius:12px;background:rgba(241,209,139,0.05);border-left:3px solid var(--gold);color:var(--muted);font-size:0.9rem;margin:16px 0}
+.notice.warn{background:rgba(251,146,60,0.1);border-left-color:var(--orange);color:#fed7aa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}
+.card h3{color:var(--cyan);font-size:1rem;margin-bottom:8px}
+.card p{color:var(--muted);font-size:0.9rem}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:20px 0}
+.sim-input{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:14px}
+.sim-input label{display:block;font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+.sim-input input{width:100%;padding:8px;background:#0d1426;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:1rem;font-family:inherit}
+.sim-input input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px rgba(114,241,237,0.3)}
+.strategy-row{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.strategy-btn{padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;font-family:inherit;font-size:0.85rem;font-weight:700;transition:all 0.2s}
+.strategy-btn.active{background:rgba(114,241,237,0.2);border-color:var(--cyan);color:var(--cyan)}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.result{background:rgba(114,241,237,0.05);border:1px solid rgba(114,241,237,0.2);border-radius:12px;padding:14px;text-align:center}
+.result .value{font-size:1.4rem;font-weight:900;color:var(--cyan)}
+.result .label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.result.green .value{color:var(--green)}
+.result.red .value{color:var(--red)}
+.result.orange .value{color:var(--orange)}
+#grafico{width:100%;height:200px;background:#0d1426;border:1px solid var(--border);border-radius:12px;margin:16px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.8rem}
+th{background:rgba(114,241,237,0.1);padding:8px 6px;text-align:left;color:var(--cyan);border-bottom:1px solid var(--border);position:sticky;top:0}
+td{padding:6px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.positive{color:var(--green)}
+.negative{color:var(--red)}
+.table-wrap{overflow-x:auto;max-height:400px;overflow-y:auto}
+footer{text-align:center;padding:32px 0;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border);margin-top:48px}
+footer a{color:var(--gold);text-decoration:none}
+ul{padding-left:20px;color:var(--muted);font-size:0.9rem}
+li{margin:6px 0}
+@media(max-width:640px){body{padding:12px}.hero{padding:20px}.sim-grid{grid-template-columns:1fr}table{font-size:0.7rem}th,td{padding:4px 2px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<a href="index.html" class="brand">✦ Luce e Crescita X∞</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="energia-eterna.html">Weaver 1.0</a>
+<a href="manifesto.html">Manifesto</a>
+<a href="progetti.html">Progetti</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="tag-row">
+<span class="tag">Concept indipendente</span>
+<span class="tag">X∞ Energy Weaver 2.0</span>
+</div>
+<h1>Energia Eterna Gratis X∞</h1>
+<p class="subtitle">Simulatore energetico 24h funzionante: coordina fonti rinnovabili, consumi, accumulo e carichi flessibili. Confronta strategie e verifica il bilancio ora per ora.</p>
+<div class="actions">
+<a href="#simulatore" class="btn btn-primary">⚡ Vai al simulatore</a>
+<a href="index.html" class="btn btn-ghost">← Torna alla Home</a>
+</div>
+</section>
+
+<div class="notice">
+<strong>Chiarezza scientifica:</strong> "Energia Eterna Gratis" è il nome visionario del progetto, non una promessa fisica. Nessun sistema può creare energia dal nulla. Il concept studia come raccogliere, convertire, immagazzinare e distribuire energia proveniente da fonti reali, considerando le perdite.
+</div>
+
+<div class="grid">
+<div class="card"><h3>24 h</h3><p>Orizzonte simulato</p></div>
+<div class="card"><h3>3</h3><p>Flussi principali (produzione, domanda, batteria)</p></div>
+<div class="card"><h3>2</h3><p>Strategie confrontabili (base vs ottimizzata)</p></div>
+<div class="card"><h3>X∞</h3><p>Concept da validare</p></div>
+</div>
+
+<h2>01 · Visione</h2>
+<p>Coordinare produzione e domanda sulla base di dati misurabili, invece di trattare ogni dispositivo come un elemento isolato.</p>
+<div class="grid">
+<div class="card"><h3>Raccogliere</h3><p>Integrare dati di fotovoltaico, eolico o altre fonti reali, senza presumere disponibilità continua.</p></div>
+<div class="card"><h3>Coordinare</h3><p>Spostare i carichi flessibili verso le ore più favorevoli rispettando priorità e sicurezza.</p></div>
+<div class="card"><h3>Verificare</h3><p>Misurare energia generata, consumata, accumulata, esportata e persa con un bilancio completo.</p></div>
+</div>
+
+<h2>02 · Architettura tecnica</h2>
+<div class="grid">
+<div class="card"><h3>A · Misura</h3><ul><li>Contatori e sensori di potenza.</li><li>Timestamp e unità coerenti.</li><li>Controlli di calibrazione.</li></ul></div>
+<div class="card"><h3>B · Previsione</h3><ul><li>Stima produzione e domanda.</li><li>Confronto previsione/misure.</li><li>Algoritmi deterministici.</li></ul></div>
+<div class="card"><h3>C · Accumulo</h3><ul><li>Limiti di carica e riserva.</li><li>Perdite carica/scarica.</li><li>Rispetto specifiche produttore.</li></ul></div>
+<div class="card"><h3>D · Sicurezza</h3><ul><li>Priorità carichi essenziali.</li><li>Arresto sicuro.</li><li>Nessun collegamento reale senza qualifica.</li></ul></div>
+</div>
+
+<h2 id="simulatore">03 · Simulatore energetico 24 ore</h2>
+<p>Modello didattico funzionante. Modifica i parametri e clicca "Calcola" per vedere il bilancio ora per ora.</p>
+
+<div class="sim-grid">
+<div class="sim-input"><label>Produzione totale (kWh)</label><input type="number" id="prod" value="18" min="0" max="100" step="0.1"></div>
+<div class="sim-input"><label>Domanda totale (kWh)</label><input type="number" id="dem" value="20" min="0" max="100" step="0.1"></div>
+<div class="sim-input"><label>Capacità batteria (kWh)</label><input type="number" id="bat" value="12" min="0" max="100" step="0.1"></div>
+<div class="sim-input"><label>Carica iniziale (%)</label><input type="number" id="soc" value="50" min="0" max="100" step="1"></div>
+<div class="sim-input"><label>Rendimento batteria (%)</label><input type="number" id="eff" value="90" min="50" max="100" step="1"></div>
+<div class="sim-input"><label>Riserva minima (%)</label><input type="number" id="res" value="15" min="0" max="100" step="1"></div>
+</div>
+
+<div class="strategy-row">
+<span style="color:var(--muted);font-size:0.85rem;align-self:center;">Strategia:</span>
+<button class="strategy-btn active" data-strategy="base" id="stratBase">📊 Base (nessuna flessibilità)</button>
+<button class="strategy-btn" data-strategy="smart" id="stratSmart">🧠 Ottimizzata (carichi flessibili)</button>
+</div>
+
+<div class="actions">
+<button class="btn btn-primary" id="calcBtn">▶ Calcola</button>
+<button class="btn btn-ghost" id="resetBtn">↺ Ripristina</button>
+<button class="btn btn-green" id="exportBtn">⬇ Esporta JSON</button>
+</div>
+
+<div id="warnings"></div>
+
+<div class="results" id="results"></div>
+
+<h3>Grafico produzione vs domanda</h3>
+<canvas id="grafico" width="1000" height="200"></canvas>
+<div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.8rem;color:var(--muted);margin-bottom:16px;">
+<span>● <span style="color:var(--cyan)">Produzione</span></span>
+<span>● <span style="color:var(--gold)">Domanda</span></span>
+<span>● <span style="color:var(--green)">Coperta da batteria</span></span>
+<span>● <span style="color:var(--red)">Deficit (non servita)</span></span>
+</div>
+
+<h3>Bilancio ora per ora</h3>
+<div class="table-wrap">
+<table id="hourlyTable">
+<thead><tr>
+<th>Ora</th>
+<th>Prod. kWh</th>
+<th>Dom. kWh</th>
+<th>Batt. inizio</th>
+<th>Caricata</th>
+<th>Scaricata</th>
+<th>Perdite</th>
+<th>Deficit</th>
+<th>Batt. fine</th>
+</tr></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="notice">
+*Stima semplificata: non comprende potenza di picco, tariffe, degradazione, temperatura, vincoli di rete o costi. Il deficit stimato è l'energia non coperta dalla produzione e dalla batteria.
+</div>
+
+<h2>04 · Dossier e piano di validazione</h2>
+
+<h3>Problema</h3>
+<p>La produzione rinnovabile variabile e i consumi non simultanei possono creare eccedenze e deficit. Accumulo e controllo possono aiutare, ma introducono perdite e limiti.</p>
+
+<h3>Obiettivo misurabile</h3>
+<p>Ridurre energia non servita e perdite rispetto a una strategia di riferimento, con gli stessi dati, capacità e vincoli.</p>
+
+<h3>Bilancio energetico</h3>
+<p>Energia in ingresso = energia utile + perdite + variazione dell'accumulo + energia esportata o limitata</p>
+<p>Il confine del sistema va dichiarato e nessuna energia può essere conteggiata senza una sorgente.</p>
+
+<h3>Fasi suggerite</h3>
+<ol style="padding-left:20px;color:var(--muted)">
+<li>Simulazione con dati sintetici o pubblici.</li>
+<li>Confronto ripetibile tra controllo base e controllo migliorato.</li>
+<li>Solo successivamente, eventuale banco a bassa tensione con protezioni e supervisione competente.</li>
+<li>Test sul campo esclusivamente con autorizzazioni e installazione qualificata.</li>
+</ol>
+
+<h3>Criteri di successo</h3>
+<ul>
+<li>Bilancio energetico entro la tolleranza dichiarata.</li>
+<li>Nessuna violazione dei limiti di sicurezza.</li>
+<li>Baseline definita prima del test e risultati ripetibili.</li>
+<li>Documentazione anche di limiti e risultati negativi.</li>
+<li>Ricerca di anteriorità prima di affermare originalità o brevettabilità.</li>
+</ul>
+
+<h2>05 · Fonti di approfondimento</h2>
+<ul>
+<li>International Energy Agency — sistemi energetici e rinnovabili.</li>
+<li>National Renewable Energy Laboratory — ricerca su energia e accumulo.</li>
+<li>U.S. Department of Energy — efficienza e tecnologie energetiche.</li>
+<li>Google Patents — ricerca preliminare di anteriorità.</li>
+<li>European Patent Office — informazioni sui brevetti.</li>
+</ul>
+
+<footer>
+<p><strong>Energia Eterna Gratis X∞</strong> — X∞ Energy Weaver</p>
+<p>Concept e documentazione: Antonello Salvatore Mastropaolo.</p>
+<p>© 2026 Antonello Salvatore Mastropaolo — Tutti i diritti riservati.</p>
+<p>Simulatore a scopo didattico: le stime non sono misure di un impianto reale e non costituiscono consulenza ingegneristica.</p>
+<p><a href="index.html">← Torna alla home Luce e Crescita</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var state = {
+  produzione: 18,
+  domanda: 20,
+  batteria: 12,
+  socIniziale: 50,
+  rendimento: 90,
+  riserva: 15,
+  strategia: 'base'
+};
+
+// Profili orari normalizzati (somma = 1.0)
+var profiloProduzioneBase = [
+  0.000, 0.000, 0.000, 0.000, 0.000, 0.010, 0.030, 0.070,
+  0.120, 0.150, 0.170, 0.170, 0.130, 0.080, 0.040, 0.020,
+  0.010, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000
+];
+var profiloDomandaBase = [
+  0.0325, 0.0280, 0.0260, 0.0260, 0.0280, 0.0370, 0.0510, 0.0600,
+  0.0465, 0.0370, 0.0350, 0.0370, 0.0390, 0.0370, 0.0370, 0.0390,
+  0.0465, 0.0600, 0.0695, 0.0650, 0.0510, 0.0415, 0.0370, 0.0345
+];
+
+// Verifica normalizzazione
+var sommaProd = profiloProduzioneBase.reduce(function(a,b){return a+b;},0);
+var sommaDem = profiloDomandaBase.reduce(function(a,b){return a+b;},0);
+// Normalizza (dovrebbero essere 1.0 ma per sicurezza)
+profiloProduzioneBase = profiloProduzioneBase.map(function(v){return v/sommaProd;});
+profiloDomandaBase = profiloDomandaBase.map(function(v){return v/sommaDem;});
+
+function leggiInput(){
+  var prod = parseFloat(document.getElementById('prod').value);
+  var dem = parseFloat(document.getElementById('dem').value);
+  var bat = parseFloat(document.getElementById('bat').value);
+  var soc = parseFloat(document.getElementById('soc').value);
+  var eff = parseFloat(document.getElementById('eff').value);
+  var res = parseFloat(document.getElementById('res').value);
+  
+  var warnings = [];
+  
+  if (isNaN(prod) || prod < 0) { warnings.push('Produzione non valida.'); prod = 18; }
+  if (isNaN(dem) || dem < 0) { warnings.push('Domanda non valida.'); dem = 20; }
+  if (isNaN(bat) || bat < 0) { warnings.push('Batteria non valida.'); bat = 12; }
+  if (isNaN(soc) || soc < 0 || soc > 100) { warnings.push('Carica iniziale deve essere 0-100%.'); soc = 50; }
+  if (isNaN(eff) || eff < 50 || eff > 100) { warnings.push('Rendimento deve essere 50-100%.'); eff = 90; }
+  if (isNaN(res) || res < 0 || res > 100) { warnings.push('Riserva deve essere 0-100%.'); res = 15; }
+  if (soc < res) { warnings.push('La carica iniziale (' + soc + '%) è inferiore alla riserva minima (' + res + '%). La batteria partirà con la riserva.'); }
+  
+  var warnDiv = document.getElementById('warnings');
+  warnDiv.innerHTML = '';
+  if (warnings.length > 0) {
+    warnings.forEach(function(w){
+      var d = document.createElement('div');
+      d.className = 'notice warn';
+      d.textContent = '⚠ ' + w;
+      warnDiv.appendChild(d);
+    });
+  }
+  
+  state.produzione = prod;
+  state.domanda = dem;
+  state.batteria = bat;
+  state.socIniziale = Math.max(soc, res);
+  state.rendimento = eff;
+  state.riserva = res;
+  
+  return warnings.length === 0;
+}
+
+function applicaStrategia(produzione, domanda, strategia){
+  if (strategia === 'smart') {
+    // Sposta i carichi flessibili (30% della domanda) verso le ore di picco produzione
+    var flessibile = domanda * 0.3;
+    var rigido = domanda * 0.7;
+    
+    // Distribuisci il flessibile proporzionalmente alla produzione
+    var sommaProd = produzione.reduce(function(a,b){return a+b;},0);
+    if (sommaProd > 0) {
+      return domanda.map(function(d, i){
+        var quotaFlessibile = flessibile * (produzione[i] / sommaProd);
+        return rigido * (d / domanda.reduce(function(a,b){return a+b;},0)) + quotaFlessibile;
+      });
+    }
+  }
+  return domanda;
+}
+
+function calcola(){
+  var valido = leggiInput();
+  if (!valido) {
+    // Procedi comunque con i valori corretti
+  }
+  
+  var eff = state.rendimento / 100;
+  var socMin = state.riserva / 100 * state.batteria;
+  var soc = Math.max(state.socIniziale / 100 * state.batteria, socMin);
+  var socIniziale = soc;
+  
+  var profiloProd = profiloProduzioneBase.map(function(v){ return v * state.produzione; });
+  var profiloDem = profiloDomandaBase.map(function(v){ return v * state.domanda; });
+  profiloDem = applicaStrategia(profiloProd, profiloDem, state.strategia);
+  
+  var energiaServita = 0;
+  var energiaNonServita = 0;
+  var eccedenza = 0;
+  var perdite = 0;
+  var caricataTotale = 0;
+  var scaricataTotale = 0;
+  var tabella = [];
+  
+  for (var h = 0; h < 24; h++) {
+    var prod = profiloProd[h];
+    var dem = profiloDem[h];
+    var saldo = prod - dem;
+    var socInizio = soc;
+    var caricata = 0;
+    var scaricata = 0;
+    var perditeOra = 0;
+    var deficit = 0;
+    
+    if (saldo > 0) {
+      // Surplus: carica batteria
+      var spazio = state.batteria - soc;
+      var daCaricare = Math.min(saldo, spazio);
+      var effettivo = daCaricare * eff;
+      perditeOra = daCaricare - effettivo;
+      soc += effettivo;
+      caricata = daCaricare;
+      caricataTotale += daCaricare;
+      eccedenza += saldo - daCaricare;
+      energiaServita += dem;
+      perdite += perditeOra;
+    } else {
+      // Deficit: scarica batteria
+      var deficitTotale = -saldo;
+      var disponibile = Math.max(0, soc - socMin);
+      var daScaricare = Math.min(deficitTotale, disponibile);
+      var effettivo = daScaricare * eff;
+      perditeOra = daScaricare - effettivo;
+      soc -= daScaricare;
+      scaricata = daScaricare;
+      scaricataTotale += daScaricare;
+      deficit = deficitTotale - effettivo;
+      energiaServita += dem - deficit;
+      energiaNonServita += deficit;
+      perdite += perditeOra;
+    }
+    
+    tabella.push({
+      ora: h,
+      prod: prod,
+      dem: dem,
+      socInizio: socInizio,
+      caricata: caricata,
+      scaricata: scaricata,
+      perdite: perditeOra,
+      deficit: deficit,
+      socFine: soc,
+      saldo: saldo
+    });
+  }
+  
+  var copertura = state.domanda > 0 ? (energiaServita / state.domanda * 100) : 100;
+  var bilancioProd = profiloProd.reduce(function(a,b){return a+b;},0);
+  var bilancioDem = profiloDem.reduce(function(a,b){return a+b;},0);
+  
+  // Mostra risultati
+  var results = document.getElementById('results');
+  results.innerHTML = '';
+  var dati = [
+    {label: 'Produzione totale', value: bilancioProd.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Domanda totale', value: bilancioDem.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Energia servita', value: energiaServita.toFixed(1) + ' kWh', cls: 'green'},
+    {label: 'Deficit non servito', value: energiaNonServita.toFixed(1) + ' kWh', cls: 'red'},
+    {label: 'Eccedenza (non accumulata)', value: eccedenza.toFixed(1) + ' kWh', cls: 'orange'},
+    {label: 'Caricata in batteria', value: caricataTotale.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Scaricata da batteria', value: scaricataTotale.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Perdite totali', value: perdite.toFixed(2) + ' kWh', cls: 'red'},
+    {label: 'Carica finale', value: soc.toFixed(2) + ' kWh (' + (soc / state.batteria * 100).toFixed(0) + '%)', cls: ''},
+    {label: 'Copertura domanda', value: copertura.toFixed(0) + '%', cls: copertura >= 95 ? 'green' : copertura >= 80 ? 'orange' : 'red'}
+  ];
+  
+  dati.forEach(function(d){
+    var div = document.createElement('div');
+    div.className = 'result ' + d.cls;
+    var val = document.createElement('div');
+    val.className = 'value';
+    val.textContent = d.value;
+    var lab = document.createElement('div');
+    lab.className = 'label';
+    lab.textContent = d.label;
+    div.appendChild(val);
+    div.appendChild(lab);
+    results.appendChild(div);
+  });
+  
+  // Tabella
+  var tbody = document.querySelector('#hourlyTable tbody');
+  tbody.innerHTML = '';
+  tabella.forEach(function(row){
+    var tr = document.createElement('tr');
+    var ora = String(row.ora).padStart(2, '0') + ':00';
+    tr.innerHTML = 
+      '<td>' + ora + '</td>' +
+      '<td>' + row.prod.toFixed(2) + '</td>' +
+      '<td>' + row.dem.toFixed(2) + '</td>' +
+      '<td>' + row.socInizio.toFixed(2) + '</td>' +
+      '<td class="positive">' + (row.caricata > 0 ? '+' + row.caricata.toFixed(2) : '0') + '</td>' +
+      '<td class="negative">' + (row.scaricata > 0 ? '-' + row.scaricata.toFixed(2) : '0') + '</td>' +
+      '<td class="negative">' + row.perdite.toFixed(2) + '</td>' +
+      '<td class="' + (row.deficit > 0 ? 'negative' : '') + '">' + (row.deficit > 0 ? row.deficit.toFixed(2) : '0') + '</td>' +
+      '<td>' + row.socFine.toFixed(2) + '</td>';
+    tbody.appendChild(tr);
+  });
+  
+  // Grafico
+  disegnaGrafico(profiloProd, profiloDem, tabella);
+  
+  // Salva per esportazione
+  window._ultimoRisultato = {
+    timestamp: new Date().toISOString(),
+    parametri: Object.assign({}, state),
+    risultati: {
+      produzione_totale: bilancioProd,
+      domanda_totale: bilancioDem,
+      energia_servita: energiaServita,
+      energia_non_servita: energiaNonServita,
+      eccedenza: eccedenza,
+      caricata_batteria: caricataTotale,
+      scaricata_batteria: scaricataTotale,
+      perdite: perdite,
+      carica_finale: soc,
+      copertura_percentuale: copertura
+    },
+    tabella_oraria: tabella
+  };
+}
+
+function disegnaGrafico(prod, dem, tabella){
+  var canvas = document.getElementById('grafico');
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = 200 * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var w = rect.width, h = 200;
+  
+  ctx.clearRect(0, 0, w, h);
+  
+  var maxVal = Math.max.apply(null, prod.concat(dem));
+  if (maxVal === 0) maxVal = 1;
+  
+  var pad = 30;
+  var chartW = w - pad * 2;
+  var chartH = h - pad * 2;
+  
+  // Assi
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad, pad);
+  ctx.lineTo(pad, h - pad);
+  ctx.lineTo(w - pad, h - pad);
+  ctx.stroke();
+  
+  // Barre produzione e domanda
+  var barW = chartW / 24 / 2.2;
+  for (var i = 0; i < 24; i++) {
+    var x = pad + (i / 24) * chartW + barW * 0.3;
+    
+    // Produzione
+    var hProd = (prod[i] / maxVal) * chartH;
+    ctx.fillStyle = 'rgba(114,241,237,0.7)';
+    ctx.fillRect(x, h - pad - hProd, barW, hProd);
+    
+    // Domanda
+    var hDem = (dem[i] / maxVal) * chartH;
+    ctx.fillStyle = 'rgba(241,209,139,0.7)';
+    ctx.fillRect(x + barW + 1, h - pad - hDem, barW, hDem);
+  }
+  
+  // Etichette assi
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  for (var j = 0; j < 24; j += 4) {
+    var x2 = pad + (j / 24) * chartW + chartW / 48;
+    ctx.fillText(j + ':00', x2, h - pad + 14);
+  }
+  
+  ctx.textAlign = 'right';
+  ctx.fillText(maxVal.toFixed(1) + ' kWh', pad - 5, pad + 5);
+  ctx.fillText('0', pad - 5, h - pad);
+}
+
+function reset(){
+  document.getElementById('prod').value = 18;
+  document.getElementById('dem').value = 20;
+  document.getElementById('bat').value = 12;
+  document.getElementById('soc').value = 50;
+  document.getElementById('eff').value = 90;
+  document.getElementById('res').value = 15;
+  state.strategia = 'base';
+  document.querySelectorAll('.strategy-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
+  document.getElementById('stratBase').classList.add('active');
+  calcola();
+}
+
+function esportaJSON(){
+  if (!window._ultimoRisultato) {
+    alert('Calcola prima i risultati.');
+    return;
+  }
+  var data = JSON.stringify(window._ultimoRisultato, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'energy-weaver-2-' + Date.now() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Event listeners
+document.getElementById('calcBtn').addEventListener('click', calcola);
+document.getElementById('resetBtn').addEventListener('click', reset);
+document.getElementById('exportBtn').addEventListener('click', esportaJSON);
+
+document.querySelectorAll('.strategy-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.strategy-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.strategia = btn.dataset.strategy;
+    calcola();
+  });
+});
+
+// Calcola all'avvio
+calcola();
+
+// Ridisegna grafico al resize
+window.addEventListener('resize', function(){
+  if (window._ultimoRisultato) {
+    var profiloProd = profiloProduzioneBase.map(function(v){ return v * state.produzione; });
+    var profiloDem = profiloDomandaBase.map(function(v){ return v * state.domanda; });
+    profiloDem = applicaStrategia(profiloProd, profiloDem, state.strategia);
+    disegnaGrafico(profiloProd, profiloDem, window._ultimoRisultato.tabella_oraria);
+  }
+});
+})();
+</script>
+</body>
+</html>
