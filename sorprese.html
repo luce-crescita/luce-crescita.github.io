@@ -1,1 +1,373 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Null Sector Console - Luce e Crescita X-Infinito</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.console-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+@media(max-width:768px){.console-grid{grid-template-columns:1fr}}
+.keyboard-wrap{background:rgba(0,0,0,0.6);border:1px solid var(--neon-cyan);border-radius:16px;padding:16px;grid-column:span 2}
+.keyboard-keys{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.key{width:52px;height:80px;background:rgba(0,255,240,0.08);border:1px solid rgba(0,255,240,0.4);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;cursor:pointer;transition:all 0.08s;user-select:none;position:relative;overflow:hidden}
+.key .note-name{font-size:10px;color:var(--neon-cyan);font-weight:700;z-index:2}
+.key .key-glow{position:absolute;inset:0;background:radial-gradient(circle at center,var(--neon-cyan),transparent 70%);opacity:0;transition:opacity 0.15s;z-index:1}
+.key.active .key-glow{opacity:0.6}
+.key.active{transform:scale(0.96);border-color:#fff}
+.key.black{background:rgba(0,0,0,0.9);border-color:rgba(255,255,255,0.3);height:56px;width:38px;margin-left:-19px;margin-right:-19px;z-index:3}
+.memory-panel{background:rgba(5,2,10,0.9);border:1px solid var(--neon-violet);border-radius:16px;padding:16px}
+.memory-panel h3{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-violet);margin-bottom:12px}
+.memory-list{max-height:180px;overflow-y:auto;font-size:11px;color:var(--text-muted)}
+.memory-item{padding:8px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center}
+.memory-item button{background:transparent;border:1px solid var(--blood);color:var(--blood);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:9px}
+.diagram-panel{background:rgba(5,2,10,0.9);border:1px solid var(--neon-magenta);border-radius:16px;padding:16px}
+.diagram-panel h3{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--neon-magenta);margin-bottom:12px}
+#freqCanvas{width:100%;height:100px;display:block;background:#000;border-radius:8px}
+.save-bar{grid-column:span 2;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.save-bar input{flex:1;min-width:120px;padding:8px;background:#000;border:1px solid var(--neon-cyan);color:var(--neon-cyan);border-radius:6px;font-family:inherit}
+.save-bar button{padding:8px 16px;border-radius:6px;border:1px solid var(--neon-lime);background:rgba(0,255,136,0.1);color:var(--neon-lime);cursor:pointer;font-weight:700}
+</style>
+</head>
+<body class="null-sector">
+<div class="grid-bg"></div>
+<div class="wrap">
+
+<nav class="nav" aria-label="Navigazione principale">
+<a href="index.html">HOME</a>
+<a href="manifesto.html">MANIFESTO</a>
+<a href="energia-eterna.html">WEAVER</a>
+<a href="sorprese.html" aria-current="page">CONSOLE</a>
+<a href="progetti.html">PROGETTI</a>
+<a href="guida.html">GUIDA</a>
+<a href="copyright.html">NOTE LEGALI</a>
+</nav>
+
+<h1>NULL SECTOR CONSOLE</h1>
+<p class="subtitle">// Tastiera Luminosa - Memoria Opere - Diagrammi Reattivi</p>
+
+<div class="console-grid">
+
+<!-- TASTIERA LUMINOSA -->
+<div class="keyboard-wrap">
+<h2 style="font-size:14px;text-transform:uppercase;letter-spacing:3px;color:var(--neon-cyan);text-align:center">Tastiera Iper-Tecnologica</h2>
+<p style="text-align:center;font-size:11px;color:var(--text-muted);margin:8px 0">Tocca i tasti per suonare. Il colore cambia in base alla frequenza.</p>
+<div class="keyboard-keys" id="keyboard"></div>
+<div style="text-align:center;margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<button class="btn magenta" id="recBtn" style="font-size:10px">REGISTRA</button>
+<button class="btn lime" id="saveComposition" style="font-size:10px">SALVA COMPOSIZIONE</button>
+</div>
+</div>
+
+<!-- MEMORIA OPERE -->
+<div class="memory-panel">
+<h3>Memoria Opere (IndexedDB)</h3>
+<div class="memory-list" id="memoryList"><p style="color:var(--text-muted)">Nessuna opera salvata.</p></div>
+<button class="btn cyan" id="clearMemory" style="margin-top:12px;font-size:10px;width:100%">CANCELLA TUTTO</button>
+</div>
+
+<!-- DIAGRAMMA REATTIVO -->
+<div class="diagram-panel">
+<h3>Diagramma Frequenze</h3>
+<canvas id="freqCanvas"></canvas>
+<p style="font-size:10px;color:var(--text-muted);margin-top:8px;text-align:center" id="freqLabel">432 Hz - Ambra</p>
+</div>
+
+<!-- ANAGRAMMI RAPIDI -->
+<div class="memory-panel" style="grid-column:span 2">
+<h3>Anagrammi - Nuvole</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0" id="anagramLetters"></div>
+<input type="text" id="anagramInput" placeholder="SCRIVI LA PAROLA..." style="width:100%;padding:12px;background:#000;border:1px solid var(--neon-cyan);color:var(--neon-cyan);border-radius:8px;text-align:center;text-transform:uppercase;letter-spacing:4px;font-size:18px">
+<div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+<button class="btn lime" id="anagramCheck">VERIFICA</button>
+<button class="btn magenta" id="anagramHint">AIUTO</button>
+<button class="btn danger" id="anagramSkip">SALTA</button>
+</div>
+<p style="text-align:center;margin-top:8px;font-size:11px;color:var(--text-muted)" id="anagramStatus">Risolvi l'anagramma</p>
+</div>
+
+</div>
+
+<footer>2025-2026 MASTROPAOLO ANTONELLO SALVATORE - LUCE E CRESCITA X-INFINITO</footer>
+</div>
+
+<script src="audio.js" defer></script>
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   TASTIERA LUMINOSA CON WEB AUDIO
+   ========================================================= */
+var keyboardEl = document.getElementById('keyboard');
+var whiteNotes = [
+  { name: 'DO', freq: 261.63, type: 'white' },
+  { name: 'RE', freq: 293.66, type: 'white' },
+  { name: 'MI', freq: 329.63, type: 'white' },
+  { name: 'FA', freq: 349.23, type: 'white' },
+  { name: 'SOL', freq: 392.00, type: 'white' },
+  { name: 'LA', freq: 440.00, type: 'white' },
+  { name: 'SI', freq: 493.88, type: 'white' },
+  { name: 'DO2', freq: 523.25, type: 'white' }
+];
+
+var activeKeys = {};
+
+whiteNotes.forEach(function(note){
+  var key = document.createElement('div');
+  key.className = 'key';
+  key.dataset.freq = note.freq;
+  key.dataset.name = note.name;
+  key.innerHTML = '<span class="note-name">' + note.name + '</span><div class="key-glow"></div>';
+  key.addEventListener('pointerdown', function(e){
+    e.preventDefault();
+    playNote(note.freq, note.name, key);
+  });
+  keyboardEl.appendChild(key);
+});
+
+function playNote(freq, name, keyEl){
+  if (!window.AudioEngine) return;
+  AudioEngine.ensure();
+  AudioEngine.tone(freq, 0.8, 'sine', 0.2);
+  keyEl.classList.add('active');
+  var glow = keyEl.querySelector('.key-glow');
+  if (glow) {
+    var color = freqToColor(freq);
+    glow.style.background = 'radial-gradient(circle at center, ' + color + ', transparent 70%)';
+  }
+  setTimeout(function(){ keyEl.classList.remove('active'); }, 150);
+  updateFreqLabel(freq);
+  if (window.AudioEngine) AudioEngine.tone(freq, 0.8, 'sine', 0.2);
+}
+
+function freqToColor(freq){
+  var presets = { 432: 45, 528: 150, 639: 270, 741: 210, 852: 320, 963: 280 };
+  var keys = Object.keys(presets).map(Number).sort(function(a,b){return a-b;});
+  var lower = keys[0], upper = keys[keys.length-1];
+  for (var i = 0; i < keys.length; i++) {
+    if (freq <= keys[i]) { upper = keys[i]; lower = i > 0 ? keys[i-1] : keys[0]; break; }
+  }
+  var t = upper === lower ? 0 : (freq - lower) / (upper - lower);
+  var h = presets[lower] + (presets[upper] - presets[lower]) * t;
+  return 'hsl(' + h + ', 90%, 60%)';
+}
+
+function updateFreqLabel(freq){
+  var label = document.getElementById('freqLabel');
+  if (label) label.textContent = Math.round(freq) + ' Hz - ' + (freq < 400 ? 'Ambra' : freq < 600 ? 'Verde' : freq < 700 ? 'Viola' : freq < 800 ? 'Blu' : 'Magenta');
+}
+
+/* =========================================================
+   DIAGRAMMA REATTIVO
+   ========================================================= */
+var freqCanvas = document.getElementById('freqCanvas');
+var freqCtx = freqCanvas.getContext('2d');
+function resizeFreqCanvas(){
+  var rect = freqCanvas.getBoundingClientRect();
+  var dpr = window.devicePixelRatio || 1;
+  freqCanvas.width = rect.width * dpr;
+  freqCanvas.height = rect.height * dpr;
+  freqCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeFreqCanvas();
+window.addEventListener('resize', resizeFreqCanvas);
+
+function drawFreqDiagram(){
+  var w = freqCanvas.width / (window.devicePixelRatio || 1);
+  var h = freqCanvas.height / (window.devicePixelRatio || 1);
+  freqCtx.clearRect(0, 0, w, h);
+  var analyser = window.AudioEngine ? AudioEngine.getAnalyser() : null;
+  var data = null;
+  if (analyser) {
+    data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+  }
+  var bars = 24;
+  var barW = w / bars;
+  for (var i = 0; i < bars; i++) {
+    var val = 0.1;
+    if (data) {
+      var idx = Math.floor(i * (data.length / bars));
+      val = Math.max(0.1, data[idx] / 255);
+    }
+    var barH = val * h * 0.9;
+    var hue = 180 + (i / bars) * 180;
+    freqCtx.fillStyle = 'hsl(' + hue + ', 90%, 60%)';
+    freqCtx.globalAlpha = 0.4 + val * 0.6;
+    freqCtx.fillRect(i * barW, h - barH, barW - 2, barH);
+  }
+  freqCtx.globalAlpha = 1;
+  requestAnimationFrame(drawFreqDiagram);
+}
+drawFreqDiagram();
+
+/* =========================================================
+   MEMORIA OPERE CON INDEXEDDB
+   ========================================================= */
+var db = null;
+
+function initDB(){
+  var request = indexedDB.open('NullSectorDB', 1);
+  request.onupgradeneeded = function(e){
+    var database = e.target.result;
+    if (!database.objectStoreNames.contains('opere')) {
+      database.createObjectStore('opere', { keyPath: 'id', autoIncrement: true });
+    }
+  };
+  request.onsuccess = function(e){
+    db = e.target.result;
+    loadMemory();
+  };
+  request.onerror = function(e){
+    console.error('IndexedDB error:', e);
+  };
+}
+initDB();
+
+function saveOpera(tipo, dati){
+  if (!db) return;
+  var tx = db.transaction('opere', 'readwrite');
+  var store = tx.objectStore('opere');
+  store.add({ tipo: tipo, dati: dati, timestamp: Date.now() });
+  tx.oncomplete = function(){ loadMemory(); };
+}
+
+function loadMemory(){
+  var list = document.getElementById('memoryList');
+  if (!db || !list) return;
+  var tx = db.transaction('opere', 'readonly');
+  var store = tx.objectStore('opere');
+  var req = store.getAll();
+  req.onsuccess = function(){
+    var items = req.result;
+    if (items.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-muted)">Nessuna opera salvata.</p>';
+      return;
+    }
+    list.innerHTML = '';
+    items.forEach(function(item){
+      var div = document.createElement('div');
+      div.className = 'memory-item';
+      var data = new Date(item.timestamp).toLocaleString();
+      div.innerHTML = '<span>' + item.tipo + ' - ' + data + '</span><button data-id="' + item.id + '">X</button>';
+      div.querySelector('button').addEventListener('click', function(){
+        var id = parseInt(this.dataset.id);
+        var tx2 = db.transaction('opere', 'readwrite');
+        tx2.objectStore('opere').delete(id);
+        tx2.oncomplete = function(){ loadMemory(); };
+      });
+      list.appendChild(div);
+    });
+  };
+}
+
+document.getElementById('clearMemory').addEventListener('click', function(){
+  if (!db) return;
+  var tx = db.transaction('opere', 'readwrite');
+  tx.objectStore('opere').clear();
+  tx.oncomplete = function(){ loadMemory(); };
+});
+
+document.getElementById('saveComposition').addEventListener('click', function(){
+  var note = prompt('Nome composizione:', 'Composizione ' + new Date().toLocaleTimeString());
+  if (note) {
+    saveOpera('composizione', note);
+    alert('Composizione salvata!');
+  }
+});
+
+/* =========================================================
+   ANAGRAMMI
+   ========================================================= */
+var words = [
+  { w: 'CRISTALLO', hint: 'Un cristallo di luce pura' },
+  { w: 'TEMPO', hint: 'La sfera del tempo' },
+  { w: 'NUVOLE', hint: 'Forme mutevoli' },
+  { w: 'SOGNI', hint: 'Matrice infinita' },
+  { w: 'ENERGIA', hint: 'Flusso del Weaver' }
+];
+var currentIdx = 0;
+var currentWord = null;
+
+function scramble(w){
+  var a = w.split('');
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a.join('');
+}
+
+function loadAnagram(){
+  if (currentIdx >= words.length) {
+    document.getElementById('anagramStatus').textContent = 'COMPLETATO! Tutti gli anagrammi risolti.';
+    document.getElementById('anagramLetters').innerHTML = '';
+    return;
+  }
+  currentWord = words[currentIdx];
+  var letters = scramble(currentWord.w).split('');
+  var container = document.getElementById('anagramLetters');
+  container.innerHTML = '';
+  letters.forEach(function(l){
+    var span = document.createElement('span');
+    span.className = 'ana-letter';
+    span.textContent = l;
+    span.style.cssText = 'display:inline-block;padding:12px 16px;background:rgba(0,255,240,0.1);border:1px solid var(--neon-cyan);color:var(--neon-cyan);font-size:20px;font-weight:700;border-radius:8px;margin:4px';
+    container.appendChild(span);
+  });
+  document.getElementById('anagramInput').value = '';
+  document.getElementById('anagramStatus').textContent = 'Risolvi: ' + currentWord.hint;
+}
+
+document.getElementById('anagramCheck').addEventListener('click', function(){
+  var input = document.getElementById('anagramInput').value.toUpperCase();
+  if (input === currentWord.w) {
+    document.getElementById('anagramStatus').textContent = 'CORRETTO!';
+    if (window.AudioEngine) AudioEngine.correct();
+    currentIdx++;
+    setTimeout(loadAnagram, 800);
+  } else {
+    document.getElementById('anagramStatus').textContent = 'RIPROVA!';
+    if (window.AudioEngine) AudioEngine.error();
+  }
+});
+
+document.getElementById('anagramHint').addEventListener('click', function(){
+  document.getElementById('anagramStatus').textContent = 'Suggerimento: ' + currentWord.hint;
+  if (window.AudioEngine) AudioEngine.hint();
+});
+
+document.getElementById('anagramSkip').addEventListener('click', function(){
+  currentIdx++;
+  loadAnagram();
+});
+
+document.getElementById('anagramInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') document.getElementById('anagramCheck').click();
+});
+
+loadAnagram();
+
+/* =========================================================
+   REGISTRAZIONE
+   ========================================================= */
+document.getElementById('recBtn').addEventListener('click', function(){
+  if (!window.AudioEngine) return;
+  if (!AudioEngine.isRecording()) {
+    AudioEngine.startRecording();
+    this.textContent = 'STOP';
+    this.classList.add('danger');
+  } else {
+    AudioEngine.stopRecording();
+    this.textContent = 'REGISTRA';
+    this.classList.remove('danger');
+  }
+});
+
+})();
+</script>
+</body>
+</html>
