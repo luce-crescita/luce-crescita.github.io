@@ -1,1 +1,1066 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Weaver X∞ — Simulatore Multidimensionale Avanzato</title>
+<meta name="description" content="Simulatore energetico con min/max configurabili, frequenze audio reattive, visualizzatore FFT, grafico 3D-10D e registrazione WAV.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta name="theme-color" content="#04060d">
+<link rel="canonical" href="https://luce-crescita.github.io/energy-weaver-2.html">
+<style>
+:root{--bg:#04060d;--card:rgba(13,20,38,0.75);--gold:#f1d18b;--cyan:#72f1ed;--purple:#bc91ff;--text:#e2e8f0;--muted:#94a3b8;--border:rgba(255,255,255,0.1);--green:#34d399;--red:#ff6b6b;--orange:#fb923c;--magenta:#ff00aa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.6;padding:20px}
+.wrap{max-width:1200px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.brand{font-weight:900;letter-spacing:0.05em;color:var(--gold);text-decoration:none;font-size:1.2rem}
+nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:0.9rem}
+nav a:hover{color:var(--cyan)}
+h1{font-size:clamp(1.8rem,5vw,3rem);color:var(--gold);margin-bottom:12px;line-height:1.2}
+h2{font-size:clamp(1.3rem,3vw,1.8rem);color:var(--cyan);margin:32px 0 16px}
+h3{font-size:1.1rem;color:var(--gold);margin:16px 0 8px}
+.subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:24px}
+.hero{background:linear-gradient(135deg,rgba(40,28,76,0.9),rgba(16,11,36,0.95));border:1px solid rgba(241,209,139,0.3);border-radius:20px;padding:32px;margin-bottom:32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(114,241,237,0.1) 0%,transparent 50%),radial-gradient(circle at 70% 50%,rgba(255,0,170,0.08) 0%,transparent 50%);pointer-events:none;animation:heroPulse 4s ease-in-out infinite}
+@keyframes heroPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.hero p{color:var(--muted);margin:8px 0;position:relative;z-index:1}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;position:relative;z-index:1}
+.tag{padding:4px 12px;border-radius:999px;background:rgba(114,241,237,0.1);border:1px solid rgba(114,241,237,0.3);color:var(--cyan);font-size:0.75rem;font-family:'Space Mono',monospace}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.85rem;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(110deg,#fff0c4,#f1d18b);color:#211630}
+.btn-primary:hover{box-shadow:0 8px 30px rgba(241,209,139,0.4)}
+.btn-ghost{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-green{background:#059669;color:#fff}
+.btn-green:hover{background:#10b981;box-shadow:0 8px 30px rgba(16,185,129,0.3)}
+.btn-magenta{background:linear-gradient(110deg,#ff00aa,#a855f7);color:#fff}
+.btn-magenta:hover{box-shadow:0 8px 30px rgba(255,0,170,0.3)}
+.btn-red{background:#dc2626;color:#fff}
+.btn-red:hover{background:#ef4444;box-shadow:0 8px 30px rgba(239,68,68,0.3)}
+.audio-toggle{position:fixed;top:20px;right:20px;z-index:999;width:50px;height:50px;border-radius:50%;background:rgba(13,20,38,0.95);border:1px solid var(--cyan);color:var(--cyan);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 0 20px rgba(114,241,237,0.3)}
+.audio-toggle:hover{transform:scale(1.1);background:rgba(114,241,237,0.2)}
+.audio-toggle.muted{color:var(--red);border-color:var(--red)}
+.notice{padding:16px;border-radius:12px;background:rgba(241,209,139,0.05);border-left:3px solid var(--gold);color:var(--muted);font-size:0.9rem;margin:16px 0}
+.notice.warn{background:rgba(251,146,60,0.1);border-left-color:var(--orange);color:#fed7aa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:16px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;transition:all 0.2s}
+.card:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.card h3{color:var(--cyan);font-size:1rem;margin-bottom:8px}
+.card p{color:var(--muted);font-size:0.9rem}
+
+/* REGOLATORE MIN/MAX */
+.param-row{background:rgba(0,0,0,0.3);border-radius:12px;padding:16px;margin:12px 0;border:1px solid rgba(255,255,255,0.05)}
+.param-row .param-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.param-row .param-header label{font-weight:700;color:var(--gold);font-size:0.9rem;min-width:120px}
+.param-row .param-header .param-value{font-family:monospace;font-weight:900;color:var(--magenta);font-size:1.1rem}
+.param-row .param-header .param-unit{font-size:0.75rem;color:var(--muted)}
+.param-row .minmax{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap}
+.param-row .minmax input[type=number]{width:80px;padding:4px 8px;background:#0d1426;border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.8rem;font-family:monospace}
+.param-row .minmax span{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.param-row input[type=range]{width:100%;accent-color:var(--magenta);height:8px;cursor:pointer;margin:8px 0}
+.param-row .param-buttons{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.param-row .param-buttons button{padding:6px 14px;border-radius:8px;border:1px solid var(--magenta);background:rgba(255,0,170,0.1);color:var(--magenta);cursor:pointer;font-weight:900;font-size:0.85rem;transition:all 0.15s;font-family:inherit}
+.param-row .param-buttons button:hover{background:rgba(255,0,170,0.3);box-shadow:0 0 12px rgba(255,0,170,0.4)}
+
+/* FREQUENZE */
+.freq-panel{background:linear-gradient(135deg,rgba(40,28,76,0.9),rgba(16,11,36,0.95));border:1px solid rgba(114,241,237,0.3);border-radius:16px;padding:24px;margin:24px 0}
+.freq-panel h3{color:var(--cyan);margin-bottom:16px;text-align:center;font-size:1.1rem}
+.freq-row{display:flex;align-items:center;gap:12px;margin:12px 0;flex-wrap:wrap}
+.freq-row label{flex:0 0 100px;font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.freq-row input[type=range]{flex:1;accent-color:var(--cyan);height:6px;cursor:pointer;min-width:200px}
+.freq-row .freq-val{flex:0 0 80px;text-align:right;font-weight:900;color:var(--cyan);font-size:0.9rem;font-family:monospace}
+.preset-btns{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.preset-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;font-family:inherit;font-size:0.75rem;font-weight:700;transition:all 0.2s}
+.preset-btn.active{background:rgba(114,241,237,0.2);border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(114,241,237,0.3)}
+.preset-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* SPETTRO FFT */
+#spettro{width:100%;height:100px;background:#0d1426;border:1px solid var(--border);border-radius:8px;margin:12px 0;display:block}
+
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.result{background:rgba(114,241,237,0.05);border:1px solid rgba(114,241,237,0.2);border-radius:12px;padding:14px;text-align:center;transition:all 0.2s}
+.result:hover{background:rgba(114,241,237,0.1);box-shadow:0 0 16px rgba(114,241,237,0.2)}
+.result .value{font-size:1.4rem;font-weight:900;color:var(--cyan)}
+.result .label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.result.green .value{color:var(--green)}
+.result.red .value{color:var(--red)}
+.result.orange .value{color:var(--orange)}
+#grafico{width:100%;height:400px;background:radial-gradient(circle at center,rgba(30,20,60,0.9) 0%,rgba(4,6,13,0.98) 70%);border:1px solid rgba(114,241,237,0.3);border-radius:12px;margin:16px 0;cursor:grab;touch-action:none;display:block}
+#grafico:active{cursor:grabbing}
+.grafico-controls{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0;align-items:center}
+.grafico-controls .dim-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;font-family:inherit;font-size:0.75rem;font-weight:700;transition:all 0.2s}
+.grafico-controls .dim-btn.active{background:rgba(255,0,170,0.2);border-color:var(--magenta);color:var(--magenta);box-shadow:0 0 12px rgba(255,0,170,0.3)}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.8rem}
+th{background:rgba(114,241,237,0.1);padding:8px 6px;text-align:left;color:var(--cyan);border-bottom:1px solid var(--border);position:sticky;top:0}
+td{padding:6px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.positive{color:var(--green)}
+.negative{color:var(--red)}
+.table-wrap{overflow-x:auto;max-height:400px;overflow-y:auto}
+footer{text-align:center;padding:32px 0;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border);margin-top:48px}
+footer a{color:var(--gold);text-decoration:none}
+ul{padding-left:20px;color:var(--muted);font-size:0.9rem}
+li{margin:6px 0}
+@media(max-width:640px){body{padding:12px}.hero{padding:20px}.grid{grid-template-columns:1fr}table{font-size:0.7rem}th,td{padding:4px 2px}#grafico{height:300px}.audio-toggle{top:12px;right:12px;width:44px;height:44px;font-size:1rem}.freq-row label{flex:0 0 80px;font-size:0.65rem}.freq-row .freq-val{flex:0 0 60px;font-size:0.75rem}.param-row .minmax input[type=number]{width:60px;font-size:0.7rem}}
+</style>
+</head>
+<body>
+<button class="audio-toggle" id="audioToggle" aria-label="Attiva audio" title="Audio On/Off">🔊</button>
+<div class="wrap">
+
+<header>
+<a href="index.html" class="brand">✦ Luce e Crescita X∞</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="energia-eterna.html">Weaver 1.0</a>
+<a href="manifesto.html">Manifesto</a>
+<a href="progetti.html">Progetti</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="tag-row">
+<span class="tag">Concept indipendente</span>
+<span class="tag">X∞ Energy Weaver 2.0</span>
+<span class="tag">3D · 4D · 5D · 6D · 7D · 8D · 9D · 10D+</span>
+<span class="tag">FREQ · AUDIO · FFT · WAV</span>
+</div>
+<h1>Energy Weaver X∞ Avanzato</h1>
+<p class="subtitle">Simulatore energetico con min/max configurabili, frequenze audio reattive, visualizzatore FFT, grafico 3D-10D e registrazione WAV.</p>
+<div class="actions">
+<a href="#simulatore" class="btn btn-primary">⚡ Vai al simulatore</a>
+<a href="index.html" class="btn btn-ghost">← Torna alla Home</a>
+</div>
+</section>
+
+<div class="notice">
+<strong>Chiarezza scientifica:</strong> "Energia Eterna Gratis" è il nome visionario del progetto, non una promessa fisica. Nessun sistema può creare energia dal nulla. Il simulatore studia come raccogliere, convertire, immagazzinare e distribuire energia proveniente da fonti reali, considerando le perdite.
+</div>
+
+<div class="grid">
+<div class="card"><h3>24 h</h3><p>Orizzonte simulato</p></div>
+<div class="card"><h3>8+</h3><p>Dimensioni visive (3D-10D+)</p></div>
+<div class="card"><h3>6</h3><p>Preset audio (432-963 Hz)</p></div>
+<div class="card"><h3>X∞</h3><p>Concept da validare</p></div>
+</div>
+
+<h2>01 · Visione</h2>
+<div class="grid">
+<div class="card"><h3>Raccogliere</h3><p>Integrare dati di fotovoltaico, eolico o altre fonti reali.</p></div>
+<div class="card"><h3>Coordinare</h3><p>Spostare i carichi flessibili verso le ore più favorevoli.</p></div>
+<div class="card"><h3>Verificare</h3><p>Misurare energia generata, consumata, accumulata, esportata e persa.</p></div>
+</div>
+
+<h2 id="simulatore">02 · Simulatore energetico avanzato</h2>
+<p>Modifica i parametri con min/max configurabili, cambia frequenza in tempo reale e visualizza il bilancio in 3D-10D.</p>
+
+<div id="paramContainer"></div>
+
+<div class="actions">
+<button class="btn btn-primary" id="calcBtn">▶ Calcola</button>
+<button class="btn btn-ghost" id="resetBtn">↺ Ripristina</button>
+<button class="btn btn-green" id="exportBtn">⬇ Esporta JSON</button>
+<button class="btn btn-magenta" id="recBtn">🔴 Registra WAV</button>
+</div>
+
+<div id="warnings"></div>
+<div class="results" id="results"></div>
+
+<h2>03 · Frequenze audio reattive</h2>
+<div class="freq-panel">
+<h3>🎵 FREQUENZA & TONALITÀ</h3>
+<div class="freq-row">
+<label>Frequenza</label>
+<input type="range" id="freqSlider" min="20" max="20000" value="440" step="1">
+<span class="freq-val" id="freqVal">440 Hz</span>
+</div>
+<div class="freq-row">
+<label>Volume</label>
+<input type="range" id="volSlider" min="0" max="100" value="30">
+<span class="freq-val" id="volVal">30%</span>
+</div>
+<div class="freq-row">
+<label>Tonalità</label>
+<select id="tonalitySelect" style="flex:1;padding:8px;background:#0d1426;border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.9rem">
+<option value="major">Maggiore (luminosa)</option>
+<option value="minor">Minore (profonda)</option>
+<option value="pentatonic">Pentatonica (eterea)</option>
+<option value="chromatic">Cromatica (sperimentale)</option>
+</select>
+</div>
+<div class="preset-btns">
+<span style="color:var(--muted);font-size:0.75rem;align-self:center;">Preset:</span>
+<button class="preset-btn" data-freq="432">432 Hz</button>
+<button class="preset-btn" data-freq="528">528 Hz</button>
+<button class="preset-btn" data-freq="639">639 Hz</button>
+<button class="preset-btn" data-freq="741">741 Hz</button>
+<button class="preset-btn" data-freq="852">852 Hz</button>
+<button class="preset-btn" data-freq="963">963 Hz</button>
+</div>
+<canvas id="spettro" width="800" height="100"></canvas>
+<p style="text-align:center;color:var(--muted);font-size:0.75rem;margin-top:8px">Spettro FFT in tempo reale</p>
+</div>
+
+<h2>04 · Visualizzazione multidimensionale</h2>
+<div class="grafico-controls">
+<span style="color:var(--muted);font-size:0.75rem;">Dimensione:</span>
+<button class="dim-btn active" data-dim="3d">3D</button>
+<button class="dim-btn" data-dim="4d">4D</button>
+<button class="dim-btn" data-dim="5d">5D</button>
+<button class="dim-btn" data-dim="6d">6D</button>
+<button class="dim-btn" data-dim="7d">7D</button>
+<button class="dim-btn" data-dim="8d">8D</button>
+<button class="dim-btn" data-dim="9d">9D</button>
+<button class="dim-btn" data-dim="10d">10D</button>
+</div>
+<canvas id="grafico" width="1200" height="400"></canvas>
+<div style="display:flex;gap:16px;flex-wrap:wrap;font-size:0.8rem;color:var(--muted);margin-bottom:16px;">
+<span>● <span style="color:var(--cyan)">Produzione</span></span>
+<span>● <span style="color:var(--gold)">Domanda</span></span>
+<span>● <span style="color:var(--green)">Energia servita</span></span>
+<span>● <span style="color:var(--red)">Deficit</span></span>
+<span>● <span style="color:var(--magenta)">Particelle dimensionale</span></span>
+</div>
+
+<h2>05 · Bilancio ora per ora</h2>
+<div class="table-wrap">
+<table id="hourlyTable">
+<thead><tr>
+<th>Ora</th><th>Prod. kWh</th><th>Dom. kWh</th><th>Batt. inizio</th>
+<th>Caricata</th><th>Scaricata</th><th>Perdite</th><th>Deficit</th><th>Batt. fine</th>
+</tr></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="notice">
+*Stima semplificata: non comprende potenza di picco, tariffe, degradazione, temperatura, vincoli di rete o costi.
+</div>
+
+<h2>06 · Dossier di validazione</h2>
+<div class="grid">
+<div class="card"><h3>Problema</h3><p>Produzione rinnovabile variabile e consumi non simultanei creano eccedenze e deficit.</p></div>
+<div class="card"><h3>Obiettivo</h3><p>Ridurre energia non servita e perdite rispetto a una strategia di riferimento.</p></div>
+<div class="card"><h3>Bilancio</h3><p>Energia in ingresso = energia utile + perdite + variazione accumulo + energia esportata.</p></div>
+<div class="card"><h3>Criteri</h3><p>Bilancio entro tolleranza, nessuna violazione sicurezza, risultati ripetibili.</p></div>
+</div>
+
+<h2>07 · Fonti</h2>
+<ul>
+<li>International Energy Agency — sistemi energetici e rinnovabili.</li>
+<li>National Renewable Energy Laboratory — ricerca su energia e accumulo.</li>
+<li>U.S. Department of Energy — efficienza e tecnologie energetiche.</li>
+<li>Google Patents — ricerca preliminare di anteriorità.</li>
+<li>European Patent Office — informazioni sui brevetti.</li>
+</ul>
+
+<footer>
+<p><strong>Energy Weaver X∞ Avanzato</strong></p>
+<p>Concept e documentazione: Antonello Salvatore Mastropaolo.</p>
+<p>© 2026 Antonello Salvatore Mastropaolo — Tutti i diritti riservati.</p>
+<p>Simulatore a scopo didattico: le stime non sono misure di un impianto reale e non costituiscono consulenza ingegneristica.</p>
+<p><a href="index.html">← Torna alla home Luce e Crescita</a></p>
+</footer>
+
+</div><script>
+(function(){
+"use strict";
+
+/* =========================================================
+   AUDIO ENGINE — Frequenza, Tonalità, FFT, WAV
+   ========================================================= */
+var AudioEngine = (function(){
+  var ctx = null, master = null, analyser = null, osc = null, gain = null;
+  var currentFreq = 440, currentVol = 0.3, muted = false;
+  var tonality = 'major';
+  var recording = false, mediaRecorder = null, recordedChunks = [];
+
+  var RATIOS = {
+    major: [1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8],
+    minor: [1, 9/8, 6/5, 4/3, 3/2, 8/5, 9/5],
+    pentatonic: [1, 9/8, 5/4, 3/2, 5/3],
+    chromatic: [1, 16/15, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8]
+  };
+
+  function ensure(){
+    if (!ctx) {
+      try {
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        master = ctx.createGain();
+        master.gain.value = currentVol;
+        analyser = ctx.createAnalyser();
+        analyser.fftSize = 256;
+        master.connect(analyser);
+        analyser.connect(ctx.destination);
+      } catch(e) {
+        console.warn('AudioContext non disponibile:', e);
+        return null;
+      }
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  function startOsc(){
+    if (!ensure() || muted) return;
+    if (osc) { try { osc.stop(); } catch(e) {} }
+    osc = ctx.createOscillator();
+    gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = currentFreq;
+    gain.gain.value = 0;
+    gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+    osc.connect(gain);
+    gain.connect(master);
+    osc.start();
+  }
+
+  function stopOsc(){
+    if (osc) {
+      try { osc.stop(); } catch(e) {}
+      try { osc.disconnect(); } catch(e) {}
+      osc = null;
+    }
+    if (gain) {
+      try { gain.disconnect(); } catch(e) {}
+      gain = null;
+    }
+  }
+
+  function setFreq(freq){
+    currentFreq = Math.max(20, Math.min(20000, freq));
+    if (osc) osc.frequency.setTargetAtTime(currentFreq, ctx.currentTime, 0.05);
+  }
+
+  function setVol(vol){
+    currentVol = Math.max(0, Math.min(1, vol));
+    if (master) master.gain.setTargetAtTime(currentVol, ctx.currentTime, 0.05);
+  }
+
+  function tone(freq, dur, type, vol){
+    if (!ensure() || muted) return;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(vol || 0.2, ctx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+    o.connect(g);
+    g.connect(master);
+    o.start();
+    o.stop(ctx.currentTime + dur + 0.05);
+  }
+
+  return {
+    ensure: ensure,
+    startOsc: startOsc,
+    stopOsc: stopOsc,
+    setFreq: setFreq,
+    setVol: setVol,
+    getFreq: function(){ return currentFreq; },
+    getVol: function(){ return currentVol; },
+    getAnalyser: function(){ return analyser; },
+    isMuted: function(){ return muted; },
+    toggle: function(){
+      muted = !muted;
+      if (muted) stopOsc();
+      else if (analyser) startOsc();
+      return muted;
+    },
+    setTonality: function(t){ tonality = t; },
+    getTonality: function(){ return tonality; },
+    getRatios: function(){ return RATIOS[tonality] || RATIOS.major; },
+    tone: tone,
+    click: function(){ tone(880, 0.05, 'square', 0.1); },
+    calc: function(){ [523, 659, 784, 1047].forEach(function(f, i){ setTimeout(function(){ tone(f, 0.12, 'sine', 0.15); }, i * 60); }); },
+    strategy: function(){ tone(440, 0.08, 'triangle', 0.12); setTimeout(function(){ tone(660, 0.1, 'triangle', 0.12); }, 70); },
+    export: function(){ tone(1047, 0.08, 'sine', 0.15); setTimeout(function(){ tone(1568, 0.12, 'sine', 0.15); }, 80); },
+    warn: function(){ tone(220, 0.2, 'sawtooth', 0.12); },
+    error: function(){ tone(120, 0.3, 'sawtooth', 0.15); },
+    dim: function(){ tone(660, 0.08, 'sine', 0.12); setTimeout(function(){ tone(880, 0.12, 'sine', 0.12); }, 80); },
+    slider: function(val){ tone(400 + (val || 0) * 8, 0.03, 'sine', 0.06); },
+    sliderUp: function(){ tone(880, 0.05, 'square', 0.1); },
+    sliderDown: function(){ tone(440, 0.05, 'square', 0.1); },
+    startRec: function(){
+      if (!ensure() || recording) return;
+      var dest = ctx.createMediaStreamDestination();
+      master.connect(dest);
+      mediaRecorder = new MediaRecorder(dest.stream);
+      recordedChunks = [];
+      mediaRecorder.ondataavailable = function(e){ if (e.data.size > 0) recordedChunks.push(e.data); };
+      mediaRecorder.onstop = function(){
+        var blob = new Blob(recordedChunks, {type: 'audio/wav'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'energy-weaver-' + Date.now() + '.wav';
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+      mediaRecorder.start();
+      recording = true;
+    },
+    stopRec: function(){
+      if (mediaRecorder && recording) {
+        mediaRecorder.stop();
+        recording = false;
+      }
+    },
+    isRecording: function(){ return recording; }
+  };
+})();
+
+var audioToggle = document.getElementById('audioToggle');
+audioToggle.addEventListener('click', function(){
+  var isMuted = AudioEngine.toggle();
+  audioToggle.textContent = isMuted ? '🔇' : '🔊';
+  audioToggle.classList.toggle('muted', isMuted);
+  if (!isMuted) AudioEngine.startOsc();
+});
+
+/* =========================================================
+   STATO E PROFILI
+   ========================================================= */
+var state = {
+  produzione: 18,
+  domanda: 20,
+  batteria: 12,
+  socIniziale: 50,
+  rendimento: 90,
+  riserva: 15,
+  strategia: 'base',
+  dimensione: '3d'
+};
+
+var profiloProduzioneBase = [0,0,0,0,0,0.01,0.03,0.07,0.12,0.15,0.17,0.17,0.13,0.08,0.04,0.02,0.01,0,0,0,0,0,0,0];
+var profiloDomandaBase = [0.0325,0.028,0.026,0.026,0.028,0.037,0.051,0.06,0.0465,0.037,0.035,0.037,0.039,0.037,0.037,0.039,0.0465,0.06,0.0695,0.065,0.051,0.0415,0.037,0.0345];
+
+var sommaProd = profiloProduzioneBase.reduce(function(a,b){return a+b;},0) || 1;
+var sommaDem = profiloDomandaBase.reduce(function(a,b){return a+b;},0) || 1;
+profiloProduzioneBase = profiloProduzioneBase.map(function(v){return v/sommaProd;});
+profiloDomandaBase = profiloDomandaBase.map(function(v){return v/sommaDem;});
+
+var ultimoRisultato = null;
+
+/* =========================================================
+   REGOLATORE MIN/MAX
+   ========================================================= */
+var paramDefs = [
+  { id: 'prod', label: 'Produzione', min: 0, max: 100, step: 0.5, unit: 'kWh' },
+  { id: 'dem', label: 'Domanda', min: 0, max: 100, step: 0.5, unit: 'kWh' },
+  { id: 'bat', label: 'Batteria', min: 0, max: 100, step: 0.5, unit: 'kWh' },
+  { id: 'soc', label: 'Carica iniziale', min: 0, max: 100, step: 1, unit: '%' },
+  { id: 'eff', label: 'Rendimento', min: 50, max: 100, step: 1, unit: '%' },
+  { id: 'res', label: 'Riserva minima', min: 0, max: 100, step: 1, unit: '%' }
+];
+
+function buildParams(){
+  var container = document.getElementById('paramContainer');
+  container.innerHTML = '';
+  paramDefs.forEach(function(p){
+    var currentVal = state[p.id] || (p.id === 'prod' ? 18 : p.id === 'dem' ? 20 : p.id === 'bat' ? 12 : p.id === 'soc' ? 50 : p.id === 'eff' ? 90 : 15);
+    
+    var row = document.createElement('div');
+    row.className = 'param-row';
+    row.dataset.param = p.id;
+    
+    var header = document.createElement('div');
+    header.className = 'param-header';
+    var label = document.createElement('label');
+    label.textContent = p.label;
+    var valueDisplay = document.createElement('span');
+    valueDisplay.className = 'param-value';
+    valueDisplay.id = 'val-' + p.id;
+    valueDisplay.textContent = currentVal;
+    var unit = document.createElement('span');
+    unit.className = 'param-unit';
+    unit.textContent = p.unit;
+    header.appendChild(label);
+    header.appendChild(valueDisplay);
+    header.appendChild(unit);
+    
+    var minmax = document.createElement('div');
+    minmax.className = 'minmax';
+    var minLabel = document.createElement('span');
+    minLabel.textContent = 'MIN';
+    var minInput = document.createElement('input');
+    minInput.type = 'number';
+    minInput.value = p.min;
+    minInput.id = 'min-' + p.id;
+    var maxLabel = document.createElement('span');
+    maxLabel.textContent = 'MAX';
+    var maxInput = document.createElement('input');
+    maxInput.type = 'number';
+    maxInput.value = p.max;
+    maxInput.id = 'max-' + p.id;
+    minmax.appendChild(minLabel);
+    minmax.appendChild(minInput);
+    minmax.appendChild(maxLabel);
+    minmax.appendChild(maxInput);
+    
+    var slider = document.createElement('input');
+    slider.type = 'range';
+    slider.min = p.min;
+    slider.max = p.max;
+    slider.step = p.step;
+    slider.value = currentVal;
+    slider.id = 'slider-' + p.id;
+    
+    var buttons = document.createElement('div');
+    buttons.className = 'param-buttons';
+    var minus = document.createElement('button');
+    minus.textContent = '−';
+    minus.setAttribute('aria-label', 'Diminuisci ' + p.label);
+    var plus = document.createElement('button');
+    plus.textContent = '+';
+    plus.setAttribute('aria-label', 'Aumenta ' + p.label);
+    buttons.appendChild(minus);
+    buttons.appendChild(plus);
+    
+    row.appendChild(header);
+    row.appendChild(minmax);
+    row.appendChild(slider);
+    row.appendChild(buttons);
+    container.appendChild(row);
+    
+    // Eventi
+    slider.addEventListener('input', function(){
+      var v = parseFloat(slider.value);
+      state[p.id] = v;
+      valueDisplay.textContent = v;
+      AudioEngine.slider(v);
+      calcola(true);
+    });
+    
+    minus.addEventListener('click', function(){
+      var v = Math.max(parseFloat(minInput.value), parseFloat(slider.value) - p.step);
+      slider.value = v;
+      state[p.id] = v;
+      valueDisplay.textContent = v;
+      AudioEngine.sliderDown();
+      calcola(true);
+    });
+    
+    plus.addEventListener('click', function(){
+      var v = Math.min(parseFloat(maxInput.value), parseFloat(slider.value) + p.step);
+      slider.value = v;
+      state[p.id] = v;
+      valueDisplay.textContent = v;
+      AudioEngine.sliderUp();
+      calcola(true);
+    });
+    
+    minInput.addEventListener('change', function(){
+      var v = parseFloat(minInput.value);
+      slider.min = v;
+      if (parseFloat(slider.value) < v) {
+        slider.value = v;
+        state[p.id] = v;
+        valueDisplay.textContent = v;
+      }
+      AudioEngine.click();
+    });
+    
+    maxInput.addEventListener('change', function(){
+      var v = parseFloat(maxInput.value);
+      slider.max = v;
+      if (parseFloat(slider.value) > v) {
+        slider.value = v;
+        state[p.id] = v;
+        valueDisplay.textContent = v;
+      }
+      AudioEngine.click();
+    });
+  });
+}
+
+function syncParams(){
+  paramDefs.forEach(function(p){
+    var slider = document.getElementById('slider-' + p.id);
+    var valDisplay = document.getElementById('val-' + p.id);
+    if (slider && valDisplay) {
+      slider.value = state[p.id];
+      valDisplay.textContent = state[p.id];
+    }
+  });
+}
+
+/* =========================================================
+   CALCOLO
+   ========================================================= */
+function calcola(silent){
+  var prod = state.produzione;
+  var dem = state.domanda;
+  var bat = state.batteria;
+  var soc = state.socIniziale;
+  var eff = state.rendimento / 100;
+  var res = state.riserva;
+
+  var socMin = res / 100 * bat;
+  var socAttuale = Math.max(soc / 100 * bat, socMin);
+
+  var profiloProd = profiloProduzioneBase.map(function(v){ return v * prod; });
+  var profiloDem = profiloDomandaBase.map(function(v){ return v * dem; });
+
+  if (state.strategia === 'smart') {
+    var sommaP = profiloProd.reduce(function(a,b){return a+b;},0);
+    var sommaD = profiloDem.reduce(function(a,b){return a+b;},0);
+    if (sommaP > 0 && sommaD > 0) {
+      profiloDem = profiloDem.map(function(d, i){
+        return (d * 0.7) + ((d * 0.3) * (profiloProd[i] / sommaP));
+      });
+    }
+  }
+
+  var energiaServita = 0, energiaNonServita = 0, eccedenza = 0, perdite = 0;
+  var caricataTotale = 0, scaricataTotale = 0;
+  var tabella = [];
+
+  for (var h = 0; h < 24; h++) {
+    var p = profiloProd[h] || 0;
+    var d = profiloDem[h] || 0;
+    var saldo = p - d;
+    var socInizio = socAttuale;
+    var caricata = 0, scaricata = 0, perditeOra = 0, deficit = 0;
+
+    if (saldo > 0) {
+      var spazio = bat - socAttuale;
+      var daCaricare = Math.min(saldo, spazio);
+      var effC = daCaricare * eff;
+      perditeOra = daCaricare - effC;
+      socAttuale += effC;
+      caricata = daCaricare;
+      caricataTotale += daCaricare;
+      eccedenza += saldo - daCaricare;
+      energiaServita += d;
+      perdite += perditeOra;
+    } else {
+      var defTot = -saldo;
+      var disp = Math.max(0, socAttuale - socMin);
+      var daScaricare = Math.min(defTot, disp);
+      var effS = daScaricare * eff;
+      perditeOra = daScaricare - effS;
+      socAttuale -= daScaricare;
+      scaricata = daScaricare;
+      scaricataTotale += daScaricare;
+      deficit = defTot - effS;
+      energiaServita += d - deficit;
+      energiaNonServita += deficit;
+      perdite += perditeOra;
+    }
+
+    tabella.push({
+      ora: h, prod: p, dem: d, socInizio: socInizio,
+      caricata: caricata, scaricata: scaricata, perdite: perditeOra,
+      deficit: deficit, socFine: socAttuale
+    });
+  }
+
+  var copertura = dem > 0 ? (energiaServita / dem * 100) : 100;
+
+  // Risultati
+  var results = document.getElementById('results');
+  results.innerHTML = '';
+  var dati = [
+    {label: 'Produzione', value: profiloProd.reduce(function(a,b){return a+b;},0).toFixed(1) + ' kWh', cls: ''},
+    {label: 'Domanda', value: profiloDem.reduce(function(a,b){return a+b;},0).toFixed(1) + ' kWh', cls: ''},
+    {label: 'Energia servita', value: energiaServita.toFixed(1) + ' kWh', cls: 'green'},
+    {label: 'Deficit', value: energiaNonServita.toFixed(1) + ' kWh', cls: 'red'},
+    {label: 'Eccedenza', value: eccedenza.toFixed(1) + ' kWh', cls: 'orange'},
+    {label: 'Caricata', value: caricataTotale.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Scaricata', value: scaricataTotale.toFixed(1) + ' kWh', cls: ''},
+    {label: 'Perdite', value: perdite.toFixed(2) + ' kWh', cls: 'red'},
+    {label: 'Carica finale', value: socAttuale.toFixed(2) + ' kWh', cls: ''},
+    {label: 'Copertura', value: copertura.toFixed(0) + '%', cls: copertura >= 95 ? 'green' : copertura >= 80 ? 'orange' : 'red'}
+  ];
+  dati.forEach(function(d){
+    var div = document.createElement('div');
+    div.className = 'result ' + d.cls;
+    var val = document.createElement('div');
+    val.className = 'value';
+    val.textContent = d.value;
+    var lab = document.createElement('div');
+    lab.className = 'label';
+    lab.textContent = d.label;
+    div.appendChild(val);
+    div.appendChild(lab);
+    results.appendChild(div);
+  });
+
+  // Tabella
+  var tbody = document.querySelector('#hourlyTable tbody');
+  tbody.innerHTML = '';
+  tabella.forEach(function(row){
+    var tr = document.createElement('tr');
+    var ora = String(row.ora).padStart(2, '0') + ':00';
+    tr.innerHTML =
+      '<td>' + ora + '</td>' +
+      '<td>' + row.prod.toFixed(2) + '</td>' +
+      '<td>' + row.dem.toFixed(2) + '</td>' +
+      '<td>' + row.socInizio.toFixed(2) + '</td>' +
+      '<td class="positive">' + (row.caricata > 0 ? '+' + row.caricata.toFixed(2) : '0') + '</td>' +
+      '<td class="negative">' + (row.scaricata > 0 ? '-' + row.scaricata.toFixed(2) : '0') + '</td>' +
+      '<td class="negative">' + row.perdite.toFixed(2) + '</td>' +
+      '<td class="' + (row.deficit > 0 ? 'negative' : '') + '">' + (row.deficit > 0 ? row.deficit.toFixed(2) : '0') + '</td>' +
+      '<td>' + row.socFine.toFixed(2) + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  ultimoRisultato = {
+    timestamp: new Date().toISOString(),
+    parametri: Object.assign({}, state),
+    audio: { frequenza: AudioEngine.getFreq(), volume: AudioEngine.getVol(), tonalita: AudioEngine.getTonality() },
+    risultati: {
+      produzione_totale: profiloProd.reduce(function(a,b){return a+b;},0),
+      domanda_totale: profiloDem.reduce(function(a,b){return a+b;},0),
+      energia_servita: energiaServita,
+      energia_non_servita: energiaNonServita,
+      eccedenza: eccedenza,
+      caricata_batteria: caricataTotale,
+      scaricata_batteria: scaricataTotale,
+      perdite: perdite,
+      carica_finale: socAttuale,
+      copertura_percentuale: copertura
+    },
+    tabella_oraria: tabella,
+    profilo_produzione: profiloProd,
+    profilo_domanda: profiloDem
+  };
+
+  if (!silent) AudioEngine.calc();
+  disegnaGrafico(profiloProd, profiloDem);
+}
+
+/* =========================================================
+   GRAFICO MULTIDIMENSIONALE
+   ========================================================= */
+var canvas = document.getElementById('grafico');
+var ctx = canvas.getContext('2d');
+var graficoState = { angleX: 0.5, angleY: 0.3, isDragging: false, prevX: 0, prevY: 0, time: 0, particles: [] };
+
+function resizeCanvas(){
+  if (!canvas) return;
+  var rect = canvas.getBoundingClientRect();
+  var w = rect.width || canvas.clientWidth || (window.innerWidth - 80);
+  var h = rect.height || 400;
+  if (w <= 0) w = 800;
+  if (h <= 0) h = 400;
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function disegnaGrafico(prod, dem){
+  if (!prod || !dem || prod.length === 0) return;
+  if (canvas.width === 0) resizeCanvas();
+  var w = canvas.width / (window.devicePixelRatio || 1);
+  var h = canvas.height / (window.devicePixelRatio || 1);
+  if (w === 0) w = 800;
+  if (h === 0) h = 400;
+  ctx.clearRect(0, 0, w, h);
+
+  var maxVal = Math.max.apply(null, prod.concat(dem));
+  if (maxVal === 0 || isNaN(maxVal)) maxVal = 1;
+
+  var dim = state.dimensione;
+  var dimLevel = parseInt(dim) || 3;
+  var pad = 60;
+  var chartW = w - pad * 2;
+  var chartH = h - pad * 2;
+  var barW = chartW / 24 / 2.5;
+
+  // Griglia
+  ctx.strokeStyle = 'rgba(114,241,237,0.1)';
+  ctx.lineWidth = 1;
+  for (var g = 0; g <= 4; g++) {
+    var y = pad + (g / 4) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(pad, y);
+    ctx.lineTo(w - pad, y);
+    ctx.stroke();
+  }
+
+  // Barre
+  for (var i = 0; i < 24; i++) {
+    var prodH = (prod[i] / maxVal) * chartH;
+    var demH = (dem[i] / maxVal) * chartH;
+    var xBase = pad + (i / 24) * chartW + barW * 0.3;
+    var yBase = pad + chartH;
+
+    var depthOffset = 0, extraDim = 0, colorShift = 0;
+    if (dimLevel >= 4) depthOffset = Math.sin(graficoState.time + i * 0.5) * 8;
+    if (dimLevel >= 5) extraDim = Math.cos(graficoState.time * 2 + i) * 4;
+    if (dimLevel >= 6) colorShift = Math.sin(graficoState.time * 3 + i) * 0.2;
+    if (dimLevel >= 7) extraDim += Math.sin(graficoState.time * 1.5 + i * 0.3) * 6;
+    if (dimLevel >= 8) depthOffset += Math.cos(graficoState.time * 2.5 + i) * 10;
+    if (dimLevel >= 9) extraDim += Math.sin(graficoState.time * 4 + i) * 8;
+    if (dimLevel >= 10) depthOffset += Math.sin(graficoState.time * 5 + i) * 15;
+
+    var prodColor1 = 'rgba(114,241,237,' + Math.min(1, 0.9 + colorShift) + ')';
+    var grad1 = ctx.createLinearGradient(xBase, yBase - prodH, xBase, yBase);
+    grad1.addColorStop(0, prodColor1);
+    grad1.addColorStop(1, 'rgba(114,241,237,0.3)');
+    ctx.fillStyle = grad1;
+    ctx.fillRect(xBase + depthOffset, yBase - prodH, Math.max(1, barW + extraDim), Math.max(0, prodH));
+
+    var xBase2 = xBase + barW + 2;
+    var demColor1 = 'rgba(241,209,139,' + Math.min(1, 0.9 + colorShift) + ')';
+    var grad2 = ctx.createLinearGradient(xBase2, yBase - demH, xBase2, yBase);
+    grad2.addColorStop(0, demColor1);
+    grad2.addColorStop(1, 'rgba(241,209,139,0.3)');
+    ctx.fillStyle = grad2;
+    ctx.fillRect(xBase2 - depthOffset, yBase - demH, Math.max(1, barW + extraDim), Math.max(0, demH));
+
+    if (dimLevel >= 5 && Math.random() < 0.3) {
+      graficoState.particles.push({
+        x: xBase + barW / 2,
+        y: yBase - prodH - 10,
+        vx: (Math.random() - 0.5) * 2,
+        vy: -Math.random() * 2 - 1,
+        life: 1,
+        color: dimLevel >= 8 ? '#ff00aa' : (Math.random() < 0.5 ? '#72f1ed' : '#ff00aa')
+      });
+    }
+  }
+
+  // Particelle
+  for (var p = graficoState.particles.length - 1; p >= 0; p--) {
+    var pt = graficoState.particles[p];
+    pt.x += pt.vx;
+    pt.y += pt.vy;
+    pt.life -= 0.02;
+    if (pt.life <= 0) { graficoState.particles.splice(p, 1); continue; }
+    ctx.fillStyle = pt.color;
+    ctx.globalAlpha = Math.max(0, pt.life);
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 2 * pt.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // Etichette
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  for (var j = 0; j < 24; j += 3) {
+    ctx.fillText(j + ':00', pad + (j / 24) * chartW + barW, pad + chartH + 20);
+  }
+  ctx.textAlign = 'right';
+  ctx.fillText(maxVal.toFixed(1) + ' kWh', pad - 10, pad + 10);
+  ctx.fillText('0', pad - 10, pad + chartH);
+
+  var dimColor = dimLevel <= 3 ? '#72f1ed' : dimLevel <= 4 ? '#bc91ff' : dimLevel <= 5 ? '#ff00aa' : dimLevel <= 6 ? '#f1d18b' : dimLevel <= 7 ? '#34d399' : dimLevel <= 8 ? '#fb923c' : dimLevel <= 9 ? '#ff6b6b' : '#ffffff';
+  ctx.fillStyle = dimColor;
+  ctx.font = 'bold 14px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('MODALITÀ ' + dim.toUpperCase(), pad, pad - 20);
+}
+
+/* =========================================================
+   SPETTRO FFT
+   ========================================================= */
+var spettroCanvas = document.getElementById('spettro');
+var spettroCtx = spettroCanvas.getContext('2d');
+
+function resizeSpettro(){
+  if (!spettroCanvas) return;
+  var rect = spettroCanvas.getBoundingClientRect();
+  var dpr = window.devicePixelRatio || 1;
+  spettroCanvas.width = rect.width * dpr;
+  spettroCanvas.height = 100 * dpr;
+  spettroCanvas.style.width = rect.width + 'px';
+  spettroCanvas.style.height = '100px';
+  spettroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function disegnaSpettro(){
+  if (!spettroCtx || !spettroCanvas) return;
+  var w = spettroCanvas.width / (window.devicePixelRatio || 1);
+  var h = 100;
+  spettroCtx.clearRect(0, 0, w, h);
+
+  var analyser = AudioEngine.getAnalyser();
+  if (analyser) {
+    var data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    var barW = w / data.length;
+    for (var i = 0; i < data.length; i++) {
+      var barH = (data[i] / 255) * h;
+      spettroCtx.fillStyle = 'rgba(114,241,237,' + (0.3 + data[i] / 255 * 0.7) + ')';
+      spettroCtx.fillRect(i * barW, h - barH, barW - 0.5, barH);
+    }
+  }
+}
+
+/* =========================================================
+   ANIMAZIONE
+   ========================================================= */
+function animate(){
+  graficoState.time += 0.02;
+  if (ultimoRisultato && canvas.width > 0) {
+    disegnaGrafico(ultimoRisultato.profilo_produzione, ultimoRisultato.profilo_domanda);
+  }
+  disegnaSpettro();
+  requestAnimationFrame(animate);
+}
+
+/* =========================================================
+   INTERAZIONE MOUSE/TOUCH
+   ========================================================= */
+canvas.addEventListener('mousedown', function(e){
+  graficoState.isDragging = true;
+  graficoState.prevX = e.clientX;
+  graficoState.prevY = e.clientY;
+});
+window.addEventListener('mousemove', function(e){
+  if (!graficoState.isDragging) return;
+  var dx = e.clientX - graficoState.prevX;
+  var dy = e.clientY - graficoState.prevY;
+  graficoState.angleY += dx * 0.01;
+  graficoState.angleX += dy * 0.01;
+  graficoState.prevX = e.clientX;
+  graficoState.prevY = e.clientY;
+});
+window.addEventListener('mouseup', function(){ graficoState.isDragging = false; });
+
+canvas.addEventListener('touchstart', function(e){
+  graficoState.isDragging = true;
+  graficoState.prevX = e.touches[0].clientX;
+  graficoState.prevY = e.touches[0].clientY;
+}, { passive: true });
+canvas.addEventListener('touchmove', function(e){
+  if (!graficoState.isDragging) return;
+  var dx = e.touches[0].clientX - graficoState.prevX;
+  var dy = e.touches[0].clientY - graficoState.prevY;
+  graficoState.angleY += dx * 0.01;
+  graficoState.angleX += dy * 0.01;
+  graficoState.prevX = e.touches[0].clientX;
+  graficoState.prevY = e.touches[0].clientY;
+}, { passive: true });
+canvas.addEventListener('touchend', function(){ graficoState.isDragging = false; });
+
+/* =========================================================
+   FREQUENZA E TONALITÀ
+   ========================================================= */
+var freqSlider = document.getElementById('freqSlider');
+var freqVal = document.getElementById('freqVal');
+var volSlider = document.getElementById('volSlider');
+var volVal = document.getElementById('volVal');
+var tonalitySelect = document.getElementById('tonalitySelect');
+
+freqSlider.addEventListener('input', function(){
+  var f = parseFloat(freqSlider.value);
+  freqVal.textContent = f + ' Hz';
+  AudioEngine.setFreq(f);
+  AudioEngine.slider(f / 100);
+});
+
+volSlider.addEventListener('input', function(){
+  var v = parseFloat(volSlider.value);
+  volVal.textContent = v + '%';
+  AudioEngine.setVol(v / 100);
+});
+
+tonalitySelect.addEventListener('change', function(){
+  AudioEngine.setTonality(tonalitySelect.value);
+  AudioEngine.click();
+});
+
+document.querySelectorAll('.preset-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    var f = parseFloat(btn.dataset.freq);
+    freqSlider.value = f;
+    freqVal.textContent = f + ' Hz';
+    AudioEngine.setFreq(f);
+    AudioEngine.startOsc();
+    AudioEngine.click();
+  });
+});
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+document.getElementById('calcBtn').addEventListener('click', function(){ AudioEngine.click(); calcola(); });
+document.getElementById('resetBtn').addEventListener('click', function(){
+  AudioEngine.click();
+  state = { produzione: 18, domanda: 20, batteria: 12, socIniziale: 50, rendimento: 90, riserva: 15, strategia: 'base', dimensione: state.dimensione };
+  syncParams();
+  calcola();
+});
+document.getElementById('exportBtn').addEventListener('click', function(){
+  if (!ultimoRisultato) { AudioEngine.error(); alert('Calcola prima i risultati.'); return; }
+  AudioEngine.export();
+  var data = JSON.stringify(ultimoRisultato, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'energy-weaver-2-' + Date.now() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('recBtn').addEventListener('click', function(){
+  if (!AudioEngine.isRecording()) {
+    AudioEngine.startRec();
+    this.textContent = '⏹ Stop WAV';
+    this.classList.add('btn-red');
+    this.classList.remove('btn-magenta');
+    AudioEngine.click();
+  } else {
+    AudioEngine.stopRec();
+    this.textContent = '🔴 Registra WAV';
+    this.classList.remove('btn-red');
+    this.classList.add('btn-magenta');
+    AudioEngine.export();
+  }
+});
+
+document.querySelectorAll('.dim-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    AudioEngine.dim();
+    document.querySelectorAll('.dim-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.dimensione = btn.dataset.dim;
+    graficoState.angleX = 0.5;
+    graficoState.angleY = 0.3;
+  });
+});
+
+/* =========================================================
+   AVVIO
+   ========================================================= */
+buildParams();
+
+function init(){
+  resizeCanvas();
+  resizeSpettro();
+  calcola(true);
+  animate();
+}
+
+if (document.readyState === 'complete') {
+  init();
+} else {
+  window.addEventListener('load', init);
+}
+
+window.addEventListener('resize', function(){ 
+  resizeCanvas();
+  resizeSpettro();
+  if (ultimoRisultato) {
+    disegnaGrafico(ultimoRisultato.profilo_produzione, ultimoRisultato.profilo_domanda);
+  }
+});
+})();
+</script>
+</body>
+</html>
