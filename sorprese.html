@@ -2591,13 +2591,12 @@ document.getElementById('recBtn').addEventListener('click', function(){
       gameLoop = requestAnimationFrame(update);
     });
 
-    resetGame();
+        resetGame();
     gameLoop = requestAnimationFrame(update);
     registerCleanup(function(){ cancelAnimationFrame(gameLoop); document.removeEventListener('keydown', onKey); });
   }
 })();
 
-})();
 </script>
 </body>
 </html>
