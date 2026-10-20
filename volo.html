@@ -1,1 +1,263 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Simulatore di Volo - Luce e Crescita X-Infinito</title>
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta name="robots" content="noai, noimageai">
+<link rel="canonical" href="https://luce-crescita.github.io/volo.html">
+<link rel="stylesheet" href="style.css">
+<style>
+body{margin:0;overflow:hidden;background:#000;font-family:'Space Mono',monospace}
+#voloCanvas{display:block;width:100vw;height:100vh;background:#87ceeb}
+#hud{position:fixed;inset:0;pointer-events:none;z-index:10;color:#00fff0;text-shadow:0 0 6px #00fff0;font-size:12px;letter-spacing:1px}
+.hud-panel{position:absolute;background:rgba(0,0,0,0.5);border:1px solid rgba(0,255,240,0.4);border-radius:8px;padding:8px 12px;backdrop-filter:blur(4px)}
+#hud-top-left{top:12px;left:12px}
+#hud-top-right{top:12px;right:12px;text-align:right}
+#hud-bottom{ bottom:12px;left:50%;transform:translateX(-50%);text-align:center;font-size:11px;color:#94a3b8;border-color:rgba(255,255,255,0.2)}
+.hud-value{font-size:16px;font-weight:900;color:#fff}
+#crosshair{position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:1px solid rgba(0,255,240,0.6);border-radius:50%}
+#crosshair::before,#crosshair::after{content:'';position:absolute;background:rgba(0,255,240,0.6)}
+#crosshair::before{top:9px;left:-6px;width:32px;height:1px}
+#crosshair::after{top:-6px;left:9px;width:1px;height:32px}
+#loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000;color:#00fff0;font-family:'Space Mono',monospace;z-index:100}
+</style>
+</head>
+<body>
+
+<div id="loading">Caricamento simulatore...</div>
+
+<canvas id="voloCanvas"></canvas>
+
+<div id="hud">
+<div id="crosshair"></div>
+<div id="hud-top-left" class="hud-panel">
+<div>VELOCITA</div>
+<div class="hud-value" id="hudSpeed">0</div>
+<div style="font-size:10px;color:#94a3b8">km/h</div>
+</div>
+<div id="hud-top-right" class="hud-panel">
+<div>ALTITUDINE</div>
+<div class="hud-value" id="hudAlt">0</div>
+<div style="font-size:10px;color:#94a3b8">metri</div>
+<div style="margin-top:6px">ROTTA</div>
+<div class="hud-value" id="hudHeading">0</div>
+<div style="font-size:10px;color:#94a3b8">gradi</div>
+</div>
+<div id="hud-bottom" class="hud-panel">
+W/S: Pitch | A/D: Roll | Q/E: Yaw | Shift/Ctrl: Throttle | V: Vista | R: Reset
+</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+// --- SCENA ---
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+scene.fog = new THREE.Fog(0x87ceeb, 500, 2000);
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
+camera.position.set(0, 10, 30);
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('voloCanvas'), antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// --- LUCI ---
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const sun = new THREE.DirectionalLight(0xffffff, 0.8);
+sun.position.set(100, 200, 100);
+scene.add(sun);
+
+// --- TERRENO ---
+const groundGeo = new THREE.PlaneGeometry(4000, 4000, 32, 32);
+const groundMat = new THREE.MeshPhongMaterial({ color: 0x2d6a4f, flatShading: true });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -1;
+scene.add(ground);
+
+// Pista di atterraggio
+const runwayGeo = new THREE.PlaneGeometry(40, 400);
+const runwayMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+const runway = new THREE.Mesh(runwayGeo, runwayMat);
+runway.rotation.x = -Math.PI / 2;
+runway.position.set(0, 0.01, -100);
+scene.add(runway);
+
+// Strisce pista
+for (let i = -180; i < 200; i += 40) {
+  const stripeGeo = new THREE.PlaneGeometry(2, 20);
+  const stripeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const stripe = new THREE.Mesh(stripeGeo, stripeMat);
+  stripe.rotation.x = -Math.PI / 2;
+  stripe.position.set(0, 0.02, i);
+  scene.add(stripe);
+}
+
+// --- AEREO ---
+const plane = new THREE.Group();
+const bodyGeo = new THREE.BoxGeometry(1.2, 0.8, 4);
+const bodyMat = new THREE.MeshPhongMaterial({ color: 0xff0040 });
+const body = new THREE.Mesh(bodyGeo, bodyMat);
+plane.add(body);
+
+const wingGeo = new THREE.BoxGeometry(8, 0.2, 1.5);
+const wingMat = new THREE.MeshPhongMaterial({ color: 0xcccccc });
+const wing = new THREE.Mesh(wingGeo, wingMat);
+wing.position.set(0, 0, 0.5);
+plane.add(wing);
+
+const tailGeo = new THREE.BoxGeometry(0.2, 1.5, 1);
+const tail = new THREE.Mesh(tailGeo, wingMat);
+tail.position.set(0, 0.6, 1.8);
+plane.add(tail);
+
+const propGeo = new THREE.BoxGeometry(0.2, 3, 0.2);
+const propMat = new THREE.MeshBasicMaterial({ color: 0x222222 });
+const prop = new THREE.Mesh(propGeo, propMat);
+prop.position.set(0, 0, -2.1);
+plane.add(prop);
+
+scene.add(plane);
+
+// --- STATO DI VOLO ---
+const state = {
+  pos: new THREE.Vector3(0, 50, 100),
+  vel: new THREE.Vector3(0, 0, -30),
+  pitch: 0,
+  roll: 0,
+  yaw: 0,
+  throttle: 0.5,
+  speed: 0,
+  altitude: 0,
+  heading: 0
+};
+
+// --- CONTROLLI ---
+const keys = {};
+window.addEventListener('keydown', e => { keys[e.code] = true; });
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+let cameraMode = 0; // 0 = chase, 1 = cockpit
+window.addEventListener('keydown', e => {
+  if (e.code === 'KeyV') {
+    cameraMode = (cameraMode + 1) % 2;
+  }
+  if (e.code === 'KeyR') {
+    state.pos.set(0, 50, 100);
+    state.vel.set(0, 0, -30);
+    state.pitch = 0; state.roll = 0; state.yaw = 0;
+    state.throttle = 0.5;
+  }
+});
+
+// --- LOOP ---
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  // Input
+  if (keys['KeyW']) state.pitch -= 0.8 * dt;
+  if (keys['KeyS']) state.pitch += 0.8 * dt;
+  if (keys['KeyA']) state.roll += 0.8 * dt;
+  if (keys['KeyD']) state.roll -= 0.8 * dt;
+  if (keys['KeyQ']) state.yaw += 0.5 * dt;
+  if (keys['KeyE']) state.yaw -= 0.5 * dt;
+  if (keys['ShiftLeft']) state.throttle = Math.min(1, state.throttle + 0.3 * dt);
+  if (keys['ControlLeft']) state.throttle = Math.max(0, state.throttle - 0.3 * dt);
+
+  // Limiti
+  state.pitch = Math.max(-1.2, Math.min(1.2, state.pitch));
+  state.roll = Math.max(-1.5, Math.min(1.5, state.roll));
+
+  // Fisica semplificata
+  const forward = new THREE.Vector3(0, 0, -1);
+  forward.applyEuler(new THREE.Euler(state.pitch, state.yaw, 0, 'YXZ'));
+  const right = new THREE.Vector3(1, 0, 0);
+  right.applyEuler(new THREE.Euler(0, state.yaw, state.roll, 'YXZ'));
+
+  // Velocità
+  const targetSpeed = state.throttle * 120; // km/h max
+  state.speed += (targetSpeed - state.speed) * 0.5 * dt;
+  const speedMs = state.speed / 3.6;
+
+  // Aggiorna posizione
+  const move = forward.clone().multiplyScalar(speedMs * dt);
+  state.pos.add(move);
+
+  // Gravità (semplice)
+  const lift = Math.abs(Math.sin(state.pitch)) * state.speed * 0.02;
+  state.pos.y += (lift - 9.8 * (1 - state.throttle)) * dt;
+
+  // Limite terreno
+  if (state.pos.y < 1) {
+    state.pos.y = 1;
+    state.speed = Math.max(0, state.speed - 50 * dt);
+  }
+
+  // Aggiorna aereo
+  plane.position.copy(state.pos);
+  plane.rotation.set(state.pitch, state.yaw, state.roll, 'YXZ');
+
+  // Elica
+  prop.rotation.z += state.throttle * 20 * dt;
+
+  // Camera
+  if (cameraMode === 0) {
+    // Chase
+    const chaseOffset = new THREE.Vector3(0, 3, 12);
+    chaseOffset.applyEuler(new THREE.Euler(state.pitch, state.yaw, 0, 'YXZ'));
+    const targetCam = state.pos.clone().add(chaseOffset);
+    camera.position.lerp(targetCam, 0.1);
+    camera.lookAt(state.pos);
+  } else {
+    // Cockpit
+    const cockpitOffset = new THREE.Vector3(0, 1, -2);
+    cockpitOffset.applyEuler(new THREE.Euler(state.pitch, state.yaw, 0, 'YXZ'));
+    camera.position.copy(state.pos.clone().add(cockpitOffset));
+    const lookDir = forward.clone().multiplyScalar(10);
+    camera.lookAt(state.pos.clone().add(lookDir));
+  }
+
+  // HUD
+  state.altitude = state.pos.y;
+  state.heading = (state.yaw * 180 / Math.PI + 360) % 360;
+  document.getElementById('hudSpeed').textContent = Math.round(state.speed);
+  document.getElementById('hudAlt').textContent = Math.round(state.altitude);
+  document.getElementById('hudHeading').textContent = Math.round(state.heading);
+
+  renderer.render(scene, camera);
+}
+
+// --- RESIZE ---
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// --- START ---
+document.getElementById('loading').style.display = 'none';
+state.pos.set(0, 50, 100);
+plane.position.copy(state.pos);
+animate();
+</script>
+</body>
+</html>
