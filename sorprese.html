@@ -2762,14 +2762,21 @@ document.getElementById('recBtn').addEventListener('click', function(){
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.setSize(500, 500, false);
 
-    var geometry = new THREE.SphereGeometry(1.5, 64, 64);
-    var material = new THREE.MeshPhongMaterial({
-      color: 0x1a1a4a,
-      emissive: 0x0a0a2a,
-      shininess: 10
-    });
-    var globe = new THREE.Mesh(geometry, material);
-    scene.add(globe);
+    var geometry = new THREE.SphereGeometry(1.2, 64, 64);
+var material = new THREE.MeshBasicMaterial({
+  color: 0x00fff0,
+  wireframe: false,
+  transparent: true,
+  opacity: 0.35
+});
+var globe = new THREE.Mesh(geometry, material);
+scene.add(globe);
+
+var edge = new THREE.LineSegments(
+  new THREE.EdgesGeometry(new THREE.SphereGeometry(1.2, 16, 16)),
+  new THREE.LineBasicMaterial({ color: 0x00fff0, transparent: true, opacity: 0.8 })
+);
+scene.add(edge);
 
     var grid = new THREE.LineSegments(
       new THREE.WireframeGeometry(new THREE.SphereGeometry(1.51, 24, 24)),
