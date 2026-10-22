@@ -54,6 +54,9 @@ body { margin: 0; overflow: hidden; background: #000; font-family: 'Space Mono',
   text-decoration: none;
   text-transform: uppercase;
   box-sizing: border-box;
+  pointer-events: auto; /* ← FIX: rende i pulsanti cliccabili dentro #hud che ha pointer-events:none */
+  position: relative;
+  z-index: 99999;
 }
 #exit-btn { background: rgba(255, 0, 64, 0.85); color: #fff; border: 1px solid #ff0040; box-shadow: 0 2px 8px rgba(255, 0, 64, 0.4); }
 #exit-btn:hover, #exit-btn:active { background: #ff0040; }
