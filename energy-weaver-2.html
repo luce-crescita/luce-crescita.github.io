@@ -1,1 +1,502 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Energy Weaver 2.0 - Simulatore Multidimensionale Avanzato - Luce e Crescita X-Infinito</title>
+<meta name="description" content="Simulatore energetico con min/max configurabili, frequenze audio reattive, visualizzatore FFT, grafico 3D-10D e registrazione audio.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta name="theme-color" content="#04060d">
+<meta property="og:title" content="Energy Weaver 2.0 Avanzato">
+<meta property="og:description" content="Simulatore energetico con grafico 3D-10D.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luce-crescita.github.io/energy-weaver-2.html">
+<meta name="robots" content="noai, noimageai">
+<link rel="canonical" href="https://luce-crescita.github.io/energy-weaver-2.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="ew2-body">
+<button class="ew2-audio-toggle" id="audioToggle" aria-label="Attiva audio" title="Audio On/Off">Audio</button>
+<div class="ew2-wrap">
+
+<header class="ew2-header">
+<a href="index.html" class="ew2-brand">Luce e Crescita X-Infinito</a>
+<nav class="ew2-nav">
+<a href="index.html">Home</a>
+<a href="energia-eterna.html">Weaver 1.0</a>
+<a href="manifesto.html">Manifesto</a>
+<a href="progetti.html">Progetti</a>
+<a href="copyright.html">Note Legali</a>
+</nav>
+</header>
+
+<section class="ew2-hero">
+<div class="ew2-tag-row">
+<span class="ew2-tag">Concept indipendente</span>
+<span class="ew2-tag">X-Infinito Energy Weaver 2.0</span>
+<span class="ew2-tag">3D - 4D - 5D - 6D - 7D - 8D - 9D - 10D+</span>
+<span class="ew2-tag">FREQ - AUDIO - FFT</span>
+</div>
+<h1 style="font-size:clamp(1.8rem,5vw,3rem);color:var(--gold);margin-bottom:12px;line-height:1.2">Energy Weaver X-Infinito Avanzato</h1>
+<p style="color:var(--text-muted);font-size:1.05rem;margin-bottom:24px">Simulatore energetico con min/max configurabili, frequenze audio reattive, visualizzatore FFT, grafico 3D-10D e registrazione audio.</p>
+<div class="ew2-actions">
+<a href="#simulatore" class="ew2-btn ew2-btn-primary">Vai al simulatore</a>
+<a href="index.html" class="ew2-btn ew2-btn-ghost">Torna alla Home</a>
+</div>
+</section>
+
+<div class="ew2-notice">
+<strong>Chiarezza scientifica:</strong> "Energia Eterna Gratis" e il nome visionario del progetto, non una promessa fisica. Nessun sistema puo creare energia dal nulla. Il simulatore studia come raccogliere, convertire, immagazzinare e distribuire energia proveniente da fonti reali, considerando le perdite.
+</div>
+
+<div class="ew2-grid">
+<div class="ew2-card"><h3>24 h</h3><p>Orizzonte simulato</p></div>
+<div class="ew2-card"><h3>8+</h3><p>Dimensioni visive (3D-10D+)</p></div>
+<div class="ew2-card"><h3>6</h3><p>Preset audio (432-963 Hz)</p></div>
+<div class="ew2-card"><h3>X-Infinito</h3><p>Concept da validare</p></div>
+</div>
+
+<h2 style="font-size:clamp(1.3rem,3vw,1.8rem);color:var(--glow-cyan);margin:32px 0 16px">01 - Visione</h2>
+<div class="ew2-grid">
+<div class="ew2-card"><h3>Raccogliere</h3><p>Integrare dati di fotovoltaico, eolico o altre fonti reali.</p></div>
+<div class="ew2-card"><h3>Coordinare</h3><p>Spostare i carichi flessibili verso le ore piu favorevoli.</p></div>
+<div class="ew2-card"><h3>Verificare</h3><p>Misurare energia generata, consumata, accumulata, esportata e persa.</p></div>
+</div>
+
+<h2 id="simulatore" style="font-size:clamp(1.3rem,3vw,1.8rem);color:var(--glow-cyan);margin:32px 0 16px">02 - Simulatore energetico avanzato</h2>
+<p style="color:var(--text-muted)">Modifica i parametri con min/max configurabili, cambia frequenza in tempo reale e visualizza il bilancio in 3D-10D.</p>
+
+<div id="paramContainer"></div>
+
+<div class="ew2-actions">
+<button class="ew2-btn ew2-btn-primary" id="calcBtn">Calcola</button>
+<button class="ew2-btn ew2-btn-ghost" id="resetBtn">Ripristina</button>
+<button class="ew2-btn ew2-btn-green" id="exportBtn">Esporta JSON</button>
+<button class="ew2-btn ew2-btn-magenta" id="recBtn">Registra audio</button>
+</div>
+
+<div id="warnings"></div>
+<div class="ew2-results" id="results"></div>
+
+<h2 style="font-size:clamp(1.3rem,3vw,1.8rem);color:var(--glow-cyan);margin:32px 0 16px">03 - Frequenze audio reattive</h2>
+<div class="ew2-freq-panel">
+<h3>FREQUENZA E TONALITA</h3>
+<div class="ew2-freq-row">
+<label>Frequenza</label>
+<input type="range" id="freqSlider" min="20" max="2000" value="432" step="1">
+<span class="freq-val" id="freqVal">432 Hz</span>
+</div>
+<div class="ew2-freq-row">
+<label>Volume</label>
+<input type="range" id="volSlider" min="0" max="100" value="30">
+<span class="freq-val" id="volVal">30%</span>
+</div>
+<div class="ew2-preset-btns">
+<span style="color:var(--text-muted);font-size:0.75rem;align-self:center;">Preset:</span>
+<button class="ew2-preset-btn" data-freq="432">432 Hz</button>
+<button class="ew2-preset-btn" data-freq="528">528 Hz</button>
+<button class="ew2-preset-btn" data-freq="639">639 Hz</button>
+<button class="ew2-preset-btn" data-freq="741">741 Hz</button>
+<button class="ew2-preset-btn" data-freq="852">852 Hz</button>
+<button class="ew2-preset-btn" data-freq="963">963 Hz</button>
+</div>
+<canvas id="spettro" class="ew2-spettro"></canvas>
+<p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:8px">Spettro FFT in tempo reale</p>
+</div>
+
+<h2 style="font-size:clamp(1.3rem,3vw,1.8rem);color:var(--glow-cyan);margin:32px 0 16px">04 - Visualizzazione multidimensionale</h2>
+<div class="ew2-graph-controls">
+<span style="color:var(--text-muted);font-size:0.75rem;">Dimensione:</span>
+<button class="ew2-dim-btn active" data-dim="3d">3D</button>
+<button class="ew2-dim-btn" data-dim="4d">4D</button>
+<button class="ew2-dim-btn" data-dim="5d">5D</button>
+<button class="ew2-dim-btn" data-dim="6d">6D</button>
+<button class="ew2-dim-btn" data-dim="7d">7D</button>
+<button class="ew2-dim-btn" data-dim="8d">8D</button>
+<button class="ew2-dim-btn" data-dim="9d">9D</button>
+<button class="ew2-dim-btn" data-dim="10d">10D</button>
+</div>
+<canvas id="grafico" class="ew2-graph"></canvas>
+
+<h2 style="font-size:clamp(1.3rem,3vw,1.8rem);color:var(--glow-cyan);margin:32px 0 16px">05 - Bilancio ora per ora</h2>
+<div class="ew2-table-wrap">
+<table class="ew2-table" id="hourlyTable">
+<thead><tr>
+<th>Ora</th><th>Prod. kWh</th><th>Dom. kWh</th><th>Batt. inizio</th>
+<th>Caricata</th><th>Scaricata</th><th>Perdite</th><th>Deficit</th><th>Batt. fine</th>
+</tr></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="ew2-notice">
+*Stima semplificata: non comprende potenza di picco, tariffe, degradazione, temperatura, vincoli di rete o costi.
+</div>
+
+<footer class="ew2-footer">
+<p><strong>Energy Weaver X-Infinito Avanzato</strong></p>
+<p>Concept e documentazione: Antonello Salvatore Mastropaolo.</p>
+<p>2025-2026 Antonello Salvatore Mastropaolo - Tutti i diritti riservati.</p>
+<p>Simulatore a scopo didattico: le stime non sono misure di un impianto reale e non costituiscono consulenza ingegneristica.</p>
+<p><a href="index.html">Torna alla home Luce e Crescita</a> - <a href="copyright.html">Note Legali</a></p>
+</footer>
+
+</div>
+<script src="audio.js" defer></script>
+<script>
+(function(){
+"use strict";
+var state = { produzione: 18, domanda: 20, batteria: 12, socIniziale: 50, rendimento: 90, riserva: 15, dimensione: '3d' };
+var userFreq = 432;
+var userVolume = 0.3;
+
+var PRESET_COLORS = {
+  432: { h: 45, s: 95, l: 60 },
+  528: { h: 150, s: 85, l: 55 },
+  639: { h: 270, s: 85, l: 65 },
+  741: { h: 210, s: 90, l: 60 },
+  852: { h: 320, s: 90, l: 65 },
+  963: { h: 280, s: 60, l: 85 }
+};
+
+function freqToColor(freq, vol){
+  var keys = [432, 528, 639, 741, 852, 963];
+  var lower = keys[0], upper = keys[keys.length-1];
+  for (var i = 0; i < keys.length; i++) {
+    if (freq <= keys[i]) { upper = keys[i]; lower = i > 0 ? keys[i-1] : keys[0]; break; }
+  }
+  if (freq >= keys[keys.length-1]) { lower = upper = keys[keys.length-1]; }
+  var t = upper === lower ? 0 : (freq - lower) / (upper - lower);
+  var c1 = PRESET_COLORS[lower], c2 = PRESET_COLORS[upper];
+  var h = c1.h + (c2.h - c1.h) * t;
+  var s = (c1.s + (c2.s - c1.s) * t) * (0.3 + vol * 0.7);
+  var l = (c1.l + (c2.l - c1.l) * t) * (0.4 + vol * 0.6);
+  return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+}
+
+var profiloProduzioneBase = [0,0,0,0,0,0.01,0.03,0.07,0.12,0.15,0.17,0.17,0.13,0.08,0.04,0.02,0.01,0,0,0,0,0,0,0];
+var profiloDomandaBase = [0.0325,0.028,0.026,0.026,0.028,0.037,0.051,0.06,0.0465,0.037,0.035,0.037,0.039,0.037,0.037,0.039,0.0465,0.06,0.0695,0.065,0.051,0.0415,0.037,0.0345];
+var sommaProd = profiloProduzioneBase.reduce(function(a,b){return a+b;},0) || 1;
+var sommaDem = profiloDomandaBase.reduce(function(a,b){return a+b;},0) || 1;
+profiloProduzioneBase = profiloProduzioneBase.map(function(v){return v/sommaProd;});
+profiloDomandaBase = profiloDomandaBase.map(function(v){return v/sommaDem;});
+var ultimoRisultato = null;
+var paramDefs = [
+{id:'prod',label:'Produzione',min:0,max:100,step:0.5,unit:'kWh'},
+{id:'dem',label:'Domanda',min:0,max:100,step:0.5,unit:'kWh'},
+{id:'bat',label:'Batteria',min:0,max:100,step:0.5,unit:'kWh'},
+{id:'soc',label:'Carica iniziale',min:0,max:100,step:1,unit:'%'},
+{id:'eff',label:'Rendimento',min:50,max:100,step:1,unit:'%'},
+{id:'res',label:'Riserva minima',min:0,max:100,step:1,unit:'%'}
+];
+function buildParams(){
+  var container = document.getElementById('paramContainer');
+  container.innerHTML = '';
+  paramDefs.forEach(function(p){
+    var currentVal = state[p.id] || (p.id==='prod'?18:p.id==='dem'?20:p.id==='bat'?12:p.id==='soc'?50:p.id==='eff'?90:15);
+    var row = document.createElement('div');
+    row.className = 'ew2-param-row';
+    row.dataset.param = p.id;
+    var header = document.createElement('div');
+    header.className = 'param-header';
+    header.innerHTML = '<label>'+p.label+'</label><span class="param-value" id="val-'+p.id+'">'+currentVal+'</span><span class="param-unit">'+p.unit+'</span>';
+    var minmax = document.createElement('div');
+    minmax.className = 'minmax';
+    minmax.innerHTML = '<span>MIN</span><input type="number" value="'+p.min+'" id="min-'+p.id+'"><span>MAX</span><input type="number" value="'+p.max+'" id="max-'+p.id+'">';
+    var slider = document.createElement('input');
+    slider.type = 'range'; slider.min = p.min; slider.max = p.max; slider.step = p.step; slider.value = currentVal; slider.id = 'slider-'+p.id;
+    var buttons = document.createElement('div');
+    buttons.className = 'param-buttons';
+    buttons.innerHTML = '<button aria-label="Diminuisci '+p.label+'">-</button><button aria-label="Aumenta '+p.label+'">+</button>';
+    row.appendChild(header); row.appendChild(minmax); row.appendChild(slider); row.appendChild(buttons);
+    container.appendChild(row);
+    slider.addEventListener('input', function(){ var v = parseFloat(this.value); state[p.id] = v; document.getElementById('val-'+p.id).textContent = v; calcola(true); });
+    buttons.children[0].addEventListener('click', function(){ var v = Math.max(parseFloat(document.getElementById('min-'+p.id).value), parseFloat(slider.value) - p.step); slider.value = v; state[p.id] = v; document.getElementById('val-'+p.id).textContent = v; calcola(true); });
+    buttons.children[1].addEventListener('click', function(){ var v = Math.min(parseFloat(document.getElementById('max-'+p.id).value), parseFloat(slider.value) + p.step); slider.value = v; state[p.id] = v; document.getElementById('val-'+p.id).textContent = v; calcola(true); });
+    document.getElementById('max-'+p.id).addEventListener('change', function(){
+      var newMax = parseFloat(this.value);
+      slider.max = newMax;
+      if (parseFloat(slider.value) > newMax) {
+        slider.value = newMax;
+        state[p.id] = newMax;
+        document.getElementById('val-'+p.id).textContent = newMax;
+      }
+    });
+    document.getElementById('min-'+p.id).addEventListener('change', function(){
+      var newMin = parseFloat(this.value);
+      slider.min = newMin;
+      if (parseFloat(slider.value) < newMin) {
+        slider.value = newMin;
+        state[p.id] = newMin;
+        document.getElementById('val-'+p.id).textContent = newMin;
+      }
+    });
+  });
+}
+function syncParams(){
+  paramDefs.forEach(function(p){
+    var slider = document.getElementById('slider-'+p.id);
+    var valDisplay = document.getElementById('val-'+p.id);
+    if (slider && valDisplay) { slider.value = state[p.id]; valDisplay.textContent = state[p.id]; }
+  });
+}
+function calcola(silent){
+  var prod = state.produzione, dem = state.domanda, bat = state.batteria, soc = state.socIniziale;
+  var eff = state.rendimento / 100, res = state.riserva;
+  var socMin = res / 100 * bat;
+  var socAttuale = Math.max(soc / 100 * bat, socMin);
+  var profiloProd = profiloProduzioneBase.map(function(v){ return v * prod; });
+  var profiloDem = profiloDomandaBase.map(function(v){ return v * dem; });
+  var energiaServita = 0, energiaNonServita = 0, eccedenza = 0, perdite = 0;
+  var caricataTotale = 0, scaricataTotale = 0;
+  var tabella = [];
+  for (var h = 0; h < 24; h++) {
+    var p = profiloProd[h] || 0, d = profiloDem[h] || 0;
+    var saldo = p - d;
+    var socInizio = socAttuale;
+    var caricata = 0, scaricata = 0, perditeOra = 0, deficit = 0;
+    if (saldo > 0) {
+      var spazio = bat - socAttuale;
+      var daCaricare = Math.min(saldo, spazio);
+      var effC = daCaricare * eff;
+      perditeOra = daCaricare - effC;
+      socAttuale += effC;
+      caricata = daCaricare;
+      caricataTotale += daCaricare;
+      eccedenza += saldo - daCaricare;
+      energiaServita += d;
+      perdite += perditeOra;
+    } else {
+      var defTot = -saldo;
+      var disp = Math.max(0, socAttuale - socMin);
+      var daScaricare = Math.min(defTot, disp);
+      var effS = daScaricare * eff;
+      perditeOra = daScaricare - effS;
+      socAttuale -= daScaricare;
+      scaricata = daScaricare;
+      scaricataTotale += daScaricare;
+      deficit = defTot - effS;
+      energiaServita += d - deficit;
+      energiaNonServita += deficit;
+      perdite += perditeOra;
+    }
+    tabella.push({ora:h, prod:p, dem:d, socInizio:socInizio, caricata:caricata, scaricata:scaricata, perdite:perditeOra, deficit:deficit, socFine:socAttuale});
+  }
+  var copertura = dem > 0 ? (energiaServita / dem * 100) : 100;
+  var results = document.getElementById('results');
+  results.innerHTML = '';
+  var dati = [
+    {label:'Produzione', value:profiloProd.reduce(function(a,b){return a+b;},0).toFixed(1)+' kWh', cls:''},
+    {label:'Domanda', value:profiloDem.reduce(function(a,b){return a+b;},0).toFixed(1)+' kWh', cls:''},
+    {label:'Energia servita', value:energiaServita.toFixed(1)+' kWh', cls:'green'},
+    {label:'Deficit', value:energiaNonServita.toFixed(1)+' kWh', cls:'red'},
+    {label:'Eccedenza', value:eccedenza.toFixed(1)+' kWh', cls:'orange'},
+    {label:'Perdite', value:perdite.toFixed(2)+' kWh', cls:'red'},
+    {label:'Carica finale', value:socAttuale.toFixed(2)+' kWh', cls:''},
+    {label:'Copertura', value:copertura.toFixed(0)+'%', cls:copertura>=95?'green':copertura>=80?'orange':'red'}
+  ];
+  dati.forEach(function(d){
+    var div = document.createElement('div');
+    div.className = 'ew2-result ' + d.cls;
+    div.innerHTML = '<div class="value">'+d.value+'</div><div class="label">'+d.label+'</div>';
+    results.appendChild(div);
+  });
+  var tbody = document.querySelector('#hourlyTable tbody');
+  tbody.innerHTML = '';
+  tabella.forEach(function(row){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+String(row.ora).padStart(2,'0')+':00</td><td>'+row.prod.toFixed(2)+'</td><td>'+row.dem.toFixed(2)+'</td><td>'+row.socInizio.toFixed(2)+'</td><td class="positive">'+(row.caricata>0?'+'+row.caricata.toFixed(2):'0')+'</td><td class="negative">'+(row.scaricata>0?'-'+row.scaricata.toFixed(2):'0')+'</td><td class="negative">'+row.perdite.toFixed(2)+'</td><td class="'+(row.deficit>0?'negative':'')+'">'+(row.deficit>0?row.deficit.toFixed(2):'0')+'</td><td>'+row.socFine.toFixed(2)+'</td>';
+    tbody.appendChild(tr);
+  });
+  ultimoRisultato = { timestamp: new Date().toISOString(), parametri: Object.assign({}, state), audio: { frequenza: userFreq, volume: userVolume }, risultati: { produzione_totale: profiloProd.reduce(function(a,b){return a+b;},0), domanda_totale: profiloDem.reduce(function(a,b){return a+b;},0), energia_servita: energiaServita, energia_non_servita: energiaNonServita, eccedenza: eccedenza, caricata_batteria: caricataTotale, scaricata_batteria: scaricataTotale, perdite: perdite, carica_finale: socAttuale, copertura_percentuale: copertura }, tabella_oraria: tabella, profilo_produzione: profiloProd, profilo_domanda: profiloDem };
+  if (!silent) disegnaGrafico(profiloProd, profiloDem);
+}
+var canvas = document.getElementById('grafico');
+var ctx = canvas.getContext('2d');
+var graficoState = { time: 0 };
+function resizeCanvas(){
+  if (!canvas) return;
+  var rect = canvas.getBoundingClientRect();
+  var w = rect.width || canvas.clientWidth || 800;
+  var h = rect.height || 400;
+  if (w <= 0 || h <= 0) return;
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function disegnaGrafico(prod, dem){
+  if (!prod || !dem || prod.length === 0) return;
+  if (canvas.width === 0) resizeCanvas();
+  var w = canvas.width / (window.devicePixelRatio || 1);
+  var h = canvas.height / (window.devicePixelRatio || 1);
+  if (w === 0) return;
+  ctx.clearRect(0, 0, w, h);
+  var maxVal = Math.max.apply(null, prod.concat(dem));
+  if (maxVal === 0 || isNaN(maxVal)) maxVal = 1;
+  var dim = state.dimensione;
+  var dimLevel = parseInt(dim.replace('d','')) || 3;
+  var pad = 60, chartW = w - pad * 2, chartH = h - pad * 2, barW = chartW / 24 / 2.5;
+
+  var mainColor = freqToColor(userFreq, userVolume);
+  var secondaryColor = freqToColor(userFreq * 1.5, userVolume);
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  for (var g = 0; g <= 4; g++) { var y = pad + (g/4)*chartH; ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w-pad, y); ctx.stroke(); }
+  var reducedMotionG = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (var i = 0; i < 24; i++) {
+    var prodH = (prod[i]/maxVal)*chartH, demH = (dem[i]/maxVal)*chartH;
+    var xBase = pad + (i/24)*chartW + barW*0.3;
+    var yBase = pad + chartH;
+    var depthOffset = 0, extraDim = 0;
+    if (dimLevel >= 4 && !reducedMotionG) depthOffset = Math.sin(graficoState.time + i * 0.5) * 8;
+    if (dimLevel >= 5 && !reducedMotionG) extraDim = Math.cos(graficoState.time * 2 + i) * 4;
+    if (dimLevel >= 7 && !reducedMotionG) extraDim += Math.sin(graficoState.time * 1.5 + i * 0.3) * 6;
+
+    ctx.fillStyle = mainColor;
+    ctx.globalAlpha = 0.9;
+    ctx.fillRect(xBase + depthOffset, yBase - prodH, Math.max(1, barW + extraDim), Math.max(0, prodH));
+
+    var xBase2 = xBase + barW + 2;
+    ctx.fillStyle = secondaryColor;
+    ctx.globalAlpha = 0.8;
+    ctx.fillRect(xBase2 - depthOffset, yBase - demH, Math.max(1, barW + extraDim), Math.max(0, demH));
+    ctx.globalAlpha = 1;
+  }
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  for (var j = 0; j < 24; j += 3) ctx.fillText(j + ':00', pad + (j/24)*chartW + barW, pad + chartH + 20);
+  ctx.textAlign = 'right';
+  ctx.fillText(maxVal.toFixed(1) + ' kWh', pad - 10, pad + 10);
+  ctx.fillText('0', pad - 10, pad + chartH);
+
+  ctx.fillStyle = mainColor;
+  ctx.font = 'bold 14px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('MODALITA ' + dim.toUpperCase() + ' - ' + Math.round(userFreq) + ' Hz', pad, pad - 20);
+}
+var spettroCanvas = document.getElementById('spettro');
+var spettroCtx = spettroCanvas.getContext('2d');
+function resizeSpettro(){
+  if (!spettroCanvas) return;
+  var rect = spettroCanvas.getBoundingClientRect();
+  var dpr = window.devicePixelRatio || 1;
+  spettroCanvas.width = rect.width * dpr;
+  spettroCanvas.height = 100 * dpr;
+  spettroCanvas.style.width = rect.width + 'px';
+  spettroCanvas.style.height = '100px';
+  spettroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function disegnaSpettro(){
+  if (!spettroCtx || !spettroCanvas) return;
+  var w = spettroCanvas.width / (window.devicePixelRatio || 1);
+  var h = 100;
+  spettroCtx.clearRect(0, 0, w, h);
+  var analyser = window.AudioEngine ? AudioEngine.getAnalyser() : null;
+  if (analyser) {
+    var data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    var barW = w / data.length;
+    var color = freqToColor(userFreq, userVolume);
+    for (var i = 0; i < data.length; i++) {
+      var barH = (data[i] / 255) * h;
+      spettroCtx.fillStyle = color;
+      spettroCtx.globalAlpha = 0.3 + data[i]/255 * 0.7;
+      spettroCtx.fillRect(i * barW, h - barH, barW - 0.5, barH);
+    }
+    spettroCtx.globalAlpha = 1;
+  }
+}
+function animate(){
+  if (document.hidden) { requestAnimationFrame(animate); return; }
+  graficoState.time += 0.02;
+  if (ultimoRisultato && canvas.width > 0) disegnaGrafico(ultimoRisultato.profilo_produzione, ultimoRisultato.profilo_domanda);
+  disegnaSpettro();
+  requestAnimationFrame(animate);
+}
+var freqSlider = document.getElementById('freqSlider');
+var freqVal = document.getElementById('freqVal');
+var volSlider = document.getElementById('volSlider');
+var volVal = document.getElementById('volVal');
+freqSlider.addEventListener('input', function(){
+  userFreq = parseFloat(this.value);
+  freqVal.textContent = Math.round(userFreq) + ' Hz';
+  if (window.AudioEngine && AudioEngine.getContext() && AudioEngine.getContext().state === 'running') {
+    AudioEngine.tone(userFreq, 0.15, 'sine', 0.1);
+  }
+});
+volSlider.addEventListener('input', function(){
+  userVolume = parseFloat(this.value) / 100;
+  volVal.textContent = this.value + '%';
+  if (window.AudioEngine) AudioEngine.setVolume(userVolume);
+});
+document.querySelectorAll('.ew2-preset-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.ew2-preset-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    var f = parseFloat(btn.dataset.freq);
+    userFreq = f;
+    freqSlider.value = f;
+    freqVal.textContent = f + ' Hz';
+    if (window.AudioEngine) {
+      AudioEngine.resumeContext().then(function(){
+        AudioEngine.tone(f, 2.0, 'sine', 0.15);
+      }).catch(function(){});
+    }
+  });
+});
+document.getElementById('audioToggle').addEventListener('click', function(){
+  if (!window.AudioEngine) return;
+  var muted = AudioEngine.toggleMute();
+  this.textContent = muted ? 'Audio Off' : 'Audio';
+  this.classList.toggle('muted', muted);
+});
+document.getElementById('calcBtn').addEventListener('click', function(){ calcola(false); });
+document.getElementById('resetBtn').addEventListener('click', function(){
+  state = { produzione: 18, domanda: 20, batteria: 12, socIniziale: 50, rendimento: 90, riserva: 15, dimensione: state.dimensione };
+  syncParams(); calcola(false);
+});
+document.getElementById('exportBtn').addEventListener('click', function(){
+  if (!ultimoRisultato) { alert('Calcola prima i risultati.'); return; }
+  var data = JSON.stringify(ultimoRisultato, null, 2);
+  var blob = new Blob([data], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'energy-weaver-2-' + Date.now() + '.json'; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+});
+document.getElementById('recBtn').addEventListener('click', function(){
+  if (!window.AudioEngine) return;
+  if (!AudioEngine.isRecording()) {
+    var rec = AudioEngine.startRecording();
+    if (!rec) { this.textContent = 'Non disponibile'; return; }
+    this.textContent = 'Stop';
+    this.classList.add('ew2-btn-red'); this.classList.remove('ew2-btn-magenta');
+  } else {
+    AudioEngine.stopRecording();
+    this.textContent = 'Registra audio';
+    this.classList.remove('ew2-btn-red'); this.classList.add('ew2-btn-magenta');
+  }
+});
+document.querySelectorAll('.ew2-dim-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.ew2-dim-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.dimensione = btn.dataset.dim;
+  });
+});
+buildParams();
+function init(){ resizeCanvas(); resizeSpettro(); calcola(true); animate(); }
+if (document.readyState === 'complete') init();
+else window.addEventListener('load', init);
+window.addEventListener('resize', function(){ resizeCanvas(); resizeSpettro(); if (ultimoRisultato) disegnaGrafico(ultimoRisultato.profilo_produzione, ultimoRisultato.profilo_domanda); });
+})();
+</script>
+</body>
+</html>
