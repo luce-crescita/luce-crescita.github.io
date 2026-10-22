@@ -1175,7 +1175,7 @@ document.getElementById('recBtn').addEventListener('click', function(){
     });
   }
 
-    function openTrain(){
+     function openTrain(){
     registerCleanup(function(){});
     open('TRENO DIMENSIONALE', '<canvas id="trainCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="trainUp">&#8593;</button><button class="btn-big btn-cyan" id="trainDown">&#8595;</button><button class="btn-big btn-lime" id="trainRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Il treno avanza. Cambia binario agli scambi per evitare gli ostacoli.</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="trainScore">SCORE: 0</p>');
     var canvas = document.getElementById('trainCanvas');
