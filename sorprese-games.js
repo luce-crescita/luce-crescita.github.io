@@ -1054,8 +1054,32 @@ document.getElementById('recBtn').addEventListener('click', function(){
           });
         }
       }
+        }
+    initGame();
+
+    function onKeyDown(e){
+      if (e.key === 'ArrowLeft') { moveLeft = true; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = true; e.preventDefault(); }
     }
-        initGame();
+    function onKeyUp(e){
+      if (e.key === 'ArrowLeft') { moveLeft = false; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = false; e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    var bLeft = document.getElementById('bLeft');
+    var bRight = document.getElementById('bRight');
+    if (bLeft) {
+      bLeft.addEventListener('pointerdown', function(e){ e.preventDefault(); moveLeft = true; });
+      bLeft.addEventListener('pointerup', function(){ moveLeft = false; });
+      bLeft.addEventListener('pointerleave', function(){ moveLeft = false; });
+    }
+    if (bRight) {
+      bRight.addEventListener('pointerdown', function(e){ e.preventDefault(); moveRight = true; });
+      bRight.addEventListener('pointerup', function(){ moveRight = false; });
+      bRight.addEventListener('pointerleave', function(){ moveRight = false; });
+    }
 
     function update(){
       if (!gameOver && !win) {
