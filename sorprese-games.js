@@ -1023,3 +1023,1650 @@ document.getElementById('recBtn').addEventListener('click', function(){
     gameLoop = requestAnimationFrame(update);
     registerCleanup(function(){ cancelAnimationFrame(gameLoop); document.removeEventListener('keydown', onKey); });
   }
+  function openBreakout(){
+    registerCleanup(function(){});
+    open('BREAKOUT DIMENSIONALE', '<canvas id="breakoutCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="bLeft">&#8592;</button><button class="btn-big btn-cyan" id="bRight">&#8594;</button><button class="btn-big btn-lime" id="bRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Frecce o bottoni per muovere la racchetta</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="breakoutScore">SCORE: 0</p>');
+    var canvas = document.getElementById('breakoutCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var paddle, ball, bricks, score, gameOver, win;
+    var gameLoop = null;
+    var moveLeft = false, moveRight = false;
+
+    function initGame(){
+      paddle = { x: W/2 - 40, y: H - 30, w: 80, h: 12, speed: 7 };
+      ball = { x: W/2, y: H/2, dx: 3, dy: -3, r: 6 };
+      bricks = [];
+      score = 0;
+      gameOver = false;
+      win = false;
+      var brickRows = 5, brickCols = 8, brickW = W / brickCols - 4, brickH = 20, brickOffTop = 50, brickOffLeft = 2;
+      var colors = ['#ff0040','#ff00aa','#a855f7','#66ccff','#00ff88'];
+      for (var r = 0; r < brickRows; r++) {
+        for (var c = 0; c < brickCols; c++) {
+          bricks.push({
+            x: c * (brickW + 4) + brickOffLeft,
+            y: r * (brickH + 4) + brickOffTop,
+            w: brickW, h: brickH,
+            color: colors[r],
+            alive: true
+          });
+        }
+      }
+    }
+    initGame();
+
+    function onKeyDown(e){
+      if (e.key === 'ArrowLeft') { moveLeft = true; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = true; e.preventDefault(); }
+    }
+    function onKeyUp(e){
+      if (e.key === 'ArrowLeft') { moveLeft = false; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = false; e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    var bLeft = document.getElementById('bLeft');
+    var bRight = document.getElementById('bRight');
+    if (bLeft) {
+      bLeft.addEventListener('pointerdown', function(e){ e.preventDefault(); moveLeft = true; });
+      bLeft.addEventListener('pointerup', function(){ moveLeft = false; });
+      bLeft.addEventListener('pointerleave', function(){ moveLeft = false; });
+    }
+    if (bRight) {
+      bRight.addEventListener('pointerdown', function(e){ e.preventDefault(); moveRight = true; });
+      bRight.addEventListener('pointerup', function(){ moveRight = false; });
+      bRight.addEventListener('pointerleave', function(){ moveRight = false; });
+    }
+
+    function update(){
+      if (!gameOver && !win) {
+        if (moveLeft) paddle.x -= paddle.speed;
+        if (moveRight) paddle.x += paddle.speed;
+        paddle.x = Math.max(0, Math.min(W - paddle.w, paddle.x));
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+        if (ball.x - ball.r < 0 || ball.x + ball.r > W) ball.dx *= -1;
+        if (ball.y - ball.r < 0) ball.dy *= -1;
+        if (ball.y + ball.r > H) { gameOver = true; saveScore('breakout', score); if (window.AudioEngine) AudioEngine.error(); }
+        if (ball.y + ball.r > paddle.y && ball.y - ball.r < paddle.y + paddle.h && ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+          ball.dy = -Math.abs(ball.dy);
+          var hitPos = (ball.x - paddle.x) / paddle.w;
+          ball.dx = (hitPos - 0.5) * 8;
+          if (window.AudioEngine) AudioEngine.tick();
+        }
+        bricks.forEach(function(b){
+          if (!b.alive) return;
+          if (ball.x + ball.r > b.x && ball.x - ball.r < b.x + b.w && ball.y + ball.r > b.y && ball.y - ball.r < b.y + b.h) {
+            b.alive = false;
+            ball.dy *= -1;
+            score += 10;
+            if (window.AudioEngine) AudioEngine.tick();
+          }
+        });
+        if (bricks.every(function(b){ return !b.alive; })) { win = true; saveScore('breakout', score); if (window.unlockAchievement) unlockAchievement('breakout_win'); if (window.AudioEngine) AudioEngine.win(); }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+      bricks.forEach(function(b){
+        if (!b.alive) return;
+        ctx.fillStyle = b.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = b.color;
+        ctx.fillRect(b.x, b.y, b.w, b.h);
+      });
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#00fff0';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00fff0';
+      ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = '#fff';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      document.getElementById('breakoutScore').textContent = 'SCORE: ' + score;
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + score, W/2, H/2 + 40);
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 70);
+      }
+      if (win) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('YOU WIN!', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + score, W/2, H/2 + 40);
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 70);
+      }
+    }
+
+    document.getElementById('bRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){
+      cancelAnimationFrame(gameLoop);
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keyup', onKeyUp);
+    });
+  }
+
+  function openTrain(){
+    registerCleanup(function(){});
+    open('TRENO DIMENSIONALE', '<canvas id="trainCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="trainUp">&#8593;</button><button class="btn-big btn-cyan" id="trainDown">&#8595;</button><button class="btn-big btn-lime" id="trainRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Il treno avanza. Cambia binario agli scambi per evitare gli ostacoli.</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="trainScore">SCORE: 0</p>');
+    var canvas = document.getElementById('trainCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var LANES = 3;
+    var laneY = [H * 0.3, H * 0.5, H * 0.7];
+    var train, obstacles, score, gameOver, speed, spawnTimer, lastTime;
+    var gameLoop = null;
+    var audioCtx = null;
+    var trainAudio = null;
+
+    function initAudio(){
+      if (audioCtx) return;
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      audioCtx = new AC();
+      var bufferSize = audioCtx.sampleRate * 2;
+      var noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      var data = noiseBuffer.getChannelData(0);
+      for (var i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      var noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      noise.loop = true;
+      var filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 200;
+      var gain = audioCtx.createGain();
+      gain.gain.value = 0.06;
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start();
+      trainAudio = { noise: noise, gain: gain, filter: filter };
+    }
+
+    function playHorn(){
+      if (!audioCtx || !trainAudio) return;
+      var o1 = audioCtx.createOscillator();
+      var o2 = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o1.type = 'sawtooth';
+      o2.type = 'sawtooth';
+      o1.frequency.value = 330;
+      o2.frequency.value = 415;
+      g.gain.setValueAtTime(0, audioCtx.currentTime);
+      g.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+      o1.connect(g); o2.connect(g);
+      g.connect(audioCtx.destination);
+      o1.start(); o2.start();
+      o1.stop(audioCtx.currentTime + 0.75);
+      o2.stop(audioCtx.currentTime + 0.75);
+    }
+
+    function initGame(){
+      train = { lane: 1, x: 80 };
+      obstacles = [];
+      score = 0;
+      gameOver = false;
+      speed = 3;
+      spawnTimer = 0;
+      lastTime = performance.now();
+    }
+
+    function changeLane(dir){
+      if (gameOver) return;
+      var newLane = train.lane + dir;
+      if (newLane < 0 || newLane >= LANES) return;
+      train.lane = newLane;
+      if (window.AudioEngine) AudioEngine.tick();
+      playHorn();
+    }
+
+    function spawnObstacle(){
+      var lane = Math.floor(Math.random() * LANES);
+      obstacles.push({ lane: lane, x: W + 20, w: 30, h: 30 });
+    }
+
+    function update(time){
+      if (!gameOver) {
+        var dt = time - lastTime;
+        lastTime = time;
+        spawnTimer += dt;
+        if (spawnTimer > 1500) { spawnObstacle(); spawnTimer = 0; }
+        obstacles.forEach(function(o){ o.x -= speed; });
+        obstacles = obstacles.filter(function(o){ return o.x > -50; });
+        for (var i = 0; i < obstacles.length; i++) {
+          var o = obstacles[i];
+          if (o.lane === train.lane && o.x < train.x + 40 && o.x + o.w > train.x - 20) {
+            gameOver = true;
+            saveScore('train', Math.floor(score / 10));
+            if (window.AudioEngine) AudioEngine.error();
+            break;
+          }
+        }
+        score += 1;
+        if (trainAudio && trainAudio.filter) {
+          trainAudio.filter.frequency.setTargetAtTime(150 + speed * 30, audioCtx.currentTime, 0.1);
+          trainAudio.gain.gain.setTargetAtTime(0.04 + speed * 0.01, audioCtx.currentTime, 0.1);
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      // Sfondo
+      ctx.fillStyle = '#0a0512';
+      ctx.fillRect(0, 0, W, H);
+
+      // Binari con traversine
+      for (var i = 0; i < LANES; i++) {
+        ctx.strokeStyle = 'rgba(0,255,240,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, laneY[i] + 20);
+        ctx.lineTo(W, laneY[i] + 20);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, laneY[i] - 20);
+        ctx.lineTo(W, laneY[i] - 20);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(0,255,240,0.12)';
+        ctx.lineWidth = 1;
+        for (var sx = 0; sx < W; sx += 20) {
+          ctx.beginPath();
+          ctx.moveTo(sx, laneY[i] - 20);
+          ctx.lineTo(sx, laneY[i] + 20);
+          ctx.stroke();
+        }
+      }
+
+      // TRENO GRAFICO
+      var ty = laneY[train.lane];
+      var tx = train.x;
+
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00fff0';
+
+      // Vagone (dietro)
+      ctx.fillStyle = '#0088aa';
+      ctx.fillRect(tx - 70, ty - 14, 40, 28);
+      ctx.fillStyle = '#00fff0';
+      ctx.fillRect(tx - 64, ty - 8, 8, 6);
+      ctx.fillRect(tx - 52, ty - 8, 8, 6);
+      ctx.fillRect(tx - 64, ty + 2, 8, 6);
+      ctx.fillRect(tx - 52, ty + 2, 8, 6);
+      ctx.fillStyle = '#000';
+      ctx.beginPath(); ctx.arc(tx - 60, ty + 16, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(tx - 40, ty + 16, 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#666';
+      ctx.fillRect(tx - 30, ty - 2, 6, 4);
+
+      // Locomotiva (davanti)
+      ctx.fillStyle = '#00fff0';
+      ctx.fillRect(tx - 20, ty - 16, 50, 32);
+      ctx.fillStyle = '#00fff0';
+      ctx.fillRect(tx + 18, ty - 22, 14, 22);
+      ctx.fillStyle = '#00ccbb';
+      ctx.fillRect(tx + 16, ty - 24, 18, 4);
+      ctx.fillStyle = '#003344';
+      ctx.fillRect(tx + 22, ty - 18, 8, 8);
+      ctx.fillStyle = '#ff0040';
+      ctx.fillRect(tx - 15, ty - 24, 8, 10);
+      // Fumo
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.beginPath(); ctx.arc(tx - 11, ty - 30, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(tx - 14, ty - 36, 3, 0, Math.PI*2); ctx.fill();
+      // Ruote
+      ctx.fillStyle = '#000';
+      ctx.beginPath(); ctx.arc(tx - 10, ty + 18, 5, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(tx + 5, ty + 18, 5, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(tx + 20, ty + 18, 5, 0, Math.PI*2); ctx.fill();
+      // Faro
+      ctx.fillStyle = '#ffaa00';
+      ctx.beginPath(); ctx.arc(tx + 32, ty - 10, 3, 0, Math.PI*2); ctx.fill();
+
+      ctx.shadowBlur = 0;
+
+      // Ostacoli
+      obstacles.forEach(function(o){
+        var oy = laneY[o.lane];
+        ctx.fillStyle = '#ff0040';
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ff0040';
+        ctx.fillRect(o.x, oy - 18, o.w, 6);
+        ctx.fillRect(o.x, oy + 12, o.w, 6);
+        ctx.fillRect(o.x + 8, oy - 12, o.w - 16, 24);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(o.x + 10, oy - 8, 4, 16);
+        ctx.fillRect(o.x + 18, oy - 8, 4, 16);
+        ctx.shadowBlur = 0;
+      });
+
+      document.getElementById('trainScore').textContent = 'SCORE: ' + Math.floor(score / 10);
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('SCHIANTO!', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + Math.floor(score / 10), W/2, H/2 + 40);
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 70);
+      }
+    }
+
+    document.getElementById('trainUp').addEventListener('click', function(){ changeLane(-1); });
+    document.getElementById('trainDown').addEventListener('click', function(){ changeLane(1); });
+    document.getElementById('trainRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      initAudio();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    initGame();
+    initAudio();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){
+      cancelAnimationFrame(gameLoop);
+      if (trainAudio) {
+        try { trainAudio.noise.stop(); } catch(e){}
+      }
+    });
+  }
+
+  function openSnake(){
+    registerCleanup(function(){});
+    open('SNAKE DIMENSIONALE', '<canvas id="snakeCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="snUp">&#8593;</button><button class="btn-big btn-cyan" id="snLeft">&#8592;</button><button class="btn-big btn-cyan" id="snDown">&#8595;</button><button class="btn-big btn-cyan" id="snRight">&#8594;</button><button class="btn-big btn-lime" id="snRestart">RIGIOCA</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="snakeScore">SCORE: 0</p>');
+    var canvas = document.getElementById('snakeCanvas');
+    var ctx = canvas.getContext('2d');
+    var GRID = 20, CELL = canvas.width / GRID;
+    var snake, dir, nextDir, food, score, gameOver, speed;
+    var gameLoop = null;
+    var lastMove = 0;
+
+    function initGame(){
+      snake = [{x: 10, y: 10}];
+      dir = {x: 1, y: 0};
+      nextDir = {x: 1, y: 0};
+      food = randomFood();
+      score = 0;
+      gameOver = false;
+      speed = 150;
+      lastMove = performance.now();
+    }
+
+    function randomFood(){
+      var f;
+      do {
+        f = {x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID)};
+      } while (snake.some(function(s){ return s.x === f.x && s.y === f.y; }));
+      return f;
+    }
+
+    function setDir(dx, dy){
+      if (gameOver) return;
+      if (dir.x === -dx && dir.y === -dy) return;
+      nextDir = {x: dx, y: dy};
+    }
+
+    function update(time){
+      if (!gameOver && time - lastMove > speed) {
+        lastMove = time;
+        dir = nextDir;
+        var head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+        if (head.x < 0 || head.x >= GRID || head.y < 0 || head.y >= GRID) {
+          gameOver = true;
+          saveScore('snake', score);
+          if (window.AudioEngine) AudioEngine.error();
+        } else if (snake.some(function(s){ return s.x === head.x && s.y === head.y; })) {
+          gameOver = true;
+          saveScore('snake', score);
+          if (window.AudioEngine) AudioEngine.error();
+        } else {
+          snake.unshift(head);
+          if (head.x === food.x && head.y === food.y) {
+            score += 10;
+            food = randomFood();
+            speed = Math.max(60, speed - 5);
+            if (window.AudioEngine) AudioEngine.correct();
+            if (score >= 50 && window.unlockAchievement) unlockAchievement('snake_50');
+          } else {
+            snake.pop();
+          }
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      ctx.fillStyle = '#0a0512';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ff0040';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#ff0040';
+      ctx.fillRect(food.x * CELL + 2, food.y * CELL + 2, CELL - 4, CELL - 4);
+      snake.forEach(function(s, i){
+        ctx.fillStyle = i === 0 ? '#00fff0' : '#00aa88';
+        ctx.shadowBlur = i === 0 ? 15 : 8;
+        ctx.shadowColor = '#00fff0';
+        ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2);
+      });
+      ctx.shadowBlur = 0;
+      document.getElementById('snakeScore').textContent = 'SCORE: ' + score;
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + score, canvas.width/2, canvas.height/2 + 40);
+        ctx.fillText('Premi RIGIOCA', canvas.width/2, canvas.height/2 + 70);
+      }
+    }
+
+    function onKey(e){
+      if (e.key === 'ArrowUp') { setDir(0, -1); e.preventDefault(); }
+      else if (e.key === 'ArrowDown') { setDir(0, 1); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft') { setDir(-1, 0); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { setDir(1, 0); e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKey);
+
+    document.getElementById('snUp').addEventListener('click', function(){ setDir(0, -1); });
+    document.getElementById('snDown').addEventListener('click', function(){ setDir(0, 1); });
+    document.getElementById('snLeft').addEventListener('click', function(){ setDir(-1, 0); });
+    document.getElementById('snRight').addEventListener('click', function(){ setDir(1, 0); });
+    document.getElementById('snRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    initGame();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){ cancelAnimationFrame(gameLoop); document.removeEventListener('keydown', onKey); });
+  }
+
+  function openPong(){
+    registerCleanup(function(){});
+    open('PONG DIMENSIONALE', '<canvas id="pongCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="pongUp">&#8593;</button><button class="btn-big btn-cyan" id="pongDown">&#8595;</button><button class="btn-big btn-lime" id="pongRestart">RIGIOCA</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="pongScore">TU: 0 - AI: 0</p>');
+    var canvas = document.getElementById('pongCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var paddle, aiPaddle, ball, playerScore, aiScore, gameOver, win;
+    var gameLoop = null;
+    var moveUp = false, moveDown = false;
+
+    function initGame(){
+      paddle = { x: 10, y: H/2 - 40, w: 10, h: 80, speed: 6 };
+      aiPaddle = { x: W - 20, y: H/2 - 40, w: 10, h: 80, speed: 5 };
+      ball = { x: W/2, y: H/2, dx: 4, dy: 3, r: 6 };
+      playerScore = 0;
+      aiScore = 0;
+      gameOver = false;
+      win = false;
+    }
+
+    function update(){
+      if (!gameOver) {
+        if (moveUp) paddle.y -= paddle.speed;
+        if (moveDown) paddle.y += paddle.speed;
+        paddle.y = Math.max(0, Math.min(H - paddle.h, paddle.y));
+
+        var targetY = ball.y - aiPaddle.h/2;
+        if (aiPaddle.y < targetY) aiPaddle.y += aiPaddle.speed;
+        else if (aiPaddle.y > targetY) aiPaddle.y -= aiPaddle.speed;
+        aiPaddle.y = Math.max(0, Math.min(H - aiPaddle.h, aiPaddle.y));
+
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+        if (ball.y - ball.r < 0 || ball.y + ball.r > H) ball.dy *= -1;
+
+        if (ball.x - ball.r < paddle.x + paddle.w && ball.y > paddle.y && ball.y < paddle.y + paddle.h && ball.dx < 0) {
+          ball.dx = Math.abs(ball.dx);
+          var rel = (ball.y - (paddle.y + paddle.h/2)) / (paddle.h/2);
+          ball.dy = rel * 5;
+          if (window.AudioEngine) AudioEngine.tick();
+        }
+        if (ball.x + ball.r > aiPaddle.x && ball.y > aiPaddle.y && ball.y < aiPaddle.y + aiPaddle.h && ball.dx > 0) {
+          ball.dx = -Math.abs(ball.dx);
+          var rel2 = (ball.y - (aiPaddle.y + aiPaddle.h/2)) / (aiPaddle.h/2);
+          ball.dy = rel2 * 5;
+          if (window.AudioEngine) AudioEngine.tick();
+        }
+
+        if (ball.x < 0) { aiScore++; ball.x = W/2; ball.y = H/2; ball.dx = 4; ball.dy = 3; if (window.AudioEngine) AudioEngine.wrong(); }
+        if (ball.x > W) { playerScore++; ball.x = W/2; ball.y = H/2; ball.dx = -4; ball.dy = 3; if (window.AudioEngine) AudioEngine.correct(); }
+
+        if (playerScore >= 5 || aiScore >= 5) {
+          gameOver = true;
+          win = playerScore >= 5;
+          saveScore('pong', playerScore);
+          if (win) { if (window.AudioEngine) AudioEngine.win(); }
+          else { if (window.AudioEngine) AudioEngine.error(); }
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      ctx.fillStyle = '#0a0512';
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      ctx.moveTo(W/2, 0);
+      ctx.lineTo(W/2, H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#00fff0';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00fff0';
+      ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+
+      ctx.fillStyle = '#ff0040';
+      ctx.shadowColor = '#ff0040';
+      ctx.fillRect(aiPaddle.x, aiPaddle.y, aiPaddle.w, aiPaddle.h);
+
+      ctx.fillStyle = '#fff';
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = '#fff';
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      document.getElementById('pongScore').textContent = 'TU: ' + playerScore + ' - AI: ' + aiScore;
+
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = win ? '#00ff88' : '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(win ? 'HAI VINTO!' : 'HAI PERSO', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 40);
+      }
+    }
+
+    function onKeyDown(e){
+      if (e.key === 'ArrowUp') { moveUp = true; e.preventDefault(); }
+      else if (e.key === 'ArrowDown') { moveDown = true; e.preventDefault(); }
+    }
+    function onKeyUp(e){
+      if (e.key === 'ArrowUp') { moveUp = false; e.preventDefault(); }
+      else if (e.key === 'ArrowDown') { moveDown = false; e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    document.getElementById('pongUp').addEventListener('pointerdown', function(){ moveUp = true; });
+    document.getElementById('pongUp').addEventListener('pointerup', function(){ moveUp = false; });
+    document.getElementById('pongDown').addEventListener('pointerdown', function(){ moveDown = true; });
+    document.getElementById('pongDown').addEventListener('pointerup', function(){ moveDown = false; });
+    document.getElementById('pongRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    initGame();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){
+      cancelAnimationFrame(gameLoop);
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keyup', onKeyUp);
+    });
+  }
+
+    function openInvaders(){
+    registerCleanup(function(){});
+    open('INVADERS DIMENSIONALE', '<canvas id="invCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="invLeft">&#8592;</button><button class="btn-big btn-cyan" id="invRight">&#8594;</button><button class="btn-big btn-magenta" id="invFire">FUOCO</button><button class="btn-big btn-lime" id="invRestart">RIGIOCA</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="invScore">SCORE: 0</p>');
+    var canvas = document.getElementById('invCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var player, bullets, invaders, invBullets, score, gameOver, invDir, invSpeed;
+    var gameLoop = null;
+    var moveLeft = false, moveRight = false;
+
+    function initGame(){
+      player = { x: W/2 - 15, y: H - 30, w: 30, h: 15, speed: 5 };
+      bullets = [];
+      invBullets = [];
+      invaders = [];
+      for (var r = 0; r < 4; r++) {
+        for (var c = 0; c < 8; c++) {
+          invaders.push({ x: c * 40 + 40, y: r * 30 + 40, w: 24, h: 20, alive: true });
+        }
+      }
+      score = 0;
+      gameOver = false;
+      invDir = 1;
+      invSpeed = 0.5;
+    }
+
+    function update(){
+      if (!gameOver) {
+        if (moveLeft) player.x -= player.speed;
+        if (moveRight) player.x += player.speed;
+        player.x = Math.max(0, Math.min(W - player.w, player.x));
+
+        var edge = false;
+        invaders.forEach(function(inv){
+          if (!inv.alive) return;
+          inv.x += invSpeed * invDir;
+          if (inv.x < 0 || inv.x + inv.w > W) edge = true;
+        });
+        if (edge) {
+          invDir *= -1;
+          invaders.forEach(function(inv){ if (inv.alive) inv.y += 15; });
+        }
+
+        bullets.forEach(function(b){ b.y -= 7; });
+        bullets = bullets.filter(function(b){ return b.y > 0; });
+        invBullets.forEach(function(b){ b.y += 5; });
+        invBullets = invBullets.filter(function(b){ return b.y < H; });
+
+        bullets.forEach(function(b){
+          invaders.forEach(function(inv){
+            if (!inv.alive) return;
+            if (b.x > inv.x && b.x < inv.x + inv.w && b.y > inv.y && b.y < inv.y + inv.h) {
+              inv.alive = false;
+              b.y = -10;
+              score += 10;
+              if (window.AudioEngine) AudioEngine.tick();
+            }
+          });
+        });
+        invBullets.forEach(function(b){
+          if (b.x > player.x && b.x < player.x + player.w && b.y > player.y && b.y < player.y + player.h) {
+            gameOver = true;
+            saveScore('invaders', score);
+            if (window.AudioEngine) AudioEngine.error();
+          }
+        });
+
+        if (Math.random() < 0.02) {
+          var alive = invaders.filter(function(inv){ return inv.alive; });
+          if (alive.length > 0) {
+            var target = alive[Math.floor(Math.random() * alive.length)];
+            invBullets.push({ x: target.x + target.w/2, y: target.y + target.h });
+          }
+        }
+
+        if (invaders.every(function(inv){ return !inv.alive; })) {
+          gameOver = true;
+          saveScore('invaders', score);
+          if (window.AudioEngine) AudioEngine.win();
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      ctx.fillStyle = '#0a0512';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = '#00fff0';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00fff0';
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+
+      invaders.forEach(function(inv){
+        if (!inv.alive) return;
+        ctx.fillStyle = '#ff0040';
+        ctx.shadowColor = '#ff0040';
+        ctx.fillRect(inv.x, inv.y, inv.w, inv.h);
+      });
+
+      ctx.fillStyle = '#fff';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#fff';
+      bullets.forEach(function(b){ ctx.fillRect(b.x, b.y, 3, 8); });
+
+      ctx.fillStyle = '#ff00aa';
+      ctx.shadowColor = '#ff00aa';
+      invBullets.forEach(function(b){ ctx.fillRect(b.x, b.y, 3, 8); });
+      ctx.shadowBlur = 0;
+
+      document.getElementById('invScore').textContent = 'SCORE: ' + score;
+
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + score, W/2, H/2 + 40);
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 70);
+      }
+    }
+
+    function fire(){
+      if (gameOver) return;
+      bullets.push({ x: player.x + player.w/2, y: player.y });
+      if (window.AudioEngine) AudioEngine.click();
+    }
+
+    function onKey(e){
+      if (e.key === 'ArrowLeft') { moveLeft = true; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = true; e.preventDefault(); }
+      else if (e.key === ' ') { fire(); e.preventDefault(); }
+    }
+    function onKeyUp(e){
+      if (e.key === 'ArrowLeft') { moveLeft = false; e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { moveRight = false; e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('keyup', onKeyUp);
+
+    document.getElementById('invLeft').addEventListener('pointerdown', function(){ moveLeft = true; });
+    document.getElementById('invLeft').addEventListener('pointerup', function(){ moveLeft = false; });
+    document.getElementById('invRight').addEventListener('pointerdown', function(){ moveRight = true; });
+    document.getElementById('invRight').addEventListener('pointerup', function(){ moveRight = false; });
+    document.getElementById('invFire').addEventListener('click', fire);
+    document.getElementById('invRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    initGame();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){
+      cancelAnimationFrame(gameLoop);
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('keyup', onKeyUp);
+    });
+  }
+
+  function openSudoku(){
+    registerCleanup(function(){});
+    open('SUDOKU DIMENSIONALE', '<div id="sudokuGrid" style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;max-width:400px;margin:16px auto;background:#000;padding:4px;border-radius:8px"></div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="sudokuCheck">VERIFICA</button><button class="btn-big btn-lime" id="sudokuRestart">NUOVO</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="sudokuStatus">Clicca una cella e digita 1-9</p>');
+    var puzzle = [
+      [5,3,0,0,7,0,0,0,0],
+      [6,0,0,1,9,5,0,0,0],
+      [0,9,8,0,0,0,0,6,0],
+      [8,0,0,0,6,0,0,0,3],
+      [4,0,0,8,0,3,0,0,1],
+      [7,0,0,0,2,0,0,0,6],
+      [0,6,0,0,0,0,2,8,0],
+      [0,0,0,4,1,9,0,0,5],
+      [0,0,0,0,8,0,0,7,9]
+    ];
+    var solution = [
+      [5,3,4,6,7,8,9,1,2],
+      [6,7,2,1,9,5,3,4,8],
+      [1,9,8,3,4,2,5,6,7],
+      [8,5,9,7,6,1,4,2,3],
+      [4,2,6,8,5,3,7,9,1],
+      [7,1,3,9,2,4,8,5,6],
+      [9,6,1,5,3,7,2,8,4],
+      [2,8,7,4,1,9,6,3,5],
+      [3,4,5,2,8,6,1,7,9]
+    ];
+    var grid = puzzle.map(function(row){ return row.slice(); });
+    var selected = null;
+    var gridEl = document.getElementById('sudokuGrid');
+    var status = document.getElementById('sudokuStatus');
+
+    function render(){
+      gridEl.innerHTML = '';
+      for (var y = 0; y < 9; y++) {
+        for (var x = 0; x < 9; x++) {
+          var cell = document.createElement('div');
+          cell.style.cssText = 'aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;border:1px solid rgba(0,255,240,0.2);color:#00fff0;font-family:monospace';
+          if (puzzle[y][x] !== 0) {
+            cell.style.background = 'rgba(0,255,240,0.05)';
+            cell.style.color = '#94a3b8';
+          }
+          if (selected && selected.x === x && selected.y === y) {
+            cell.style.background = 'rgba(0,255,240,0.3)';
+          }
+          if ((Math.floor(x/3) + Math.floor(y/3)) % 2 === 0) {
+            cell.style.background = cell.style.background || 'rgba(255,255,255,0.02)';
+          }
+          cell.textContent = grid[y][x] === 0 ? '' : grid[y][x];
+          cell.addEventListener('click', (function(xx, yy){
+            return function(){
+              selected = { x: xx, y: yy };
+              render();
+            };
+          })(x, y));
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+
+    function sudokuKeyHandler(e){
+      if (!selected) return;
+      if (puzzle[selected.y][selected.x] !== 0) return;
+      var n = parseInt(e.key);
+      if (n >= 1 && n <= 9) {
+        grid[selected.y][selected.x] = n;
+        if (window.AudioEngine) AudioEngine.tick();
+        render();
+      }
+      if (e.key === 'Backspace' || e.key === 'Delete') {
+        grid[selected.y][selected.x] = 0;
+        render();
+      }
+    }
+    document.addEventListener('keydown', sudokuKeyHandler);
+    registerCleanup(function(){ document.removeEventListener('keydown', sudokuKeyHandler); });
+
+    document.getElementById('sudokuCheck').addEventListener('click', function(){
+      var ok = true;
+      for (var y = 0; y < 9; y++) for (var x = 0; x < 9; x++) {
+        if (grid[y][x] !== solution[y][x]) { ok = false; break; }
+      }
+      if (ok) {
+        status.textContent = 'RISOLTO!';
+        status.style.color = '#00ff88';
+        if (window.AudioEngine) AudioEngine.win();
+      } else {
+        status.textContent = 'Ci sono errori';
+        status.style.color = '#ff0040';
+        if (window.AudioEngine) AudioEngine.error();
+      }
+    });
+
+    document.getElementById('sudokuRestart').addEventListener('click', function(){
+      grid = puzzle.map(function(row){ return row.slice(); });
+      selected = null;
+      status.textContent = 'Clicca una cella e digita 1-9';
+      status.style.color = '#00fff0';
+      render();
+    });
+
+    render();
+  }
+
+  function openClassifica(){
+    registerCleanup(function(){});
+    var html = '<div id="classificaList" style="font-size:14px;line-height:1.8;color:#00fff0;font-family:monospace;text-align:center;padding:20px 0"></div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-lime" id="classificaClear">CANCELLA TUTTI I RECORD</button></div>';
+    open('CLASSIFICA', html);
+    renderClassifica();
+    document.getElementById('classificaClear').addEventListener('click', function(){
+      localStorage.removeItem('nullSectorScores');
+      renderClassifica();
+      if (window.AudioEngine) AudioEngine.correct();
+    });
+    function renderClassifica(){
+      var list = document.getElementById('classificaList');
+      var scores = JSON.parse(localStorage.getItem('nullSectorScores') || '{}');
+      var games = ['memory', 'quiz', 'anagram', 'enigma', 'dice', 'draw', 'tetris', 'breakout', 'train', 'snake', 'pong', 'invaders', 'jipong', 'tris', 'pacman'];
+      var names = { memory: 'MEMORY', quiz: 'TEMPO', anagram: 'NUVOLE', enigma: 'ENIGMA', dice: 'DADO', draw: 'SOGNI', tetris: 'TETRIS', breakout: 'BREAKOUT', train: 'TRENO', snake: 'SNAKE', pong: 'PONG', invaders: 'INVADERS', jipong: 'JIPONG', tris: 'TRIS', pacman: 'PAC-MAN' };
+      var html = '<h3 style="color:#fff;margin-bottom:16px">RECORD MASSIMI</h3>';
+      games.forEach(function(g){
+        html += '<div style="margin:8px 0">' + names[g] + ': <strong style="color:#fff">' + (scores[g] || 0) + '</strong></div>';
+      });
+      list.innerHTML = html;
+    }
+  }
+
+  function openTris(){
+    registerCleanup(function(){});
+    open('TRIS DIMENSIONALE', '<div id="trisGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:300px;margin:20px auto"></div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-lime" id="trisRestart">RIGIOCA</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900;font-size:18px" id="trisStatus">Il tuo turno (X)</p>');
+    var grid = ['','','','','','','','',''];
+    var gameOver = false;
+    var gridEl = document.getElementById('trisGrid');
+    var status = document.getElementById('trisStatus');
+
+    function render(){
+      gridEl.innerHTML = '';
+      grid.forEach(function(cell, i){
+        var b = document.createElement('button');
+        b.style.cssText = 'aspect-ratio:1;font-size:40px;font-weight:900;background:rgba(0,255,240,0.05);border:1px solid rgba(0,255,240,0.4);border-radius:8px;color:' + (cell === 'X' ? '#00fff0' : '#ff0040') + ';cursor:pointer;font-family:monospace;box-shadow:' + (cell ? '0 0 15px ' + (cell === 'X' ? '#00fff0' : '#ff0040') : 'none');
+        b.textContent = cell;
+        b.addEventListener('click', (function(idx){
+          return function(){ playerMove(idx); };
+        })(i));
+        gridEl.appendChild(b);
+      });
+    }
+
+    function playerMove(i){
+      if (gameOver || grid[i] !== '') return;
+      grid[i] = 'X';
+      if (window.AudioEngine) AudioEngine.tick();
+      render();
+      if (checkWin('X')) { status.textContent = 'HAI VINTO!'; status.style.color = '#00ff88'; gameOver = true; saveScore('tris', 1); if (window.AudioEngine) AudioEngine.win(); return; }
+      if (grid.every(function(c){ return c !== ''; })) { status.textContent = 'PAREGGIO'; gameOver = true; return; }
+      status.textContent = 'Turno AI...';
+      setTimeout(aiMove, 400);
+    }
+
+    function aiMove(){
+      if (gameOver) return;
+      var move = findWinningMove('O');
+      if (move === -1) move = findWinningMove('X');
+      if (move === -1) {
+        var free = [];
+        grid.forEach(function(c, i){ if (c === '') free.push(i); });
+        if (free.length === 0) return;
+        move = free[Math.floor(Math.random() * free.length)];
+      }
+      grid[move] = 'O';
+      if (window.AudioEngine) AudioEngine.flip();
+      render();
+      if (checkWin('O')) { status.textContent = 'HAI PERSO'; status.style.color = '#ff0040'; gameOver = true; saveScore('tris', 0); if (window.AudioEngine) AudioEngine.error(); return; }
+      if (grid.every(function(c){ return c !== ''; })) { status.textContent = 'PAREGGIO'; gameOver = true; return; }
+      status.textContent = 'Il tuo turno (X)';
+    }
+
+    function findWinningMove(player){
+      var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      for (var i = 0; i < lines.length; i++) {
+        var l = lines[i];
+        var vals = l.map(function(idx){ return grid[idx]; });
+        var count = vals.filter(function(v){ return v === player; }).length;
+        var empty = l.filter(function(idx){ return grid[idx] === ''; });
+        if (count === 2 && empty.length === 1) return empty[0];
+      }
+      return -1;
+    }
+
+    function checkWin(player){
+      var lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return lines.some(function(l){ return l.every(function(idx){ return grid[idx] === player; }); });
+    }
+
+    document.getElementById('trisRestart').addEventListener('click', function(){
+      grid = ['','','','','','','','',''];
+      gameOver = false;
+      status.textContent = 'Il tuo turno (X)';
+      status.style.color = '#00fff0';
+      render();
+    });
+
+    render();
+  }
+
+  function openJiPong(){
+    registerCleanup(function(){});
+    open('JIPONG DIMENSIONALE', '<canvas id="jipongCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="jpUp">&#8593;</button><button class="btn-big btn-cyan" id="jpDown">&#8595;</button><button class="btn-big btn-lime" id="jpRestart">RIGIOCA</button></div><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="jipongScore">TU: 0 - AI: 0</p><p style="text-align:center;color:#94a3b8;font-size:0.8rem">2 palline - ostacoli centrali</p>');
+    var canvas = document.getElementById('jipongCanvas');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var paddle, aiPaddle, balls, obstacles, playerScore, aiScore, gameOver, win;
+    var gameLoop = null;
+    var moveUp = false, moveDown = false;
+
+    function initGame(){
+      paddle = { x: 10, y: H/2 - 40, w: 10, h: 80, speed: 6 };
+      aiPaddle = { x: W - 20, y: H/2 - 40, w: 10, h: 80, speed: 5 };
+      balls = [
+        { x: W/2, y: H/2 - 50, dx: 4, dy: 3, r: 6, color: '#00fff0' },
+        { x: W/2, y: H/2 + 50, dx: -4, dy: -3, r: 6, color: '#ff00aa' }
+      ];
+      obstacles = [
+        { x: W/2 - 10, y: H/2 - 60, w: 20, h: 30 },
+        { x: W/2 - 10, y: H/2 + 30, w: 20, h: 30 }
+      ];
+      playerScore = 0;
+      aiScore = 0;
+      gameOver = false;
+      win = false;
+    }
+
+    function update(){
+      if (!gameOver) {
+        if (moveUp) paddle.y -= paddle.speed;
+        if (moveDown) paddle.y += paddle.speed;
+        paddle.y = Math.max(0, Math.min(H - paddle.h, paddle.y));
+
+        var closest = balls.reduce(function(a, b){
+          return (a.x > b.x) ? a : b;
+        });
+        var targetY = closest.y - aiPaddle.h/2;
+        if (aiPaddle.y < targetY) aiPaddle.y += aiPaddle.speed;
+        else if (aiPaddle.y > targetY) aiPaddle.y -= aiPaddle.speed;
+        aiPaddle.y = Math.max(0, Math.min(H - aiPaddle.h, aiPaddle.y));
+
+        balls.forEach(function(ball){
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+          if (ball.y - ball.r < 0 || ball.y + ball.r > H) ball.dy *= -1;
+
+          obstacles.forEach(function(o){
+            if (ball.x + ball.r > o.x && ball.x - ball.r < o.x + o.w && ball.y + ball.r > o.y && ball.y - ball.r < o.y + o.h) {
+              if (ball.x < o.x) ball.dx = -Math.abs(ball.dx);
+              else ball.dx = Math.abs(ball.dx);
+              if (window.AudioEngine) AudioEngine.tick();
+            }
+          });
+
+          if (ball.x - ball.r < paddle.x + paddle.w && ball.y > paddle.y && ball.y < paddle.y + paddle.h && ball.dx < 0) {
+            ball.dx = Math.abs(ball.dx);
+            var rel = (ball.y - (paddle.y + paddle.h/2)) / (paddle.h/2);
+            ball.dy = rel * 5;
+            if (window.AudioEngine) AudioEngine.tick();
+          }
+          if (ball.x + ball.r > aiPaddle.x && ball.y > aiPaddle.y && ball.y < aiPaddle.y + aiPaddle.h && ball.dx > 0) {
+            ball.dx = -Math.abs(ball.dx);
+            var rel2 = (ball.y - (aiPaddle.y + aiPaddle.h/2)) / (aiPaddle.h/2);
+            ball.dy = rel2 * 5;
+            if (window.AudioEngine) AudioEngine.tick();
+          }
+
+          if (ball.x < 0) {
+            aiScore++;
+            ball.x = W/2;
+            ball.y = H/2;
+            ball.dx = 4;
+            ball.dy = (Math.random() - 0.5) * 6;
+            if (window.AudioEngine) AudioEngine.wrong();
+          }
+          if (ball.x > W) {
+            playerScore++;
+            ball.x = W/2;
+            ball.y = H/2;
+            ball.dx = -4;
+            ball.dy = (Math.random() - 0.5) * 6;
+            if (window.AudioEngine) AudioEngine.correct();
+          }
+        });
+
+        if (playerScore >= 5 || aiScore >= 5) {
+          gameOver = true;
+          win = playerScore >= 5;
+          saveScore('jipong', playerScore);
+          if (win) { if (window.AudioEngine) AudioEngine.win(); }
+          else { if (window.AudioEngine) AudioEngine.error(); }
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function draw(){
+      ctx.fillStyle = '#0a0512';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = 'rgba(168,85,247,0.6)';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#a855f7';
+      obstacles.forEach(function(o){ ctx.fillRect(o.x, o.y, o.w, o.h); });
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      ctx.moveTo(W/2, 0);
+      ctx.lineTo(W/2, H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#00fff0';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#00fff0';
+      ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+
+      ctx.fillStyle = '#ff0040';
+      ctx.shadowColor = '#ff0040';
+      ctx.fillRect(aiPaddle.x, aiPaddle.y, aiPaddle.w, aiPaddle.h);
+
+      balls.forEach(function(ball){
+        ctx.fillStyle = ball.color;
+        ctx.shadowColor = ball.color;
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+      ctx.shadowBlur = 0;
+
+      document.getElementById('jipongScore').textContent = 'TU: ' + playerScore + ' - AI: ' + aiScore;
+
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = win ? '#00ff88' : '#ff0040';
+        ctx.font = 'bold 30px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(win ? 'HAI VINTO!' : 'HAI PERSO', W/2, H/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = '16px monospace';
+        ctx.fillText('Premi RIGIOCA', W/2, H/2 + 40);
+      }
+    }
+
+    function onKeyDown(e){
+      if (e.key === 'ArrowUp') { moveUp = true; e.preventDefault(); }
+      else if (e.key === 'ArrowDown') { moveDown = true; e.preventDefault(); }
+    }
+    function onKeyUp(e){
+      if (e.key === 'ArrowUp') { moveUp = false; e.preventDefault(); }
+      else if (e.key === 'ArrowDown') { moveDown = false; e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+
+    document.getElementById('jpUp').addEventListener('pointerdown', function(){ moveUp = true; });
+    document.getElementById('jpUp').addEventListener('pointerup', function(){ moveUp = false; });
+    document.getElementById('jpDown').addEventListener('pointerdown', function(){ moveDown = true; });
+    document.getElementById('jpDown').addEventListener('pointerup', function(){ moveDown = false; });
+    document.getElementById('jpRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      initGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    initGame();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){
+      cancelAnimationFrame(gameLoop);
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keyup', onKeyUp);
+    });
+  }
+
+  function openPacman(){
+    registerCleanup(function(){});
+    open('NULL PAC-MAN', '<canvas id="pacCanvas" width="448" height="496" class="game-canvas" style="max-width:448px;aspect-ratio:448/496"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="pacUp">&#8593;</button><button class="btn-big btn-cyan" id="pacLeft">&#8592;</button><button class="btn-big btn-cyan" id="pacDown">&#8595;</button><button class="btn-big btn-cyan" id="pacRight">&#8594;</button><button class="btn-big btn-magenta" id="pacLaser">LASER</button><button class="btn-big btn-lime" id="pacRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Frecce o bottoni - Spazio: laser</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="pacScore">SCORE: 0</p>');
+    var canvas = document.getElementById('pacCanvas');
+    var ctx = canvas.getContext('2d');
+    var TILE = 16;
+    var map = [
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,3,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,3,1],
+      [1,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,2,1,1,1,1,1,1],
+      [0,0,0,0,0,1,2,1,1,1,1,2,2,2,2,2,2,1,1,1,1,2,1,0,0,0,0,0],
+      [1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1],
+      [0,0,0,0,0,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,0,0,0,0,0],
+      [1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1],
+      [1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1],
+      [0,0,0,0,0,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,0,0,0,0,0],
+      [1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1],
+      [1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,1],
+      [1,2,1,1,1,1,2,1,1,1,1,1,2,1,1,2,1,1,1,1,1,2,1,1,1,1,2,1],
+      [1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+    var originalMap = JSON.parse(JSON.stringify(map));
+    var player = { x: 14, y: 23, dx: 0, dy: 0, nextDx: 0, nextDy: 0, mouth: 0 };
+    var ghosts = [
+      { x: 13, y: 11, dx: 1, dy: 0, color: '#ff0040', homeX: 13, homeY: 11 },
+      { x: 14, y: 11, dx: -1, dy: 0, color: '#ff00aa', homeX: 14, homeY: 11 },
+      { x: 13, y: 14, dx: 0, dy: 1, color: '#00fff0', homeX: 13, homeY: 14 },
+      { x: 14, y: 14, dx: 0, dy: -1, color: '#ffd166', homeX: 14, homeY: 14 }
+    ];
+    var score = 0, gameOver = false, frightenedTimer = 0, gameLoop = null;
+    var laserCooldown = 0, laserActive = 0, combo = 1, lastGhostEatenTime = 0;
+
+    function resetPositions() {
+      player.x = 14; player.y = 23; player.dx = 0; player.dy = 0; player.nextDx = 0; player.nextDy = 0;
+      ghosts.forEach(function(g) { g.x = g.homeX; g.y = g.homeY; });
+      frightenedTimer = 0;
+      combo = 1;
+    }
+
+    function resetGame() {
+      map = JSON.parse(JSON.stringify(originalMap));
+      score = 0; gameOver = false;
+      resetPositions();
+      document.getElementById('pacScore').textContent = 'SCORE: 0';
+    }
+
+    function isWall(x, y) {
+      if (y < 0 || y >= map.length) return true;
+      if (x < 0 || x >= map[y].length) return true;
+      return map[y][x] === 1;
+    }
+
+    function canMove(x, y, dx, dy) {
+      var nx = x + dx, ny = y + dy;
+      if (nx < 0) nx = map[0].length - 1;
+      if (nx >= map[0].length) nx = 0;
+      if (ny < 0 || ny >= map.length) return false;
+      return !isWall(nx, ny);
+    }
+
+    function movePlayer() {
+      if (gameOver) return;
+      if (player.nextDx !== 0 || player.nextDy !== 0) {
+        if (canMove(player.x, player.y, player.nextDx, player.nextDy)) {
+          player.dx = player.nextDx; player.dy = player.nextDy;
+          player.nextDx = 0; player.nextDy = 0;
+        }
+      }
+      if (!canMove(player.x, player.y, player.dx, player.dy)) { player.dx = 0; player.dy = 0; return; }
+      player.x += player.dx; player.y += player.dy;
+      if (player.x < 0) player.x = map[0].length - 1;
+      if (player.x >= map[0].length) player.x = 0;
+      if (player.y < 0 || player.y >= map.length) return;
+
+      var cell = map[player.y][player.x];
+      if (cell === 2) {
+        map[player.y][player.x] = 0;
+        score += 10;
+        if (window.AudioEngine) AudioEngine.tick();
+        if (score >= 500 && window.unlockAchievement) unlockAchievement('pacman_500');
+      } else if (cell === 3) {
+        map[player.y][player.x] = 0;
+        score += 50;
+        frightenedTimer = 300;
+        if (window.AudioEngine) AudioEngine.correct();
+        if (score >= 500 && window.unlockAchievement) unlockAchievement('pacman_500');
+      }
+      document.getElementById('pacScore').textContent = 'SCORE: ' + score;
+      checkWin();
+    }
+
+    function moveGhosts() {
+      if (gameOver) return;
+      ghosts.forEach(function(g) {
+        var possible = [];
+        if (canMove(g.x, g.y, 1, 0)) possible.push({dx:1,dy:0});
+        if (canMove(g.x, g.y, -1, 0)) possible.push({dx:-1,dy:0});
+        if (canMove(g.x, g.y, 0, 1)) possible.push({dx:0,dy:1});
+        if (canMove(g.x, g.y, 0, -1)) possible.push({dx:0,dy:-1});
+        if (possible.length === 0) return;
+
+        var chosen;
+        if (frightenedTimer > 0) {
+          chosen = possible[Math.floor(Math.random() * possible.length)];
+        } else {
+          chosen = possible[0];
+          var bestDist = 9999;
+          possible.forEach(function(p) {
+            var nx = g.x + p.dx, ny = g.y + p.dy;
+            var d = Math.abs(nx - player.x) + Math.abs(ny - player.y);
+            if (d < bestDist) { bestDist = d; chosen = p; }
+          });
+        }
+        g.dx = chosen.dx; g.dy = chosen.dy;
+        g.x += g.dx; g.y += g.dy;
+        if (g.x < 0) g.x = map[0].length - 1;
+        if (g.x >= map[0].length) g.x = 0;
+
+        if (g.x === player.x && g.y === player.y) {
+          if (frightenedTimer > 0) {
+            var now = Date.now();
+            if (now - lastGhostEatenTime < 2000) { combo = Math.min(combo * 2, 8); } else { combo = 1; }
+            lastGhostEatenTime = now;
+            score += 200 * combo;
+            if (window.AudioEngine) AudioEngine.match();
+            g.x = g.homeX; g.y = g.homeY;
+            document.getElementById('pacScore').textContent = 'SCORE: ' + score;
+          } else {
+            gameOver = true;
+            saveScore('pacman', score);
+            if (window.AudioEngine) AudioEngine.error();
+          }
+        }
+      });
+      if (frightenedTimer > 0) frightenedTimer--;
+      if (laserCooldown > 0) laserCooldown--;
+      if (laserActive > 0) laserActive--;
+    }
+
+    function fireLaser() {
+      if (laserCooldown > 0 || gameOver) return;
+      laserActive = 10;
+      laserCooldown = 300;
+      if (window.AudioEngine) AudioEngine.click();
+      ghosts.forEach(function(g) {
+        if ((player.dx !== 0 && g.y === player.y) || (player.dy !== 0 && g.x === player.x)) {
+          var inPath = false;
+          if (player.dx === 1 && g.x > player.x) inPath = true;
+          if (player.dx === -1 && g.x < player.x) inPath = true;
+          if (player.dy === 1 && g.y > player.y) inPath = true;
+          if (player.dy === -1 && g.y < player.y) inPath = true;
+          if (inPath) {
+            score += 100;
+            g.x = g.homeX; g.y = g.homeY;
+            if (window.AudioEngine) AudioEngine.match();
+          }
+        }
+      });
+      document.getElementById('pacScore').textContent = 'SCORE: ' + score;
+    }
+
+    function checkWin() {
+      var remaining = 0;
+      for (var r = 0; r < map.length; r++) for (var c = 0; c < map[r].length; c++) if (map[r][c] === 2 || map[r][c] === 3) remaining++;
+      if (remaining === 0) {
+        gameOver = true;
+        saveScore('pacman', score);
+        if (window.AudioEngine) AudioEngine.win();
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (var r = 0; r < map.length; r++) {
+        for (var c = 0; c < map[r].length; c++) {
+          var v = map[r][c];
+          if (v === 1) { ctx.fillStyle = '#1a1a4a'; ctx.fillRect(c*TILE, r*TILE, TILE, TILE); }
+          else if (v === 2) { ctx.fillStyle = '#ffd166'; ctx.beginPath(); ctx.arc(c*TILE+TILE/2, r*TILE+TILE/2, 2, 0, Math.PI*2); ctx.fill(); }
+          else if (v === 3) { ctx.fillStyle = '#ffd166'; ctx.beginPath(); ctx.arc(c*TILE+TILE/2, r*TILE+TILE/2, 5, 0, Math.PI*2); ctx.fill(); }
+        }
+      }
+
+      ctx.fillStyle = frightenedTimer > 0 ? '#fff' : '#00fff0';
+      ctx.shadowBlur = 15; ctx.shadowColor = '#00fff0';
+      var px = player.x*TILE+TILE/2, py = player.y*TILE+TILE/2;
+      player.mouth = (player.mouth + 0.2) % (Math.PI*2);
+      var mouthOpen = Math.abs(Math.sin(player.mouth)) * 0.5;
+      ctx.beginPath();
+      if (player.dx === 1) ctx.arc(px, py, TILE/2, mouthOpen, Math.PI*2 - mouthOpen);
+      else if (player.dx === -1) ctx.arc(px, py, TILE/2, Math.PI + mouthOpen, Math.PI - mouthOpen);
+      else if (player.dy === 1) ctx.arc(px, py, TILE/2, Math.PI/2 + mouthOpen, Math.PI*1.5 - mouthOpen);
+      else if (player.dy === -1) ctx.arc(px, py, TILE/2, -Math.PI/2 + mouthOpen, Math.PI/2 - mouthOpen);
+      else ctx.arc(px, py, TILE/2, 0, Math.PI*2);
+      ctx.lineTo(px, py); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (laserActive > 0) {
+        ctx.strokeStyle = '#ff00aa'; ctx.lineWidth = 4; ctx.shadowBlur = 20; ctx.shadowColor = '#ff00aa';
+        ctx.beginPath();
+        var cx = player.x*TILE+TILE/2, cy = player.y*TILE+TILE/2;
+        if (player.dx === 1) { ctx.moveTo(cx, cy); ctx.lineTo(canvas.width, cy); }
+        if (player.dx === -1) { ctx.moveTo(cx, cy); ctx.lineTo(0, cy); }
+        if (player.dy === 1) { ctx.moveTo(cx, cy); ctx.lineTo(cx, canvas.height); }
+        if (player.dy === -1) { ctx.moveTo(cx, cy); ctx.lineTo(cx, 0); }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      ghosts.forEach(function(g) {
+        ctx.fillStyle = frightenedTimer > 0 ? '#666' : g.color;
+        ctx.shadowBlur = 10; ctx.shadowColor = g.color;
+        ctx.beginPath();
+        ctx.arc(g.x*TILE+TILE/2, g.y*TILE+TILE/2 - 2, TILE/2 - 1, Math.PI, 0);
+        ctx.lineTo(g.x*TILE+TILE-1, g.y*TILE+TILE-1);
+        ctx.lineTo(g.x*TILE+1, g.y*TILE+TILE-1);
+        ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(g.x*TILE+5, g.y*TILE+5, 2, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(g.x*TILE+11, g.y*TILE+5, 2, 0, Math.PI*2); ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ff0040'; ctx.font = 'bold 30px monospace'; ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2);
+        ctx.fillStyle = '#fff'; ctx.font = '16px monospace';
+        ctx.fillText('Score: ' + score, canvas.width/2, canvas.height/2 + 40);
+        ctx.fillText('Premi RIGIOCA', canvas.width/2, canvas.height/2 + 70);
+      }
+    }
+
+    function update(time) {
+      if (!gameOver) {
+        movePlayer();
+        moveGhosts();
+        if (Math.random() < 0.002) {
+          var rx = Math.floor(Math.random() * map[0].length);
+          var ry = Math.floor(Math.random() * map.length);
+          if (map[ry][rx] === 1 && (rx > 1 && rx < map[0].length-2) && (ry > 1 && ry < map.length-2)) {
+            map[ry][rx] = 0;
+          }
+        }
+      }
+      draw();
+      gameLoop = requestAnimationFrame(update);
+    }
+
+    function onKey(e) {
+      if (e.key === 'ArrowUp' || e.key === 'w') { player.nextDx = 0; player.nextDy = -1; e.preventDefault(); }
+      else if (e.key === 'ArrowDown' || e.key === 's') { player.nextDx = 0; player.nextDy = 1; e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'a') { player.nextDx = -1; player.nextDy = 0; e.preventDefault(); }
+      else if (e.key === 'ArrowRight' || e.key === 'd') { player.nextDx = 1; player.nextDy = 0; e.preventDefault(); }
+      else if (e.key === ' ') { fireLaser(); e.preventDefault(); }
+    }
+    document.addEventListener('keydown', onKey);
+
+    document.getElementById('pacUp').addEventListener('click', function(){ player.nextDx = 0; player.nextDy = -1; });
+    document.getElementById('pacDown').addEventListener('click', function(){ player.nextDx = 0; player.nextDy = 1; });
+    document.getElementById('pacLeft').addEventListener('click', function(){ player.nextDx = -1; player.nextDy = 0; });
+    document.getElementById('pacRight').addEventListener('click', function(){ player.nextDx = 1; player.nextDy = 0; });
+    document.getElementById('pacLaser').addEventListener('click', fireLaser);
+    document.getElementById('pacRestart').addEventListener('click', function(){
+      cancelAnimationFrame(gameLoop);
+      resetGame();
+      gameLoop = requestAnimationFrame(update);
+    });
+
+    resetGame();
+    gameLoop = requestAnimationFrame(update);
+    registerCleanup(function(){ cancelAnimationFrame(gameLoop); document.removeEventListener('keydown', onKey); });
+  }
+
+  })();   // chiude IIFE "GIOCHI"
+
+  // ============================================
+  // PAUSA MENTALE - Mandala Infinito
+  // ============================================
+  (function(){
+    var canvas = document.getElementById('mandalaCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var cx = W / 2, cy = H / 2;
+    var drawing = false;
+    var lastAngle = null, lastRadius = null;
+    var SYMMETRY = 6;
+    var hue = 0;
+
+    function clear(){
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+    }
+    clear();
+
+    function getPos(e){
+      var r = canvas.getBoundingClientRect();
+      var x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+      var y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+      return { x: x * (W / r.width), y: y * (H / r.height) };
+    }
+
+    function drawPoint(x, y){
+      var dx = x - cx, dy = y - cy;
+      var radius = Math.sqrt(dx*dx + dy*dy);
+      var angle = Math.atan2(dy, dx);
+      hue = (hue + 0.5) % 360;
+      for (var i = 0; i < SYMMETRY; i++) {
+        var a = angle + (i * Math.PI * 2 / SYMMETRY);
+        var px = cx + Math.cos(a) * radius;
+        var py = cy + Math.sin(a) * radius;
+        ctx.fillStyle = 'hsl(' + hue + ', 90%, 60%)';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'hsl(' + hue + ', 90%, 60%)';
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    function drawLine(x, y){
+      var dx = x - cx, dy = y - cy;
+      var radius = Math.sqrt(dx*dx + dy*dy);
+      var angle = Math.atan2(dy, dx);
+      if (lastAngle !== null && lastRadius !== null) {
+        hue = (hue + 1) % 360;
+        for (var i = 0; i < SYMMETRY; i++) {
+          var a1 = lastAngle + (i * Math.PI * 2 / SYMMETRY);
+          var a2 = angle + (i * Math.PI * 2 / SYMMETRY);
+          var x1 = cx + Math.cos(a1) * lastRadius;
+          var y1 = cy + Math.sin(a1) * lastRadius;
+          var x2 = cx + Math.cos(a2) * radius;
+          var y2 = cy + Math.sin(a2) * radius;
+          ctx.strokeStyle = 'hsl(' + hue + ', 90%, 60%)';
+          ctx.lineWidth = 2;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = 'hsl(' + hue + ', 90%, 60%)';
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+      }
+      lastAngle = angle;
+      lastRadius = radius;
+    }
+
+    function start(e){
+      e.preventDefault();
+      drawing = true;
+      lastAngle = null; lastRadius = null;
+      var p = getPos(e);
+      drawPoint(p.x, p.y);
+      if (window.AudioEngine) AudioEngine.paint();
+    }
+    function move(e){
+      if (!drawing) return;
+      e.preventDefault();
+      var p = getPos(e);
+      drawLine(p.x, p.y);
+    }
+    function end(){
+      drawing = false;
+      lastAngle = null;
+      lastRadius = null;
+    }
+
+    canvas.addEventListener('pointerdown', start);
+    canvas.addEventListener('pointermove', move);
+    canvas.addEventListener('pointerup', end);
+    canvas.addEventListener('pointerleave', end);
+    canvas.addEventListener('touchstart', start, {passive: false});
+    canvas.addEventListener('touchmove', move, {passive: false});
+    canvas.addEventListener('touchend', end);
+
+    document.getElementById('mandalaClear').addEventListener('click', function(){
+      clear();
+      if (window.AudioEngine) AudioEngine.click();
+    });
+
+    document.getElementById('mandalaSave').addEventListener('click', function(){
+      var a = document.createElement('a');
+      a.download = 'mandala-' + Date.now() + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      if (window.AudioEngine) AudioEngine.correct();
+    });
+  })();
+
+  // ============================================
+  // SISTEMA ACHIEVEMENT (TROFEI)
+  // ============================================
+  (function(){
+    var ACHIEVEMENTS = [
+      { id: 'first_game', icon: '🥇', name: 'Primo Passo', desc: 'Gioca almeno una partita' },
+      { id: 'memory_win', icon: '🎯', name: 'Memoria di Ferro', desc: 'Vinci a Memory' },
+      { id: 'quiz_master', icon: '⚡', name: 'Velocista', desc: '5 risposte corrette a Tempo' },
+      { id: 'anagram_master', icon: '🧩', name: 'Paroliere', desc: 'Risolvi 3 anagrammi' },
+      { id: 'snake_50', icon: '🐍', name: 'Serpente', desc: '50 punti a Snake' },
+      { id: 'breakout_win', icon: '🧱', name: 'Demolitore', desc: 'Completa un livello di Breakout' },
+      { id: 'pacman_500', icon: '👻', name: 'Cacciatore', desc: '500 punti a Pac-Man' },
+      { id: 'dice_10', icon: '🎲', name: 'Fortunello', desc: 'Lancia il dado 10 volte' }
+    ];
+
+    function getUnlocked(){
+      try {
+        return JSON.parse(localStorage.getItem('nullSectorAchievements') || '[]');
+      } catch(e) { return []; }
+    }
+
+    function saveUnlocked(arr){
+      try {
+        localStorage.setItem('nullSectorAchievements', JSON.stringify(arr));
+      } catch(e) {}
+    }
+
+    window.unlockAchievement = function(id){
+      var unlocked = getUnlocked();
+      if (unlocked.indexOf(id) !== -1) return;
+      unlocked.push(id);
+      saveUnlocked(unlocked);
+      renderTrophies();
+      if (window.AudioEngine) AudioEngine.win();
+    };
+
+    function renderTrophies(){
+      var grid = document.getElementById('trophyGrid');
+      var count = document.getElementById('trophyCount');
+      if (!grid) return;
+      var unlocked = getUnlocked();
+      grid.innerHTML = '';
+      ACHIEVEMENTS.forEach(function(a){
+        var isUnlocked = unlocked.indexOf(a.id) !== -1;
+        var card = document.createElement('div');
+        card.className = 'trophy-card' + (isUnlocked ? ' unlocked' : '');
+        card.innerHTML = '<span class="trophy-icon">' + a.icon + '</span>' +
+                        '<div class="trophy-name">' + a.name + '</div>' +
+                        '<div class="trophy-desc">' + a.desc + '</div>';
+        grid.appendChild(card);
+      });
+      if (count) count.textContent = unlocked.length + ' / ' + ACHIEVEMENTS.length + ' sbloccati';
+    }
+
+    renderTrophies();
+  })();   // chiude IIFE "SISTEMA ACHIEVEMENT"
+
+})();     // chiude IIFE principale
