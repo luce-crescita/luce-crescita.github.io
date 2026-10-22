@@ -1054,7 +1054,7 @@ document.getElementById('recBtn').addEventListener('click', function(){
           });
         }
       }
-        }
+    }
     initGame();
 
     function onKeyDown(e){
