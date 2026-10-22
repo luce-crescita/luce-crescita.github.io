@@ -1,1 +1,1014 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<title>Simulatore di Volo Cessna - Luce e Crescita X-Infinito</title>
+<meta name="description" content="Simulatore di volo 3D con Cessna procedurale, fisica di volo realistica, HUD professionale e missioni.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta name="robots" content="noai, noimageai">
+<link rel="canonical" href="https://luce-crescita.github.io/volo.html">
+<link rel="stylesheet" href="style.css">
+<style>
+* { -webkit-tap-highlight-color: transparent; }
+body { margin: 0; overflow: hidden; background: #000; font-family: 'Space Mono', monospace; user-select: none; -webkit-user-select: none; touch-action: none; }
+#voloCanvas { display: block; width: 100vw; height: 100vh; background: #87ceeb; touch-action: none; }
+
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; color: #00fff0; text-shadow: 0 0 6px #00fff0; font-size: clamp(9px, 2.2vw, 12px); letter-spacing: 0.5px; }
+.hud-panel { position: absolute; background: rgba(0, 0, 0, 0.72); border: 1px solid rgba(0, 255, 240, 0.4); border-radius: clamp(4px, 1.5vw, 8px); padding: clamp(4px, 1.5vw, 8px) clamp(6px, 2vw, 12px); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+/* Pannelli HUD: pulsanti centrati, dati centrati */
+#hud-top-left {
+  top: clamp(6px, 1.5vw, 12px);
+  left: clamp(6px, 1.5vw, 12px);
+  min-width: clamp(90px, 22vw, 140px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+#hud-top-right {
+  top: clamp(6px, 1.5vw, 12px);
+  right: clamp(6px, 1.5vw, 12px);
+  min-width: clamp(90px, 22vw, 140px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Pulsanti dentro i pannelli (centrati) */
+#exit-btn, #globalOffrimi {
+  display: block;
+  width: 100%;
+  padding: clamp(4px, 1.2vw, 7px) clamp(6px, 2vw, 10px);
+  margin-bottom: clamp(4px, 1.2vw, 8px);
+  border-radius: clamp(3px, 1vw, 6px);
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 2vw, 11px);
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+#exit-btn { background: rgba(255, 0, 64, 0.85); color: #fff; border: 1px solid #ff0040; box-shadow: 0 2px 8px rgba(255, 0, 64, 0.4); }
+#exit-btn:hover, #exit-btn:active { background: #ff0040; }
+#globalOffrimi { background: linear-gradient(90deg, #a855f7, #00fff0); color: #000; border: none; box-shadow: 0 2px 8px rgba(168, 85, 247, 0.5); }
+#globalOffrimi:hover, #globalOffrimi:active { transform: scale(1.02); }
+
+.hud-value { font-size: clamp(12px, 3.5vw, 16px); font-weight: 900; color: #fff; }
+.hud-label { font-size: clamp(8px, 1.8vw, 10px); color: #94a3b8; margin-top: clamp(2px, 0.8vw, 4px); }
+.hud-bar { width: 100%; max-width: clamp(70px, 18vw, 110px); height: clamp(4px, 1.2vw, 6px); background: rgba(255, 255, 255, 0.15); border-radius: 3px; margin-top: clamp(2px, 0.8vw, 4px); overflow: hidden; }
+.hud-bar-fill { height: 100%; background: linear-gradient(90deg, #00fff0, #00ff88); width: 0%; transition: width 0.1s; }
+
+#gear-indicator { display: inline-block; padding: 2px clamp(4px, 1.5vw, 8px); border-radius: 4px; font-size: clamp(8px, 1.8vw, 10px); font-weight: 900; margin-top: 2px; }
+#gear-indicator.down { background: rgba(0, 255, 136, 0.3); color: #00ff88; border: 1px solid #00ff88; }
+#gear-indicator.up { background: rgba(255, 0, 64, 0.3); color: #ff0040; border: 1px solid #ff0040; }
+#gear-indicator.transit { background: rgba(255, 170, 0, 0.3); color: #ffaa00; border: 1px solid #ffaa00; }
+
+#mission-panel {
+  position: absolute;
+  top: clamp(6px, 1.5vw, 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.78);
+  border: 1px solid rgba(0, 255, 136, 0.5);
+  border-radius: clamp(4px, 1.5vw, 8px);
+  padding: clamp(4px, 1.2vw, 8px) clamp(8px, 2.5vw, 16px);
+  color: #00ff88;
+  text-align: center;
+  min-width: clamp(140px, 40vw, 240px);
+  max-width: 90vw;
+  font-size: clamp(9px, 2vw, 11px);
+  z-index: 11;
+}
+#mission-title { font-weight: 900; font-size: clamp(10px, 2.3vw, 12px); margin-bottom: 2px; }
+#mission-objective { color: #fff; font-size: clamp(8px, 1.9vw, 10px); }
+#mission-status { color: #ffaa00; font-size: clamp(8px, 1.9vw, 10px); margin-top: 2px; }
+
+#stall-warning { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ff0040; font-size: clamp(16px, 5vw, 24px); font-weight: 900; text-shadow: 0 0 20px #ff0040; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+#stall-warning.active { opacity: 1; }
+
+#crosshair { position: absolute; top: 50%; left: 50%; width: clamp(14px, 4vw, 20px); height: clamp(14px, 4vw, 20px); margin: calc(clamp(14px, 4vw, 20px) / -2) 0 0 calc(clamp(14px, 4vw, 20px) / -2); border: 1px solid rgba(0, 255, 240, 0.6); border-radius: 50%; }
+#crosshair::before, #crosshair::after { content: ''; position: absolute; background: rgba(0, 255, 240, 0.6); }
+#crosshair::before { top: 50%; left: -30%; width: 160%; height: 1px; transform: translateY(-50%); }
+#crosshair::after { left: 50%; top: -30%; width: 1px; height: 160%; transform: translateX(-50%); }
+
+#hud-bottom { bottom: clamp(4px, 1.2vw, 12px); left: 50%; transform: translateX(-50%); text-align: center; font-size: clamp(7px, 1.7vw, 10px); color: #94a3b8; border-color: rgba(255, 255, 255, 0.2); max-width: 95vw; line-height: 1.5; padding: clamp(4px, 1.2vw, 8px) clamp(8px, 2vw, 14px); }
+#hud-bottom strong { color: #00fff0; }
+
+#loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; color: #00fff0; font-family: 'Space Mono', monospace; z-index: 100; font-size: clamp(10px, 2.5vw, 14px); letter-spacing: 3px; text-align: center; padding: 20px; }
+
+#mode-toggle, #physics-toggle {
+  position: fixed;
+  bottom: clamp(50px, 12vw, 70px);
+  z-index: 99999;
+  padding: clamp(4px, 1.2vw, 6px) clamp(8px, 2vw, 12px);
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: clamp(3px, 1vw, 6px);
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(8px, 1.9vw, 10px);
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#mode-toggle { left: 50%; transform: translateX(-110%); color: #00fff0; border: 1px solid #00fff0; }
+#physics-toggle { left: 50%; transform: translateX(10%); color: #ffaa00; border: 1px solid #ffaa00; }
+#mode-toggle:hover, #mode-toggle:active { background: rgba(0, 255, 240, 0.2); }
+#physics-toggle:hover, #physics-toggle:active { background: rgba(255, 170, 0, 0.2); }
+
+#cockpit-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.95) 0%, rgba(5, 5, 8, 0.98) 100%);
+  border-top: 2px solid rgba(0, 255, 240, 0.5);
+  display: none;
+  z-index: 15;
+  pointer-events: none;
+  padding: clamp(6px, 1.5vw, 10px) clamp(8px, 2vw, 20px);
+  font-family: 'Space Mono', monospace;
+  color: #00fff0;
+  justify-content: space-around;
+  align-items: center;
+  gap: clamp(4px, 1.5vw, 10px);
+  flex-wrap: wrap;
+  max-height: 45vh;
+  overflow: hidden;
+}
+#cockpit-overlay.active { display: flex; }
+
+.instrument {
+  position: relative;
+  width: clamp(60px, 18vw, 120px);
+  height: clamp(60px, 18vw, 120px);
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a12 100%);
+  border: 2px solid #333;
+  box-shadow: 0 0 20px rgba(0, 255, 240, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.instrument .needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(2px, 0.6vw, 4px);
+  height: 35%;
+  background: #ff0040;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(0deg);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255, 0, 64, 0.8);
+  transition: transform 0.05s linear;
+}
+.instrument .label { position: absolute; top: 8%; left: 50%; transform: translateX(-50%); font-size: clamp(6px, 1.5vw, 8px); color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.instrument .value { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); font-size: clamp(9px, 2.3vw, 14px); font-weight: 900; color: #fff; }
+
+.tape {
+  width: clamp(50px, 14vw, 80px);
+  height: clamp(70px, 20vw, 120px);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #333;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tape .tape-label { position: absolute; top: 2px; left: 0; right: 0; text-align: center; font-size: clamp(6px, 1.5vw, 8px); color: #94a3b8; z-index: 2; }
+.tape .tape-content { position: absolute; top: 20%; left: 0; right: 0; bottom: 20%; display: flex; align-items: center; justify-content: center; font-size: clamp(12px, 3.5vw, 20px); font-weight: 900; color: #fff; }
+.tape .tape-bar { position: absolute; right: 4px; top: 20%; bottom: 20%; width: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; }
+.tape .tape-fill { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, #00fff0, #00ff88); border-radius: 2px; transition: height 0.1s; }
+
+#attitude {
+  width: clamp(70px, 20vw, 140px);
+  height: clamp(70px, 20vw, 140px);
+  border-radius: 50%;
+  border: 3px solid #333;
+  overflow: hidden;
+  position: relative;
+  background: #1a1a2e;
+  box-shadow: 0 0 20px rgba(0, 255, 240, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.8);
+  flex-shrink: 0;
+  transition: transform 0.05s linear;
+}
+#attitude .sky { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, #1e3a5f, #2d5a8a); transform-origin: center bottom; }
+#attitude .ground { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, #4a2a1a, #2d1a0a); transform-origin: center top; }
+#attitude .horizon-line { position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: #ff0040; box-shadow: 0 0 8px #ff0040; transform: translateY(-50%); transition: transform 0.05s linear; }
+#attitude .aircraft-symbol { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00fff0; font-size: clamp(14px, 4vw, 20px); font-weight: 900; text-shadow: 0 0 8px #00fff0; z-index: 5; }
+
+#touch-controls { position: fixed; inset: 0; pointer-events: none; z-index: 20; display: none; }
+#touch-controls.active { display: block; }
+.tc-joystick { position: absolute; bottom: clamp(60px, 15vw, 200px); left: clamp(10px, 3vw, 24px); width: clamp(80px, 24vw, 120px); height: clamp(80px, 24vw, 120px); border-radius: 50%; background: rgba(0, 255, 240, 0.08); border: 2px solid rgba(0, 255, 240, 0.4); pointer-events: auto; touch-action: none; }
+.tc-knob { position: absolute; top: 50%; left: 50%; width: 40%; height: 40%; margin: -20% 0 0 -20%; border-radius: 50%; background: rgba(0, 255, 240, 0.3); border: 1px solid rgba(0, 255, 240, 0.8); box-shadow: 0 0 12px rgba(0, 255, 240, 0.5); }
+.tc-btn { position: absolute; bottom: clamp(60px, 15vw, 200px); width: clamp(45px, 13vw, 60px); height: clamp(45px, 13vw, 60px); border-radius: 50%; background: rgba(0, 255, 240, 0.1); border: 2px solid rgba(0, 255, 240, 0.5); color: #00fff0; font-family: 'Space Mono', monospace; font-size: clamp(8px, 2vw, 10px); font-weight: 900; pointer-events: auto; touch-action: none; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.tc-btn:active, .tc-btn.pressed { background: rgba(0, 255, 240, 0.35); box-shadow: 0 0 16px rgba(0, 255, 240, 0.7); }
+#tc-throttle-up { right: clamp(10px, 3vw, 90px); bottom: clamp(110px, 28vw, 280px); }
+#tc-throttle-down { right: clamp(10px, 3vw, 90px); bottom: clamp(60px, 15vw, 200px); }
+
+@media (orientation: landscape) and (max-height: 500px) {
+  #cockpit-overlay { max-height: 55vh; }
+  .instrument, #attitude { width: clamp(50px, 10vh, 80px); height: clamp(50px, 10vh, 80px); }
+  .tape { height: clamp(50px, 10vh, 80px); width: clamp(40px, 8vh, 60px); }
+  #hud-bottom { display: none; }
+  #mode-toggle, #physics-toggle { bottom: 4px; }
+  .tc-joystick { bottom: 10px; }
+  .tc-btn { bottom: 10px; }
+  #tc-throttle-up { bottom: 80px; }
+  #tc-throttle-down { bottom: 10px; }
+}
+@media (orientation: portrait) and (max-width: 640px) {
+  #cockpit-overlay { max-height: 35vh; padding: 4px; gap: 4px; }
+  .instrument, #attitude { width: clamp(50px, 14vw, 70px); height: clamp(50px, 14vw, 70px); }
+  .tape { width: clamp(40px, 11vw, 60px); height: clamp(55px, 15vw, 80px); }
+  #hud-bottom { display: none; }
+  #mission-panel { min-width: 130px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loading">INIZIALIZZAZIONE SISTEMI DI VOLO...</div>
+
+<canvas id="voloCanvas"></canvas>
+
+<div id="hud">
+<div id="crosshair"></div>
+<div id="stall-warning">STALLO</div>
+
+<div id="mission-panel">
+  <div id="mission-title">MISSIONE 1</div>
+  <div id="mission-objective">Decolla e raggiungi 500m</div>
+  <div id="mission-status">In corso...</div>
+</div>
+
+<div id="hud-top-left" class="hud-panel">
+  <a id="exit-btn" href="sorprese.html">← ESCI</a>
+  <div class="hud-label">VELOCITA</div>
+  <div class="hud-value" id="hudSpeed">0</div>
+  <div class="hud-label">km/h</div>
+  <div class="hud-label">THROTTLE</div>
+  <div class="hud-bar"><div class="hud-bar-fill" id="hudThrottle"></div></div>
+  <div class="hud-label">CARRELLO</div>
+  <div id="gear-indicator" class="down">GIU</div>
+</div>
+
+<div id="hud-top-right" class="hud-panel">
+  <a id="globalOffrimi" href="https://ko-fi.com/luceecrescita" target="_blank" rel="noopener noreferrer">Offrimi</a>
+  <div class="hud-label">ALTITUDINE</div>
+  <div class="hud-value" id="hudAlt">0</div>
+  <div class="hud-label">metri</div>
+  <div class="hud-label">ROTTA</div>
+  <div class="hud-value" id="hudHeading">0</div>
+  <div class="hud-label">gradi</div>
+  <div class="hud-label">VISTA</div>
+  <div class="hud-value" id="hudCamera" style="font-size: 11px; color: #ff00aa;">CHASE</div>
+  <div class="hud-label">FASE</div>
+  <div class="hud-value" id="hudPhase" style="font-size: 11px; color: #00ff88;">TERRA</div>
+</div>
+
+<div id="hud-bottom" class="hud-panel">
+<strong>DECOLLO:</strong> Shift throttle | W cabra a 100 km/h | G carrello<br>
+<strong>VOLO:</strong> W/S pitch | A/D roll (vira) | Q/E yaw | V vista | C cabina | F fisica
+</div>
+</div>
+
+<button id="mode-toggle">CABINA</button>
+<button id="physics-toggle">FISICA: BASE</button>
+
+<div id="cockpit-overlay">
+  <div class="tape" id="speed-tape">
+    <div class="tape-label">VEL</div>
+    <div class="tape-content" id="speed-tape-value">0</div>
+    <div class="tape-bar"><div class="tape-fill" id="speed-tape-fill" style="height:0%"></div></div>
+  </div>
+  <div id="attitude">
+    <div class="sky" id="att-sky"></div>
+    <div class="ground" id="att-ground"></div>
+    <div class="horizon-line" id="att-horizon"></div>
+    <div class="aircraft-symbol">✈</div>
+  </div>
+  <div class="tape" id="alt-tape">
+    <div class="tape-label">ALT</div>
+    <div class="tape-content" id="alt-tape-value">0</div>
+    <div class="tape-bar"><div class="tape-fill" id="alt-tape-fill" style="height:0%"></div></div>
+  </div>
+  <div class="instrument" id="heading-inst">
+    <div class="label">ROTTA</div>
+    <div class="needle" id="heading-needle"></div>
+    <div class="value" id="heading-value">0</div>
+  </div>
+  <div class="instrument" id="vsi-inst">
+    <div class="label">V/S</div>
+    <div class="needle" id="vsi-needle"></div>
+    <div class="value" id="vsi-value">0</div>
+  </div>
+</div>
+
+<div id="touch-controls">
+  <div class="tc-joystick" id="tc-stick"><div class="tc-knob" id="tc-knob"></div></div>
+  <div class="tc-btn" id="tc-throttle-up">THR+</div>
+  <div class="tc-btn" id="tc-throttle-down">THR-</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const AudioEngine = (() => {
+  let ctx = null, master = null;
+  let engineOsc1 = null, engineOsc2 = null, engineGain = null, engineFilter = null;
+  let windGain = null, windFilter = null;
+  let initialized = false;
+
+  function init() {
+    if (initialized) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = 0.7;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -18;
+    comp.ratio.value = 4;
+    master.connect(comp);
+    comp.connect(ctx.destination);
+
+    engineOsc1 = ctx.createOscillator();
+    engineOsc1.type = 'sawtooth';
+    engineOsc1.frequency.value = 60;
+    engineOsc2 = ctx.createOscillator();
+    engineOsc2.type = 'square';
+    engineOsc2.frequency.value = 120;
+    engineFilter = ctx.createBiquadFilter();
+    engineFilter.type = 'lowpass';
+    engineFilter.frequency.value = 500;
+    engineFilter.Q.value = 1.5;
+    engineGain = ctx.createGain();
+    engineGain.gain.value = 0.15;
+    engineOsc1.connect(engineFilter);
+    engineOsc2.connect(engineFilter);
+    engineFilter.connect(engineGain);
+    engineGain.connect(master);
+    engineOsc1.start();
+    engineOsc2.start();
+
+    const bufferSize = ctx.sampleRate * 2;
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    noise.loop = true;
+    windFilter = ctx.createBiquadFilter();
+    windFilter.type = 'bandpass';
+    windFilter.frequency.value = 800;
+    windFilter.Q.value = 0.3;
+    windGain = ctx.createGain();
+    windGain.gain.value = 0;
+    noise.connect(windFilter);
+    windFilter.connect(windGain);
+    windGain.connect(master);
+    noise.start();
+    initialized = true;
+  }
+
+  function resume() { if (ctx && ctx.state === 'suspended') { ctx.resume().catch(() => {}); } }
+
+  function setEngine(throttle, speed) {
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const freq = 40 + throttle * 180 + speed * 0.5;
+    engineOsc1.frequency.setTargetAtTime(freq, now, 0.05);
+    engineOsc2.frequency.setTargetAtTime(freq * 2.01, now, 0.05);
+    engineFilter.frequency.setTargetAtTime(400 + throttle * 2000, now, 0.05);
+    engineGain.gain.setTargetAtTime(0.1 + throttle * 0.35, now, 0.05);
+  }
+
+  function setWind(speed) {
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const intensity = Math.min(1, speed / 180);
+    windGain.gain.setTargetAtTime(intensity * 0.2, now, 0.1);
+    windFilter.frequency.setTargetAtTime(400 + speed * 12, now, 0.1);
+  }
+
+  function gearTransit() {
+    if (!ctx) return; resume();
+    const now = ctx.currentTime;
+    const o1 = ctx.createOscillator();
+    const g1 = ctx.createGain();
+    o1.type = 'square';
+    o1.frequency.setValueAtTime(120, now);
+    o1.frequency.exponentialRampToValueAtTime(60, now + 0.6);
+    g1.gain.setValueAtTime(0.12, now);
+    g1.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+    o1.connect(g1); g1.connect(master);
+    o1.start(); o1.stop(now + 0.85);
+    setTimeout(() => {
+      if (!ctx) return;
+      const o2 = ctx.createOscillator();
+      const g2 = ctx.createGain();
+      o2.type = 'sawtooth';
+      o2.frequency.setValueAtTime(80, ctx.currentTime);
+      o2.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.15);
+      g2.gain.setValueAtTime(0.2, ctx.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      o2.connect(g2); g2.connect(master);
+      o2.start(); o2.stop(ctx.currentTime + 0.25);
+    }, 700);
+  }
+
+  function impact() {
+    if (!ctx) return; resume();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(150, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.4);
+    g.gain.setValueAtTime(0.45, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    o.connect(g); g.connect(master);
+    o.start(); o.stop(ctx.currentTime + 0.65);
+  }
+
+  function stallWarning() {
+    if (!ctx) return; resume();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'square';
+    o.frequency.value = 800;
+    g.gain.setValueAtTime(0.08, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    o.connect(g); g.connect(master);
+    o.start(); o.stop(ctx.currentTime + 0.16);
+  }
+
+  function chime() {
+    if (!ctx) return; resume();
+    [523, 659, 784].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, ctx.currentTime + i * 0.1);
+      g.gain.linearRampToValueAtTime(0.18, ctx.currentTime + i * 0.1 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.3);
+      o.connect(g); g.connect(master);
+      o.start(ctx.currentTime + i * 0.1);
+      o.stop(ctx.currentTime + i * 0.1 + 0.35);
+    });
+  }
+
+  return { init, resume, setEngine, setWind, gearTransit, impact, stallWarning, chime, get ctx() { return ctx; } };
+})();
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
+scene.fog = new THREE.Fog(0x87ceeb, 800, 3500);
+
+const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 8000);
+camera.position.set(0, 10, 30);
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('voloCanvas'), antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(200, 300, 150);
+sun.castShadow = true;
+sun.shadow.mapSize.width = 2048;
+sun.shadow.mapSize.height = 2048;
+sun.shadow.camera.near = 0.5;
+sun.shadow.camera.far = 2000;
+sun.shadow.camera.left = -600;
+sun.shadow.camera.right = 600;
+sun.shadow.camera.top = 600;
+sun.shadow.camera.bottom = -600;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight(0x87ceeb, 0x2d6a4f, 0.5));
+
+const groundGeo = new THREE.PlaneGeometry(8000, 8000, 60, 60);
+const pos = groundGeo.attributes.position;
+for (let i = 0; i < pos.count; i++) {
+  const x = pos.getX(i), y = pos.getY(i);
+  const d = Math.sqrt(x*x + y*y);
+  if (d > 800) pos.setZ(i, Math.sin(x * 0.01) * Math.cos(y * 0.01) * 40);
+}
+groundGeo.computeVertexNormals();
+const ground = new THREE.Mesh(groundGeo, new THREE.MeshPhongMaterial({ color: 0x2d6a4f, flatShading: true }));
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -1;
+ground.receiveShadow = true;
+scene.add(ground);
+
+const runway = new THREE.Mesh(new THREE.PlaneGeometry(60, 1200), new THREE.MeshPhongMaterial({ color: 0x2a2a2a }));
+runway.rotation.x = -Math.PI / 2;
+runway.position.set(0, 0.01, 0);
+runway.receiveShadow = true;
+scene.add(runway);
+
+for (let i = -560; i < 600; i += 50) {
+  const s = new THREE.Mesh(new THREE.PlaneGeometry(4, 30), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  s.rotation.x = -Math.PI / 2;
+  s.position.set(0, 0.02, i);
+  scene.add(s);
+}
+
+const runway2 = new THREE.Mesh(new THREE.PlaneGeometry(40, 600), new THREE.MeshPhongMaterial({ color: 0x3a3a3a }));
+runway2.rotation.x = -Math.PI / 2;
+runway2.position.set(1500, 0.01, 0);
+runway2.receiveShadow = true;
+scene.add(runway2);
+
+const treeMat = new THREE.MeshPhongMaterial({ color: 0x1a4d2e, flatShading: true });
+for (let i = 0; i < 150; i++) {
+  const tree = new THREE.Mesh(new THREE.ConeGeometry(3 + Math.random() * 4, 8 + Math.random() * 12, 6), treeMat);
+  tree.castShadow = true;
+  const ang = Math.random() * Math.PI * 2;
+  const rad = 200 + Math.random() * 2500;
+  const tx = Math.cos(ang) * rad, tz = Math.sin(ang) * rad;
+  tree.position.set(tx, Math.sin(tx * 0.01) * Math.cos(tz * 0.01) * 40 + 5, tz);
+  scene.add(tree);
+}
+
+const plane = new THREE.Group();
+
+const fuselageGeo = new THREE.CylinderGeometry(0.75, 0.45, 7, 16);
+fuselageGeo.rotateX(Math.PI / 2);
+const fuselage = new THREE.Mesh(fuselageGeo, new THREE.MeshPhongMaterial({ color: 0xf5f5f5, shininess: 70 }));
+fuselage.castShadow = true;
+plane.add(fuselage);
+
+const noseGeo = new THREE.ConeGeometry(0.75, 1.8, 16);
+noseGeo.rotateX(-Math.PI / 2);
+const nose = new THREE.Mesh(noseGeo, new THREE.MeshPhongMaterial({ color: 0xcc0000, shininess: 90 }));
+nose.position.z = -4.4;
+nose.castShadow = true;
+plane.add(nose);
+
+const cockpit = new THREE.Mesh(
+  new THREE.BoxGeometry(1.3, 0.55, 1.8),
+  new THREE.MeshPhongMaterial({ color: 0x1a1a3a, shininess: 100, transparent: true, opacity: 0.85 })
+);
+cockpit.position.set(0, 0.4, -0.8);
+plane.add(cockpit);
+
+const wingMat = new THREE.MeshPhongMaterial({ color: 0xe8e8e8, side: THREE.DoubleSide, shininess: 50 });
+const wing = new THREE.Mesh(new THREE.BoxGeometry(14, 0.18, 2.4), wingMat);
+wing.position.set(0, 0.1, 0.1);
+wing.castShadow = true;
+plane.add(wing);
+
+const aileronGeo = new THREE.BoxGeometry(3, 0.12, 0.6);
+const aileronMat = new THREE.MeshPhongMaterial({ color: 0xd0d0d0 });
+const leftAileron = new THREE.Mesh(aileronGeo, aileronMat);
+leftAileron.position.set(-4.5, 0.1, 1.4);
+leftAileron.castShadow = true;
+plane.add(leftAileron);
+const rightAileron = new THREE.Mesh(aileronGeo, aileronMat);
+rightAileron.position.set(4.5, 0.1, 1.4);
+rightAileron.castShadow = true;
+plane.add(rightAileron);
+
+const tail = new THREE.Mesh(new THREE.BoxGeometry(5, 0.14, 1.2), wingMat);
+tail.position.set(0, 0, 3.2);
+tail.castShadow = true;
+plane.add(tail);
+
+const fin = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.8, 1.3), wingMat);
+fin.position.set(0, 0.9, 3.2);
+fin.castShadow = true;
+plane.add(fin);
+
+const rudder = new THREE.Mesh(new THREE.BoxGeometry(0.14, 1.6, 0.5), wingMat);
+rudder.position.set(0, 0.9, 3.95);
+rudder.castShadow = true;
+plane.add(rudder);
+
+const propGroup = new THREE.Group();
+const propBladeGeo = new THREE.BoxGeometry(0.12, 3.6, 0.12);
+const propMat = new THREE.MeshPhongMaterial({ color: 0x222222 });
+for (let i = 0; i < 2; i++) {
+  const blade = new THREE.Mesh(propBladeGeo, propMat);
+  blade.rotation.z = i * Math.PI;
+  propGroup.add(blade);
+}
+propGroup.position.z = -5.3;
+plane.add(propGroup);
+
+const leftLight = new THREE.PointLight(0xff0000, 0.5, 15);
+leftLight.position.set(-7, 0.1, 0.1);
+plane.add(leftLight);
+const rightLight = new THREE.PointLight(0x00ff00, 0.5, 15);
+rightLight.position.set(7, 0.1, 0.1);
+plane.add(rightLight);
+
+const gearGroup = new THREE.Group();
+const gearMat = new THREE.MeshPhongMaterial({ color: 0x444444, metalness: 0.6 });
+const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+
+function createGearLeg(x, z, length, wheelRadius) {
+  const leg = new THREE.Group();
+  const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, length, 8), gearMat);
+  strut.position.y = -length / 2;
+  strut.castShadow = true;
+  leg.add(strut);
+  const wheel = new THREE.Mesh(new THREE.CylinderGeometry(wheelRadius, wheelRadius, 0.15, 16), wheelMat);
+  wheel.rotation.z = Math.PI / 2;
+  wheel.position.y = -length;
+  wheel.castShadow = true;
+  leg.add(wheel);
+  leg.position.set(x, -0.6, z);
+  return leg;
+}
+gearGroup.add(createGearLeg(0, -3.6, 0.9, 0.28));
+gearGroup.add(createGearLeg(-2.3, 1.4, 1.0, 0.32));
+gearGroup.add(createGearLeg(2.3, 1.4, 1.0, 0.32));
+plane.add(gearGroup);
+scene.add(plane);
+
+const state = {
+  pos: new THREE.Vector3(0, 1.5, 500),
+  pitch: 0, roll: 0, yaw: 0,
+  throttle: 0, speed: 0,
+  gearDown: true, gearTransit: 0,
+  onGround: true, verticalSpeed: 0, stallTimer: 0,
+  phase: 'TERRA',
+  mission: { id: 1, targetAlt: 500, reached: false },
+  physicsMode: 0,
+  cockpitMode: false
+};
+
+const keys = {};
+let cameraMode = 0;
+
+let audioInitialized = false;
+function initAudioOnce() {
+  if (audioInitialized) return;
+  audioInitialized = true;
+  AudioEngine.init();
+  AudioEngine.resume();
+}
+window.addEventListener('keydown', initAudioOnce, { once: true });
+window.addEventListener('pointerdown', initAudioOnce, { once: true });
+window.addEventListener('touchstart', initAudioOnce, { once: true, passive: true });
+
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if (e.code === 'KeyV') cameraMode = (cameraMode + 1) % 2;
+  if (e.code === 'KeyR') resetFlight();
+  if (e.code === 'KeyG') toggleGear();
+  if (e.code === 'KeyC') toggleCockpit();
+  if (e.code === 'KeyF') togglePhysics();
+});
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+function resetFlight() {
+  state.pos.set(0, 1.5, 500);
+  state.pitch = 0; state.roll = 0; state.yaw = 0;
+  state.throttle = 0; state.speed = 0;
+  state.gearDown = true; state.gearTransit = 0;
+  state.onGround = true; state.verticalSpeed = 0; state.stallTimer = 0;
+  state.phase = 'TERRA';
+  state.mission.reached = false;
+  gearGroup.position.y = 0;
+  gearGroup.visible = true;
+  document.getElementById('stall-warning').classList.remove('active');
+}
+
+function toggleGear() {
+  if (state.onGround) return;
+  if (state.gearTransit > 0) return;
+  state.gearDown = !state.gearDown;
+  state.gearTransit = 1.0;
+  AudioEngine.gearTransit();
+}
+
+function toggleCockpit() {
+  state.cockpitMode = !state.cockpitMode;
+  const overlay = document.getElementById('cockpit-overlay');
+  const btn = document.getElementById('mode-toggle');
+  if (state.cockpitMode) {
+    overlay.classList.add('active');
+    btn.textContent = 'ESTERNO';
+    cameraMode = 1;
+  } else {
+    overlay.classList.remove('active');
+    btn.textContent = 'CABINA';
+    cameraMode = 0;
+  }
+}
+
+function togglePhysics() {
+  state.physicsMode = (state.physicsMode + 1) % 3;
+  const modes = ['BASE', 'INTERMEDIA', 'AVANZATA'];
+  document.getElementById('physics-toggle').textContent = 'FISICA: ' + modes[state.physicsMode];
+}
+
+document.getElementById('mode-toggle').addEventListener('click', toggleCockpit);
+document.getElementById('physics-toggle').addEventListener('click', togglePhysics);
+
+const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+if (isTouch) document.getElementById('touch-controls').classList.add('active');
+
+const stick = document.getElementById('tc-stick');
+const knob = document.getElementById('tc-knob');
+let stickActive = false, stickId = null;
+let touchPitch = 0, touchRoll = 0;
+
+function stickMove(clientX, clientY) {
+  const rect = stick.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  let dx = (clientX - cx) / (rect.width / 2);
+  let dy = (clientY - cy) / (rect.height / 2);
+  const len = Math.hypot(dx, dy);
+  if (len > 1) { dx /= len; dy /= len; }
+  touchRoll = dx; touchPitch = -dy;
+  knob.style.transform = `translate(${dx * 35}px, ${dy * 35}px)`;
+}
+stick.addEventListener('pointerdown', e => { e.preventDefault(); stickActive = true; stickId = e.pointerId; stick.setPointerCapture(e.pointerId); stickMove(e.clientX, e.clientY); });
+stick.addEventListener('pointermove', e => { if (!stickActive || e.pointerId !== stickId) return; e.preventDefault(); stickMove(e.clientX, e.clientY); });
+stick.addEventListener('pointerup', e => { if (e.pointerId !== stickId) return; stickActive = false; stickId = null; touchPitch = 0; touchRoll = 0; knob.style.transform = 'translate(0,0)'; });
+stick.addEventListener('pointercancel', () => { stickActive = false; stickId = null; touchPitch = 0; touchRoll = 0; knob.style.transform = 'translate(0,0)'; });
+
+let touchThrottleDir = 0;
+function bindHold(el, dir) {
+  el.addEventListener('pointerdown', e => { e.preventDefault(); touchThrottleDir = dir; el.classList.add('pressed'); });
+  el.addEventListener('pointerup', () => { touchThrottleDir = 0; el.classList.remove('pressed'); });
+  el.addEventListener('pointercancel', () => { touchThrottleDir = 0; el.classList.remove('pressed'); });
+  el.addEventListener('pointerleave', () => { touchThrottleDir = 0; el.classList.remove('pressed'); });
+}
+bindHold(document.getElementById('tc-throttle-up'), 1);
+bindHold(document.getElementById('tc-throttle-down'), -1);
+
+const clock = new THREE.Clock();
+const _forward = new THREE.Vector3();
+const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
+const _chaseOffset = new THREE.Vector3();
+const _cockpitOffset = new THREE.Vector3();
+const _lookTarget = new THREE.Vector3();
+let firstFrame = true;
+let stallWarnCooldown = 0;
+
+const VR = 100;
+const V_STALL = 70;
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  let inPitch = 0, inRoll = 0, inYaw = 0;
+  if (keys['KeyW']) inPitch += 1;
+  if (keys['KeyS']) inPitch -= 1;
+  if (keys['KeyA']) inRoll += 1;
+  if (keys['KeyD']) inRoll -= 1;
+  if (keys['KeyQ']) inYaw += 1;
+  if (keys['KeyE']) inYaw -= 1;
+  if (keys['ShiftLeft'] || keys['ShiftRight']) state.throttle = Math.min(1, state.throttle + 0.4 * dt);
+  if (keys['ControlLeft'] || keys['ControlRight']) state.throttle = Math.max(0, state.throttle - 0.4 * dt);
+
+  inPitch += touchPitch;
+  inRoll += touchRoll;
+  if (touchThrottleDir > 0) state.throttle = Math.min(1, state.throttle + 0.4 * dt);
+  if (touchThrottleDir < 0) state.throttle = Math.max(0, state.throttle - 0.4 * dt);
+
+  // ROTAZIONE CON FISICA DI VIRATA
+  const controlFactor = state.onGround ? 0.3 : 1.0;
+  state.pitch += inPitch * 0.9 * dt * controlFactor;
+  state.roll += inRoll * 1.3 * dt * controlFactor;
+  state.pitch = Math.max(-1.3, Math.min(1.3, state.pitch));
+  state.roll = Math.max(-1.6, Math.min(1.6, state.roll));
+
+  // AUTO-LIVELLAMENTO
+  if (Math.abs(inRoll) < 0.05 && Math.abs(state.roll) > 0.02) {
+    state.roll -= state.roll * 2.0 * dt;
+  }
+
+  // FISICA DI VIRATA (bank-to-turn)
+  if (!state.onGround) {
+    const bankAngle = state.roll;
+    const bankTurnRate = Math.sin(bankAngle) * 0.8;
+    const rudderTurnRate = inYaw * 0.5;
+    state.yaw += (bankTurnRate + rudderTurnRate) * dt;
+  } else {
+    state.yaw += inYaw * 0.6 * dt;
+  }
+
+  _euler.set(state.pitch, state.yaw, 0);
+  _forward.set(0, 0, -1).applyEuler(_euler);
+
+  const targetSpeed = state.throttle * 280;
+  const accel = state.onGround ? 0.4 : 0.7;
+  state.speed += (targetSpeed - state.speed) * accel * dt;
+  const speedMs = state.speed / 3.6;
+
+  if (state.onGround) {
+    if (state.throttle < 0.05) state.speed = Math.max(0, state.speed - 30 * dt);
+    state.pos.y = 1.5;
+    if (state.speed > 1) {
+      state.pos.z -= speedMs * dt * Math.cos(state.yaw);
+      state.pos.x += speedMs * dt * Math.sin(state.yaw);
+    }
+    if (state.speed > VR && state.pitch > 0.05) {
+      state.onGround = false;
+      state.phase = 'VOLO';
+      state.pos.y += 0.8;
+      state.verticalSpeed = 2;
+      AudioEngine.chime();
+    }
+  }
+
+  if (!state.onGround) {
+    state.pos.x += _forward.x * speedMs * dt;
+    state.pos.z += _forward.z * speedMs * dt;
+
+    let climbRate, lift, gravity, thrustVert;
+
+    if (state.physicsMode === 0) {
+      climbRate = Math.sin(state.pitch) * 25;
+      lift = Math.max(-8, Math.min(8, (state.speed - 100) * 0.1));
+      gravity = 9.8;
+      thrustVert = state.throttle * 2;
+      state.verticalSpeed = climbRate + lift + thrustVert - gravity;
+    } else if (state.physicsMode === 1) {
+      const aoa = state.pitch + 0.05;
+      const cl = Math.sin(aoa) * 2.5;
+      lift = Math.max(-15, Math.min(15, state.speed * 0.04 * cl));
+      climbRate = Math.sin(state.pitch) * 20;
+      gravity = 9.8;
+      thrustVert = state.throttle * 3;
+      state.verticalSpeed = lift + climbRate + thrustVert - gravity;
+    } else {
+      const altitude = state.pos.y;
+      const rho = 1.225 * Math.exp(-altitude / 8500);
+      const aoa = state.pitch + 0.05;
+      const cl = Math.sin(aoa) * 2.8;
+      const dynamicPressure = 0.5 * rho * speedMs * speedMs;
+      lift = dynamicPressure * 16 * cl * 0.08;
+      climbRate = Math.sin(state.pitch) * 18;
+      gravity = 9.8;
+      thrustVert = state.throttle * 4 * (rho / 1.225);
+      state.verticalSpeed = lift + climbRate + thrustVert - gravity;
+    }
+
+    state.pos.y += state.verticalSpeed * dt;
+
+    const isStalling = state.speed < V_STALL && state.pitch > 0.3;
+    if (isStalling) {
+      state.stallTimer += dt;
+      if (state.stallTimer > 0.3) {
+        document.getElementById('stall-warning').classList.add('active');
+        if (stallWarnCooldown <= 0) { AudioEngine.stallWarning(); stallWarnCooldown = 0.8; }
+        state.verticalSpeed -= 20 * dt;
+        state.pos.y += state.verticalSpeed * dt;
+      }
+    } else {
+      state.stallTimer = 0;
+      document.getElementById('stall-warning').classList.remove('active');
+    }
+    stallWarnCooldown -= dt;
+
+    if (state.pos.y <= 1.5) {
+      state.pos.y = 1.5;
+      const onRunwayNow = Math.abs(state.pos.x) < 35 && state.pos.z > -700 && state.pos.z < 700;
+      if (onRunwayNow && state.verticalSpeed > -6 && state.gearDown) {
+        state.onGround = true; state.phase = 'TERRA'; state.pitch = Math.max(0, state.pitch);
+        AudioEngine.impact();
+      } else if (!state.gearDown) {
+        AudioEngine.impact(); setTimeout(resetFlight, 2000);
+      } else {
+        AudioEngine.impact(); state.speed *= 0.3; state.onGround = true; state.phase = 'TERRA';
+      }
+      document.getElementById('stall-warning').classList.remove('active');
+    }
+    if (state.pos.y > 3000) { state.pos.y = 3000; state.pitch = Math.min(state.pitch, 0); }
+  }
+
+  if (!state.mission.reached && state.pos.y >= state.mission.targetAlt) {
+    state.mission.reached = true;
+    document.getElementById('mission-status').textContent = 'COMPLETATA!';
+    document.getElementById('mission-status').style.color = '#00ff88';
+    AudioEngine.chime();
+    setTimeout(() => {
+      state.mission.targetAlt += 500;
+      state.mission.reached = false;
+      document.getElementById('mission-objective').textContent = 'Raggiungi ' + state.mission.targetAlt + 'm';
+      document.getElementById('mission-status').textContent = 'In corso...';
+      document.getElementById('mission-status').style.color = '#ffaa00';
+    }, 3000);
+  }
+
+  if (state.gearTransit > 0) {
+    state.gearTransit -= dt * 1.2;
+    const t = 1 - Math.max(0, state.gearTransit);
+    if (state.gearDown) {
+      gearGroup.position.y = -t * 2.5; gearGroup.visible = true;
+    } else {
+      gearGroup.position.y = -2.5 + t * 2.5;
+      if (state.gearTransit <= 0) gearGroup.visible = false;
+    }
+  }
+
+  plane.position.copy(state.pos);
+  plane.rotation.set(state.pitch, state.yaw, state.roll, 'YXZ');
+  propGroup.rotation.z += (0.3 + state.throttle * 45) * dt;
+  leftAileron.rotation.x = state.roll * 0.5;
+  rightAileron.rotation.x = -state.roll * 0.5;
+  rudder.rotation.y = state.yaw * 0.5;
+
+  AudioEngine.setEngine(state.throttle, state.speed);
+  AudioEngine.setWind(state.speed);
+
+  if (state.cockpitMode || cameraMode === 1) {
+    _euler.set(state.pitch, state.yaw, 0);
+    _cockpitOffset.set(0, 1.2, -0.8).applyEuler(_euler);
+    camera.position.copy(state.pos).add(_cockpitOffset);
+    _lookTarget.copy(state.pos).addScaledVector(_forward, 40);
+    camera.lookAt(_lookTarget);
+  } else {
+    _euler.set(state.pitch * 0.5, state.yaw, 0);
+    _chaseOffset.set(0, 6, 22).applyEuler(_euler);
+    _lookTarget.copy(state.pos).add(_chaseOffset);
+    camera.position.lerp(_lookTarget, 0.08);
+    camera.lookAt(state.pos);
+  }
+
+  document.getElementById('hudSpeed').textContent = Math.round(state.speed);
+  document.getElementById('hudAlt').textContent = Math.round(state.pos.y);
+  document.getElementById('hudHeading').textContent = Math.round(((state.yaw * 180 / Math.PI) % 360 + 360) % 360);
+  document.getElementById('hudThrottle').style.width = (state.throttle * 100) + '%';
+  document.getElementById('hudCamera').textContent = (state.cockpitMode || cameraMode === 1) ? 'COCKPIT' : 'CHASE';
+  document.getElementById('hudPhase').textContent = state.phase;
+
+  const gearEl = document.getElementById('gear-indicator');
+  if (state.gearTransit > 0) { gearEl.className = 'transit'; gearEl.textContent = 'IN MOVIMENTO'; }
+  else if (state.gearDown) { gearEl.className = 'down'; gearEl.textContent = 'GIU'; }
+  else { gearEl.className = 'up'; gearEl.textContent = 'SU'; }
+
+  if (state.cockpitMode) {
+    const speedKmh = Math.round(state.speed);
+    const altM = Math.round(state.pos.y);
+    const heading = Math.round(((state.yaw * 180 / Math.PI) % 360 + 360) % 360);
+    const vs = Math.round(state.verticalSpeed * 10) / 10;
+
+    document.getElementById('speed-tape-value').textContent = speedKmh;
+    document.getElementById('speed-tape-fill').style.height = Math.min(100, (speedKmh / 300) * 100) + '%';
+    document.getElementById('alt-tape-value').textContent = altM;
+    document.getElementById('alt-tape-fill').style.height = Math.min(100, (altM / 3000) * 100) + '%';
+
+    const pitchDeg = state.pitch * 180 / Math.PI;
+    const rollDeg = state.roll * 180 / Math.PI;
+    document.getElementById('attitude').style.transform = `rotate(${-rollDeg}deg)`;
+    const pitchOffset = Math.max(-50, Math.min(50, pitchDeg * 1.5));
+    document.getElementById('att-sky').style.transform = `translateY(${pitchOffset}px)`;
+    document.getElementById('att-ground').style.transform = `translateY(${pitchOffset}px)`;
+    document.getElementById('att-horizon').style.transform = `translateY(calc(-50% + ${pitchOffset}px))`;
+
+    document.getElementById('heading-needle').style.transform = `translate(-50%,-100%) rotate(${heading}deg)`;
+    document.getElementById('heading-value').textContent = heading;
+
+    const vsAngle = Math.max(-90, Math.min(90, vs * 3));
+    document.getElementById('vsi-needle').style.transform = `translate(-50%,-100%) rotate(${vsAngle}deg)`;
+    document.getElementById('vsi-value').textContent = vs;
+  }
+
+  renderer.render(scene, camera);
+
+  if (firstFrame) {
+    document.getElementById('loading').style.display = 'none';
+    firstFrame = false;
+  }
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+plane.position.copy(state.pos);
+animate();
+</script>
+</body>
+</html>
