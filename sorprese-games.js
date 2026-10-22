@@ -1175,9 +1175,9 @@ document.getElementById('recBtn').addEventListener('click', function(){
     });
   }
 
-  function openTrain(){
+    function openTrain(){
     registerCleanup(function(){});
-    open('TRENO DIMENSIONALE', '<canvas id="trainCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="trainLeft">&#8592; CAMBIA BINARIO</button><button class="btn-big btn-cyan" id="trainRight">CAMBIA BINARIO &#8594;</button><button class="btn-big btn-lime" id="trainRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Il treno avanza. Cambia binario agli scambi per evitare gli ostacoli.</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="trainScore">SCORE: 0</p>');
+    open('TRENO DIMENSIONALE', '<canvas id="trainCanvas" width="400" height="400" class="game-canvas"></canvas><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0"><button class="btn-big btn-cyan" id="trainUp">&#8593;</button><button class="btn-big btn-cyan" id="trainDown">&#8595;</button><button class="btn-big btn-lime" id="trainRestart">RIGIOCA</button></div><p style="text-align:center;color:#94a3b8;font-size:0.85rem">Il treno avanza. Cambia binario agli scambi per evitare gli ostacoli.</p><p style="text-align:center;color:var(--neon-cyan);font-weight:900" id="trainScore">SCORE: 0</p>');
     var canvas = document.getElementById('trainCanvas');
     var ctx = canvas.getContext('2d');
     var W = canvas.width, H = canvas.height;
@@ -1245,12 +1245,9 @@ document.getElementById('recBtn').addEventListener('click', function(){
 
     function changeLane(dir){
       if (gameOver) return;
-      var now = performance.now();
-      if (now - lastLaneChange < 300) return;
       var newLane = train.lane + dir;
       if (newLane < 0 || newLane >= LANES) return;
       train.lane = newLane;
-      lastLaneChange = now;
       if (window.AudioEngine) AudioEngine.tick();
       playHorn();
     }
@@ -1331,8 +1328,8 @@ document.getElementById('recBtn').addEventListener('click', function(){
       }
     }
 
-    document.getElementById('trainLeft').addEventListener('click', function(){ changeLane(-1); });
-    document.getElementById('trainRight').addEventListener('click', function(){ changeLane(1); });
+    document.getElementById('trainUp').addEventListener('click', function(){ changeLane(-1); });
+    document.getElementById('trainDown').addEventListener('click', function(){ changeLane(1); });
     document.getElementById('trainRestart').addEventListener('click', function(){
       cancelAnimationFrame(gameLoop);
       initGame();
