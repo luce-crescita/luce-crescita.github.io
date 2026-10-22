@@ -1055,7 +1055,9 @@ document.getElementById('recBtn').addEventListener('click', function(){
         }
       }
     }
-    initGame();    function update(){
+        initGame();
+
+    function update(){
       if (!gameOver && !win) {
         if (moveLeft) paddle.x -= paddle.speed;
         if (moveRight) paddle.x += paddle.speed;
