@@ -1,1 +1,264 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Giochi Gratis Online: Tetris, Pac-Man, Snake, Simulatori di Volo | Luce e Crescita</title>
+<meta name="description" content="Gioca gratis nel browser senza download: Tetris, Pac-Man, Snake, Breakout, Tris, Sudoku, simulatori di volo e 18 giochi dimensionali. Nessuna installazione richiesta.">
+<meta name="author" content="Mastropaolo Antonello Salvatore">
+<meta property="og:title" content="Sorprese X-Infinito - Null Sector Console">
+<meta property="og:description" content="Tastiera 7 ottave, 16 timbri, 18 giochi, simulatori di volo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luce-crescita.github.io/sorprese.html">
+<meta name="robots" content="noai, noimageai">
+<link rel="canonical" href="https://luce-crescita.github.io/sorprese.html">
+<link rel="stylesheet" href="style.css">
+<style>
+.keyboard-controls{display:flex;gap:10px;justify-content:center;margin-bottom:15px;flex-wrap:wrap;align-items:center;background:rgba(0,0,0,0.4);padding:10px;border-radius:8px}
+.keyboard-controls label{font-size:10px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px}
+.keyboard-controls select,.keyboard-controls input[type="range"]{padding:4px;background:#000;border:1px solid var(--neon-cyan);color:var(--neon-cyan);border-radius:4px;font-family:'Space Mono',monospace;font-size:11px}
+.keyboard-wrapper{width:100%;overflow-x:auto;padding:10px;background:#0a0512;border:1px solid var(--neon-cyan);border-radius:12px;box-shadow:0 0 30px rgba(0,255,240,0.15) inset}
+.keyboard{display:flex;position:relative;height:180px;width:100%;transition:min-width 0.2s}
+.piano-key{position:relative;cursor:pointer;user-select:none;touch-action:none;border-radius:0 0 5px 5px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-size:9px;font-weight:700;transition:transform 0.05s,box-shadow 0.1s,background 0.1s}
+.piano-key.white{flex:1;height:180px;background:linear-gradient(180deg,#f0f0f0 0%,#ffffff 100%);border:1px solid #222;color:#222;z-index:1;margin-right:-1px;box-shadow:inset 0 -4px 6px rgba(0,0,0,0.1)}
+.piano-key.white.active{background:var(--neon-cyan);box-shadow:0 0 15px var(--neon-cyan);transform:translateY(2px) scaleY(0.98)}
+.piano-key.black{position:absolute;height:110px;background:linear-gradient(180deg,#333 0%,#000 100%);border:1px solid #000;color:#00fff0;z-index:2;top:0;box-shadow:0 2px 4px rgba(0,0,0,0.6);border-radius:0 0 4px 4px}
+.piano-key.black.active{background:var(--neon-magenta);box-shadow:0 0 15px var(--neon-magenta);transform:translateY(2px) scaleY(0.97)}
+.keyboard-info{display:flex;justify-content:space-between;font-size:10px;color:var(--ns-muted);margin-bottom:8px;font-family:'Space Mono',monospace;flex-wrap:wrap;gap:8px}
+.pentagram-box{background:#0a0512;border:1px solid var(--neon-violet);border-radius:12px;padding:15px;margin-top:20px;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:10px}
+.pentagram-box svg{max-width:100%;height:auto;filter:drop-shadow(0 0 10px rgba(168,85,247,0.3))}
+.pentagram-note{font-size:10px;color:var(--ns-muted);text-align:center;font-family:'Space Mono',monospace}
+.memory-list{max-height:180px;overflow-y:auto;font-size:11px;color:var(--text-muted)}
+.memory-item{padding:8px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.memory-item button{background:transparent;border:1px solid var(--blood);color:var(--blood);padding:2px 8px;border-radius:4px;cursor:pointer;font-size:9px;flex-shrink:0}
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin:10px 0}
+.preset-btn-timbro{padding:6px 8px;border-radius:6px;border:1px solid var(--neon-cyan);background:rgba(0,255,240,0.08);color:var(--neon-cyan);font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s}
+.preset-btn-timbro:hover{background:rgba(0,255,240,0.2)}
+.preset-btn-timbro.active{background:var(--neon-cyan);color:#000;font-weight:900}
+.pan-slider{display:flex;align-items:center;gap:8px;margin:8px 0}
+.pan-slider label{font-size:10px;color:var(--ns-muted);min-width:100px}
+.pan-slider input{flex:1}
+.game-canvas{width:100%;max-width:400px;height:auto;aspect-ratio:1;background:#000;border:2px solid var(--neon-cyan);border-radius:12px;display:block;margin:16px auto}
+.seo-text{font-size:10px;color:#94a3b8;margin-top:8px;line-height:1.5}
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin:16px 0}
+.trophy-card{background:#0a0512;border:2px solid #334155;border-radius:12px;padding:12px;text-align:center;transition:all 0.3s;opacity:0.4}
+.trophy-card.unlocked{border-color:var(--neon-cyan);box-shadow:0 0 20px rgba(0,255,240,0.3);opacity:1}
+.trophy-card .trophy-icon{font-size:32px;display:block;margin-bottom:6px;filter:grayscale(100%)}
+.trophy-card.unlocked .trophy-icon{filter:grayscale(0%)}
+.trophy-card .trophy-name{font-size:11px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.5px}
+.trophy-card .trophy-desc{font-size:9px;color:#94a3b8;margin-top:4px;line-height:1.4}
+.trophy-count{text-align:center;font-size:12px;color:var(--neon-cyan);margin-bottom:12px;font-weight:900}
+</style>
+</head>
+<body class="null-sector">
+<div class="grid-bg"></div>
+<div class="wrap">
+
+<nav class="nav" aria-label="Navigazione principale">
+<a href="index.html">HOME</a>
+<a href="manifesto.html">MANIFESTO</a>
+<a href="energia-eterna.html">WEAVER</a>
+<a href="sorprese.html" aria-current="page">CONSOLE</a>
+<a href="progetti.html">PROGETTI</a>
+<a href="guida.html">GUIDA</a>
+<a href="copyright.html">NOTE LEGALI</a>
+</nav>
+
+<h1>NULL SECTOR CONSOLE</h1>
+<p class="subtitle">// Tastiera 7 Ottave - 16 Timbri - 18 Giochi - Simulatori di Volo</p>
+
+<section class="section">
+<h2>TASTIERA PIANOFORTE</h2>
+<div class="keyboard-controls">
+<label for="octaveRange">Ottave:</label>
+<select id="octaveRange">
+<option value="2">2</option>
+<option value="3" selected>3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7 (max)</option>
+</select>
+<label for="zoomRange">Zoom:</label>
+<input type="range" id="zoomRange" min="30" max="100" value="50" style="width:80px">
+</div>
+<div class="keyboard-info">
+<span id="noteDisplay">Pronto - clicca un tasto</span>
+<span>Z-M e Q-U bianchi - S-D-G-H-J e 2-3-5-6-7 neri</span>
+</div>
+<div class="keyboard-wrapper">
+<div class="keyboard" id="pianoKeyboard"></div>
+</div>
+
+<div style="margin:12px 0">
+<label style="font-size:11px;color:var(--neon-cyan);text-transform:uppercase;display:block;margin-bottom:6px">Timbro (16 disponibili)</label>
+<div class="preset-grid" id="timbriGrid"></div>
+</div>
+
+<div class="pan-slider">
+<label for="volSlider">Volume Tastiera</label>
+<input type="range" id="volSlider" min="0" max="100" value="50">
+<span id="volVal" style="font-size:10px;color:var(--neon-cyan);min-width:40px;text-align:right">50%</span>
+</div>
+
+<div class="pan-slider">
+<label for="panSlider">Bilanciere</label>
+<input type="range" id="panSlider" min="-100" max="100" value="0">
+<span id="panVal" style="font-size:10px;color:var(--neon-cyan);min-width:40px;text-align:right">C</span>
+</div>
+
+<div style="text-align:center;margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+<button class="btn magenta" id="recBtn">REGISTRA</button>
+<button class="btn lime" id="saveComposition">SALVA</button>
+</div>
+
+<div class="pentagram-box">
+<svg id="staffSvg" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#00fff0" stroke-width="1.5" opacity="0.5">
+<line x1="50" y1="40" x2="550" y2="40"/>
+<line x1="50" y1="55" x2="550" y2="55"/>
+<line x1="50" y1="70" x2="550" y2="70"/>
+<line x1="50" y1="85" x2="550" y2="85"/>
+<line x1="50" y1="100" x2="550" y2="100"/>
+</g>
+<path d="M 80 90 C 70 70, 90 40, 100 50 C 110 60, 100 90, 90 95 C 80 100, 80 70, 90 60" fill="none" stroke="#00fff0" stroke-width="2"/>
+<text x="60" y="105" fill="#00fff0" font-size="10" font-family="monospace">SOL</text>
+<g stroke="#a855f7" stroke-width="1.5" opacity="0.5">
+<line x1="50" y1="150" x2="550" y2="150"/>
+<line x1="50" y1="165" x2="550" y2="165"/>
+<line x1="50" y1="180" x2="550" y2="180"/>
+<line x1="50" y1="195" x2="550" y2="195"/>
+<line x1="50" y1="210" x2="550" y2="210"/>
+</g>
+<path d="M 80 180 C 70 160, 90 150, 100 160 C 110 170, 100 190, 90 200 C 80 210, 80 180, 90 170" fill="none" stroke="#a855f7" stroke-width="2"/>
+<circle cx="95" cy="175" r="2" fill="#a855f7"/>
+<circle cx="95" cy="185" r="2" fill="#a855f7"/>
+<text x="60" y="215" fill="#a855f7" font-size="10" font-family="monospace">FA</text>
+<circle id="staffNoteTreble" cx="0" cy="0" r="5" fill="#00fff0" opacity="0"/>
+<circle id="staffNoteBass" cx="0" cy="0" r="5" fill="#a855f7" opacity="0"/>
+</svg>
+<p class="pentagram-note">La nota appare sulla linea/spazio corretto. Do centrale sul taglio addizionale.</p>
+</div>
+</section>
+
+<section class="section">
+<h2>EQUALIZZATORE FREQUENZE</h2>
+<canvas id="freqCanvas" style="width:100%;height:140px;display:block;background:#000;border-radius:8px"></canvas>
+<p style="font-size:10px;color:var(--text-muted);margin-top:8px;text-align:center" id="freqLabel">432 Hz - Ambra</p>
+</section>
+
+<section class="section">
+<h2>MEMORIA OPERE</h2>
+<div class="memory-list" id="memoryList"><p style="color:var(--text-muted)">Nessuna opera salvata.</p></div>
+<button class="btn cyan" id="clearMemory" style="margin-top:12px;width:100%">CANCELLA TUTTO</button>
+</section>
+<section class="section">
+<h2>PIXEL MATRIX</h2>
+<canvas id="pixelCanvas" width="320" height="320" aria-label="Matrice di pixel"></canvas>
+<div class="palette" id="palette" role="group" aria-label="Tavolozza colori"></div>
+<div style="text-align:center;margin-top:12px">
+<button class="btn lime" id="exportPng">EXPORT PNG</button>
+<button class="btn danger" id="clearPixels">RESET</button>
+</div>
+</section>
+
+<section class="section">
+<h2>FREQUENCY LAB 10D</h2>
+<div class="music-row">
+<label>FREQ <input type="range" id="baseFreq" min="220" max="880" value="440"><span id="baseFreqVal" style="color:var(--neon-cyan)">440</span></label>
+<label>VOL <input type="range" id="volume" min="0" max="100" value="30"><span id="volumeVal" style="color:var(--neon-cyan)">30%</span></label>
+</div>
+<div class="note-grid" id="noteGrid" role="group" aria-label="Note musicali"></div>
+</section>
+
+<section class="section">
+<h2>ULTRA DIMENSIONAL GAMES</h2>
+<div class="games-grid" id="gamesGrid"></div>
+</section>
+
+<section class="section">
+<h2>PAUSA MENTALE</h2>
+<p style="text-align:center;color:#94a3b8;font-size:0.85rem;margin-bottom:12px">Disegna con il dito o il mouse. Il tratto si riflette su 6 assi. Nessun punteggio, nessuna fretta.</p>
+<canvas id="mandalaCanvas" width="400" height="400" style="width:100%;max-width:400px;aspect-ratio:1;background:#000;border:2px solid var(--neon-violet);border-radius:50%;display:block;margin:16px auto;cursor:crosshair;touch-action:none"></canvas>
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0">
+<button class="btn-big btn-lime" id="mandalaClear">CANCELLA</button>
+<button class="btn-big btn-magenta" id="mandalaSave">SALVA PNG</button>
+</div>
+</section>
+
+<section class="section">
+<h2>MAPPAMONDO 3D</h2>
+<p style="text-align:center;color:#94a3b8;font-size:0.85rem;margin-bottom:16px">Esplora la Terra con un globo interattivo realistico. Si apre in una nuova scheda, separato da questo sito.</p>
+<div class="games-grid">
+<div class="game-card">
+<div class="emoji" aria-hidden="true">🌍</div>
+<h3>Google Earth</h3>
+<p>Il globo 3D più dettagliato al mondo. Cerca qualsiasi città, ruota, zoomma, esplora in 3D. Include Voyager, tour guidati e Street View.</p>
+<a href="https://earth.google.com/web/" target="_blank" rel="noopener noreferrer" class="btn magenta" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">APRI GOOGLE EARTH</a>
+</div>
+<div class="game-card">
+<div class="emoji" aria-hidden="true">✈</div>
+<h3>GeoFS</h3>
+<p>Simulatore di volo con globo 3D realistico. 30+ aerei, 40.000 piste, meteo reale, multiplayer. Puoi sorvolare qualsiasi punto della Terra.</p>
+<a href="https://geo-fs.com" target="_blank" rel="noopener noreferrer" class="btn magenta" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">APRI GEOFS</a>
+</div>
+</div>
+<p style="text-align:center;color:#6b5a8a;font-size:0.75rem;margin-top:16px">I link si aprono in una nuova scheda. Nessun dato viene condiviso con questo sito. I simulatori sono di terze parti e non sono controllati da Luce e Crescita X-Infinito.</p>
+</section>
+
+<section class="section">
+<h2>TROFEI</h2>
+<p class="trophy-count" id="trophyCount">0 / 8 sbloccati</p>
+<div class="trophy-grid" id="trophyGrid"></div>
+</section>
+
+<section class="section">
+<h2>SIMULATORI DI VOLO ESTERNI</h2>
+<p style="text-align:center;color:#94a3b8;font-size:0.85rem;margin-bottom:16px">Link a simulatori gratuiti nel browser. Si aprono in una nuova scheda, separati da questo sito.</p>
+<div class="games-grid">
+<div class="game-card">
+<div class="emoji" aria-hidden="true">✈</div>
+<h3>0SFS</h3>
+<p>Fisica JSBSim, Cessna 172 e Vision Jet. Carrello (G), flap (F/R), freno (B). Il più realistico.</p>
+<a href="https://0sfs.github.io/fly/" target="_blank" rel="noopener noreferrer" class="btn magenta" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">APRI 0SFS</a>
+</div>
+<div class="game-card">
+<div class="emoji" aria-hidden="true">🌍</div>
+<h3>GeoFS</h3>
+<p>30+ aerei, 40.000 piste, meteo reale, traffico ADS-B, multiplayer. Mondo intero.</p>
+<a href="https://geo-fs.com" target="_blank" rel="noopener noreferrer" class="btn magenta" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">APRI GEOFS</a>
+</div>
+<div class="game-card">
+<div class="emoji" aria-hidden="true">🌐</div>
+<h3>Google Earth Flight</h3>
+<p>F-16 e SR22. Apri Google Earth web, clicca "Esplora Earth" - "Strumenti" - "Flight Simulator".</p>
+<a href="https://earth.google.com/web/" target="_blank" rel="noopener noreferrer" class="btn magenta" style="display:inline-block;text-align:center;text-decoration:none;margin-top:8px">APRI GOOGLE EARTH</a>
+</div>
+</div>
+<p style="text-align:center;color:#6b5a8a;font-size:0.75rem;margin-top:16px">I link si aprono in una nuova scheda. Nessun dato viene condiviso con questo sito. I simulatori sono di terze parti e non sono controllati da Luce e Crescita X-Infinito.</p>
+</section>
+<footer>
+  2025-2026 MASTROPAOLO ANTONELLO SALVATORE - LUCE E CRESCITA X-INFINITO - <a href="copyright.html" style="color:var(--neon-cyan)">NOTE LEGALI</a>
+  <p style="text-align:center; margin-top:14px; font-size:0.9rem;">
+    <a href="https://ko-fi.com/luceecrescita" target="_blank" rel="noopener noreferrer" style="display:inline-block; padding:10px 20px; background:linear-gradient(90deg, #a855f7, #00fff0); color:#000; text-decoration:none; border-radius:8px; font-weight:900; letter-spacing:1px;">Offrimi</a>
+  </p>
+</footer>
+
+</div>
+
+<div class="modal" id="gameModal" hidden>
+<div class="modal-inner">
+<div class="modal-header">
+<h3 id="gameTitle">GAME</h3>
+<button class="modal-close" id="gameClose" aria-label="Chiudi">X</button>
+</div>
+<div id="gameContent"></div>
+</div>
+</div>
+
+<script src="audio.js" defer></script>
+<script src="sorprese-games.js" defer></script>
+</body>
+</html>
