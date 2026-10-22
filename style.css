@@ -1192,7 +1192,7 @@ body.null-sector::after {
    ========================================================================== */
 #globalOffrimi {
     position: fixed;
-    bottom: 20px;
+    bottom: 92px;
     right: 20px;
     z-index: 9999;
     padding: 12px 22px;
@@ -1217,7 +1217,7 @@ body.null-sector::after {
 }
 @media (max-width: 600px) {
     #globalOffrimi {
-        bottom: 14px;
+        bottom: 80px;
         right: 14px;
         padding: 10px 16px;
         font-size: 11px;
